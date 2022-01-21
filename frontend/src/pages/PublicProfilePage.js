@@ -6,7 +6,7 @@ export const PublicProfilePage = () => {
     <div class="flex flex-col justify-center items-center ">
       <p1>Public Profile page</p1>
       <img class="rounded-full w-24 h-24" src={avi} alt="pfp" />
-      <p1>@DeMar_Derozan</p1>
+      <p1 class="mt-1">@DeMar_Derozan</p1>
     </div>
   );
 };
