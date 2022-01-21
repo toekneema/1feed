@@ -13,9 +13,10 @@ export const PrivateEditingPage = () => {
       {/* <Link to="/edit">
         <h1>Dashboard</h1>
       </Link> */}
-      <p1>Private Admin Dashboard Page</p1>
+      <h1 class="text-3xl font-bold">Private Admin Dashboard Page</h1>
       <img class="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
       <p1 class="mt-1">@DeMar_Derozan</p1>
+      <button class="text-blue-500 text-xs">view your public profile</button>
       <div class="mt-14 flex flex-col">
         {allSocialMedias.map((obj) => (
           <button
