@@ -61,9 +61,11 @@ export const PrivateEditingPage = () => {
         <div class="flex items-center flex-col">
           <label class="mt-8 text-gray-800 font-semibold text-xl">
             New bio:
-            <input
+            <textarea
               type="text"
+              maxLength="140"
               class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
+              style={{ overflowWrap: "break-word" }}
               placeholder="Limit 140 characters."
               onChange={(event) => setNewBioText(event.target.value)}
             />
