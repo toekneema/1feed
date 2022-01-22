@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
+import { IoIosShareAlt } from "react-icons/io";
 import Modal from "react-modal";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
-    { name: "YouTube", alreadyLinked: true, color: "#FF0000" },
-    { name: "Facebook", alreadyLinked: false, color: "#1877f2" },
-    { name: "Instagram", alreadyLinked: false, color: "#FF0000" },
-    { name: "Twitter", alreadyLinked: false, color: "#FF0000" },
+    { name: "YouTube", alreadyLinked: true },
+    { name: "Facebook", alreadyLinked: false },
+    { name: "Instagram", alreadyLinked: false },
+    { name: "Twitter", alreadyLinked: false },
   ];
 
   const returnCorrectIcon = (objName) => {
@@ -45,7 +46,7 @@ export const PrivateEditingPage = () => {
         onClick={() => setModalVisible(true)}
         onMouseOver={() => setIsHoveringBio(true)}
         onMouseLeave={() => setIsHoveringBio(false)}
-        class="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-200 hover:rounded-xl relative"
+        class="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-100 hover:rounded-xl relative"
         style={{ "word-break": "break-word" }}
       >
         {bio}
@@ -65,7 +66,6 @@ export const PrivateEditingPage = () => {
               type="text"
               maxLength="140"
               class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
-              style={{ overflowWrap: "break-word" }}
               placeholder="Limit 140 characters."
               onChange={(event) => setNewBioText(event.target.value)}
             />
@@ -91,8 +91,9 @@ export const PrivateEditingPage = () => {
         </div>
       </Modal>
 
-      <button class="mt-2 text-blue-500 text-xs">
+      <button class="mt-2 text-blue-500 text-xs flex flex-row items-center">
         view your public profile
+        <IoIosShareAlt size={20} class="pb-0.5 ml-1" />
       </button>
       <div class="mt-14 flex flex-col">
         {allSocialMedias.map((obj) => (
