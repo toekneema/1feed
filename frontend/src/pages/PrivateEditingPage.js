@@ -126,10 +126,15 @@ const styles = {
   enabledButton:
     "w-64 rounded-full bg-gray-800 m-2 px-3 py-2 text-gray-50 font-semibold flex items-center justify-center relative",
   modal: {
-    top: "20%",
-    left: "20%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
+    content: {
+      position: "absolute",
+      // width: "30%",
+      // height: "40%",
+      display: "inline-block",
+      marginLeft: "auto",
+      marginRight: "auto",
+      overflow: "hidden",
+      borderRadius: "12px",
+    },
   },
 };
