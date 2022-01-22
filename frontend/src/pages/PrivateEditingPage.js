@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
+import { IoIosShareAlt } from "react-icons/io";
+import Modal from "react-modal";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
-    { name: "YouTube", alreadyLinked: true, color: "#FF0000" },
-    { name: "Facebook", alreadyLinked: false, color: "#1877f2" },
-    { name: "Instagram", alreadyLinked: false, color: "#FF0000" },
-    { name: "Twitter", alreadyLinked: false, color: "#FF0000" },
+    { name: "YouTube", alreadyLinked: true },
+    { name: "Facebook", alreadyLinked: false },
+    { name: "Instagram", alreadyLinked: false },
+    { name: "Twitter", alreadyLinked: false },
   ];
 
   const returnCorrectIcon = (objName) => {
@@ -25,30 +28,42 @@ export const PrivateEditingPage = () => {
     }
   };
 
-  const [isPublishable, setIsPublishable] = useState(false);
+  const fetchBio = () => {
+    return "Player for the Chicago Bulls. Born and raised in Compton. #Comp10";
+  };
+
+  const [isHoveringBio, setIsHoveringBio] = useState(false);
+  const [bio, setBio] = useState(fetchBio());
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <div class="flex flex-col justify-center items-center ">
-      {/* <Link to="/edit">
-        <h1>Dashboard</h1>
-      </Link> */}
-      {/* <button
-        disabled={!isPublishable}
-        class={
-          isPublishable
-            ? "absolute top-5 right-10 rounded-full bg-blue-700 text-white py-2 px-4"
-            : "absolute top-5 right-10 rounded-full bg-gray-300 text-gray-700 py-2 px-4"
-        }
-      >
-        Publish
-      </button> */}
       <h1 class="mt-5 text-3xl font-bold">Private Editing Page</h1>
       <img class="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
       <h3 class="mt-1 font-semibold text-lg">@DeMar_Derozan</h3>
-      <p class="mt-2 text-sm w-72 text-center">
-        Player for the Chicago Bulls. Born and raised in Compton. #Comp10
-      </p>
-      <button class="mt-2 text-blue-500 text-xs">
+      <button
+        onClick={() => setModalVisible(true)}
+        onMouseOver={() => setIsHoveringBio(true)}
+        onMouseLeave={() => setIsHoveringBio(false)}
+        class="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-100 hover:rounded-xl relative"
+        style={{ "word-break": "break-word" }}
+      >
+        {bio}
+        {isHoveringBio && (
+          <AiFillEdit
+            size={20}
+            class="absolute bottom-1 right-1 text-gray-800"
+          />
+        )}
+      </button>
+      <EditBioModal
+        setBio={setBio}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+      <button class="mt-2 text-blue-500 text-xs flex flex-row items-center">
         view your public profile
+        <IoIosShareAlt size={20} class="pb-0.5 ml-1" />
       </button>
       <div class="mt-14 flex flex-col">
         {allSocialMedias.map((obj) => (
@@ -59,7 +74,6 @@ export const PrivateEditingPage = () => {
             }
           >
             {returnCorrectIcon(obj.name)}
-
             {obj.alreadyLinked ? `${obj.name} linked` : `Link ${obj.name}`}
           </button>
         ))}
@@ -68,9 +82,59 @@ export const PrivateEditingPage = () => {
   );
 };
 
+const EditBioModal = ({ ...props }) => {
+  const [newBioText, setNewBioText] = useState("");
+  return (
+    <Modal isOpen={props.modalVisible} style={styles.modal}>
+      <div class="flex items-center flex-col">
+        <label class="mt-8 text-gray-800 font-semibold text-xl">
+          New bio:
+          <textarea
+            type="text"
+            maxLength="140"
+            class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
+            placeholder="Limit 140 characters."
+            onChange={(event) => setNewBioText(event.target.value)}
+          />
+        </label>
+        <div>
+          <button
+            onClick={() => props.setModalVisible(false)}
+            class="rounded-full bg-gray-300 m-2 py-2 px-4"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              props.setBio(newBioText);
+              console.log(newBioText, "hey tehre");
+              props.setModalVisible(false);
+            }}
+            class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
 const styles = {
   disabledButton:
     "w-64 rounded-full bg-gray-200 m-2 px-3 py-2 text-gray-700 font-semibold flex items-center justify-center relative",
   enabledButton:
     "w-64 rounded-full bg-gray-800 m-2 px-3 py-2 text-gray-50 font-semibold flex items-center justify-center relative",
+  modal: {
+    content: {
+      position: "absolute",
+      // width: "30%",
+      // height: "40%",
+      display: "inline-block",
+      marginLeft: "auto",
+      marginRight: "auto",
+      overflow: "hidden",
+      borderRadius: "12px",
+    },
+  },
 };
