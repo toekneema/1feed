@@ -45,7 +45,8 @@ export const PrivateEditingPage = () => {
         onClick={() => setModalVisible(true)}
         onMouseOver={() => setIsHoveringBio(true)}
         onMouseLeave={() => setIsHoveringBio(false)}
-        class="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-200 hover:rounded-xl relative block"
+        class="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-200 hover:rounded-xl relative"
+        style={{ "word-break": "break-word" }}
       >
         {bio}
         {isHoveringBio && (
