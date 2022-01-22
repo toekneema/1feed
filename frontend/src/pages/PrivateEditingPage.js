@@ -26,8 +26,13 @@ export const PrivateEditingPage = () => {
       </button> */}
       <h1 class="mt-5 text-3xl font-bold">Private Editing Page</h1>
       <img class="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
-      <p1 class="mt-1">@DeMar_Derozan</p1>
-      <button class="text-blue-500 text-xs">view your public profile</button>
+      <h3 class="mt-1 font-semibold text-lg">@DeMar_Derozan</h3>
+      <p class="mt-2 text-sm w-72 text-center">
+        Player for the Chicago Bulls. Born and raised in Compton. #Comp10
+      </p>
+      <button class="mt-2 text-blue-500 text-xs">
+        view your public profile
+      </button>
       <div class="mt-14 flex flex-col">
         {allSocialMedias.map((obj) => (
           <button
