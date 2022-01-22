@@ -34,7 +34,6 @@ export const PrivateEditingPage = () => {
 
   const [isHoveringBio, setIsHoveringBio] = useState(false);
   const [bio, setBio] = useState(fetchBio());
-  const [newBioText, setNewBioText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -57,40 +56,11 @@ export const PrivateEditingPage = () => {
           />
         )}
       </button>
-
-      <Modal isOpen={modalVisible} style={styles.modal}>
-        <div class="flex items-center flex-col">
-          <label class="mt-8 text-gray-800 font-semibold text-xl">
-            New bio:
-            <textarea
-              type="text"
-              maxLength="140"
-              class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
-              placeholder="Limit 140 characters."
-              onChange={(event) => setNewBioText(event.target.value)}
-            />
-          </label>
-          <div>
-            <button
-              onClick={() => setModalVisible(false)}
-              class="rounded-full bg-gray-300 m-2 py-2 px-4"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => {
-                setBio(newBioText);
-                console.log(newBioText, "hey tehre");
-                setModalVisible(false);
-              }}
-              class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </Modal>
-
+      <EditBioModal
+        setBio={setBio}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <button class="mt-2 text-blue-500 text-xs flex flex-row items-center">
         view your public profile
         <IoIosShareAlt size={20} class="pb-0.5 ml-1" />
@@ -109,6 +79,44 @@ export const PrivateEditingPage = () => {
         ))}
       </div>
     </div>
+  );
+};
+
+const EditBioModal = ({ ...props }) => {
+  const [newBioText, setNewBioText] = useState("");
+  return (
+    <Modal isOpen={props.modalVisible} style={styles.modal}>
+      <div class="flex items-center flex-col">
+        <label class="mt-8 text-gray-800 font-semibold text-xl">
+          New bio:
+          <textarea
+            type="text"
+            maxLength="140"
+            class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
+            placeholder="Limit 140 characters."
+            onChange={(event) => setNewBioText(event.target.value)}
+          />
+        </label>
+        <div>
+          <button
+            onClick={() => props.setModalVisible(false)}
+            class="rounded-full bg-gray-300 m-2 py-2 px-4"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              props.setBio(newBioText);
+              console.log(newBioText, "hey tehre");
+              props.setModalVisible(false);
+            }}
+            class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </Modal>
   );
 };
 
