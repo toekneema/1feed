@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
+import { GrFormClose } from "react-icons/gr";
+import Modal from "react-modal";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
@@ -29,12 +31,15 @@ export const PrivateEditingPage = () => {
   const [isHoveringBio, setIsHoveringBio] = useState(false);
   const [bio, setBio] = useState(false);
   const [bioIsDiff, setBioIsDiff] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <div class="flex flex-col justify-center items-center ">
       <h1 class="mt-5 text-3xl font-bold">Private Editing Page</h1>
       <img class="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
       <h3 class="mt-1 font-semibold text-lg">@DeMar_Derozan</h3>
       <button
+        onClick={() => setModalVisible(true)}
         onMouseOver={() => setIsHoveringBio(true)}
         onMouseLeave={() => setIsHoveringBio(false)}
         class="mt-2 text-sm w-72 text-center p-1 hover:bg-gray-200 hover:rounded-xl relative"
@@ -47,6 +52,36 @@ export const PrivateEditingPage = () => {
           />
         )}
       </button>
+
+      <Modal isOpen={modalVisible} style={styles.modal}>
+        <div class="flex items-center flex-col">
+          <form class="mt-8">
+            <label class="text-gray-800 font-semibold text-xl">
+              New bio:
+              <input
+                type="text"
+                class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
+                placeholder="Limit 140 characters."
+              />
+            </label>
+          </form>
+          <div>
+            <button
+              onClick={() => setModalVisible(false)}
+              class="rounded-full bg-gray-300 m-2 py-2 px-4"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => setModalVisible(false)}
+              class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       <button class="mt-2 text-blue-500 text-xs">
         view your public profile
       </button>
@@ -72,4 +107,11 @@ const styles = {
     "w-64 rounded-full bg-gray-200 m-2 px-3 py-2 text-gray-700 font-semibold flex items-center justify-center relative",
   enabledButton:
     "w-64 rounded-full bg-gray-800 m-2 px-3 py-2 text-gray-50 font-semibold flex items-center justify-center relative",
+  modal: {
+    top: "20%",
+    left: "20%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+  },
 };
