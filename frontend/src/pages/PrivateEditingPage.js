@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
-import { GrFormClose } from "react-icons/gr";
 import Modal from "react-modal";
 
 export const PrivateEditingPage = () => {
@@ -28,9 +27,13 @@ export const PrivateEditingPage = () => {
     }
   };
 
+  const fetchBio = () => {
+    return "Player for the Chicago Bulls. Born and raised in Compton. #Comp10";
+  };
+
   const [isHoveringBio, setIsHoveringBio] = useState(false);
-  const [bio, setBio] = useState(false);
-  const [bioIsDiff, setBioIsDiff] = useState(false);
+  const [bio, setBio] = useState(fetchBio());
+  const [newBioText, setNewBioText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -42,9 +45,9 @@ export const PrivateEditingPage = () => {
         onClick={() => setModalVisible(true)}
         onMouseOver={() => setIsHoveringBio(true)}
         onMouseLeave={() => setIsHoveringBio(false)}
-        class="mt-2 text-sm w-72 text-center p-1 hover:bg-gray-200 hover:rounded-xl relative"
+        class="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-200 hover:rounded-xl relative block"
       >
-        Player for the Chicago Bulls. Born and raised in Compton. #Comp10
+        {bio}
         {isHoveringBio && (
           <AiFillEdit
             size={20}
@@ -55,16 +58,15 @@ export const PrivateEditingPage = () => {
 
       <Modal isOpen={modalVisible} style={styles.modal}>
         <div class="flex items-center flex-col">
-          <form class="mt-8">
-            <label class="text-gray-800 font-semibold text-xl">
-              New bio:
-              <input
-                type="text"
-                class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
-                placeholder="Limit 140 characters."
-              />
-            </label>
-          </form>
+          <label class="mt-8 text-gray-800 font-semibold text-xl">
+            New bio:
+            <input
+              type="text"
+              class="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
+              placeholder="Limit 140 characters."
+              onChange={(event) => setNewBioText(event.target.value)}
+            />
+          </label>
           <div>
             <button
               onClick={() => setModalVisible(false)}
@@ -73,7 +75,11 @@ export const PrivateEditingPage = () => {
               Cancel
             </button>
             <button
-              onClick={() => setModalVisible(false)}
+              onClick={() => {
+                setBio(newBioText);
+                console.log(newBioText, "hey tehre");
+                setModalVisible(false);
+              }}
               class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
             >
               Save
