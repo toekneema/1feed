@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
@@ -25,28 +26,27 @@ export const PrivateEditingPage = () => {
     }
   };
 
-  const [isPublishable, setIsPublishable] = useState(false);
+  const [isHoveringBio, setIsHoveringBio] = useState(false);
+  const [bio, setBio] = useState(false);
+  const [bioIsDiff, setBioIsDiff] = useState(false);
   return (
     <div class="flex flex-col justify-center items-center ">
-      {/* <Link to="/edit">
-        <h1>Dashboard</h1>
-      </Link> */}
-      {/* <button
-        disabled={!isPublishable}
-        class={
-          isPublishable
-            ? "absolute top-5 right-10 rounded-full bg-blue-700 text-white py-2 px-4"
-            : "absolute top-5 right-10 rounded-full bg-gray-300 text-gray-700 py-2 px-4"
-        }
-      >
-        Publish
-      </button> */}
       <h1 class="mt-5 text-3xl font-bold">Private Editing Page</h1>
       <img class="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
       <h3 class="mt-1 font-semibold text-lg">@DeMar_Derozan</h3>
-      <p class="mt-2 text-sm w-72 text-center">
+      <button
+        onMouseOver={() => setIsHoveringBio(true)}
+        onMouseLeave={() => setIsHoveringBio(false)}
+        class="mt-2 text-sm w-72 text-center p-1 hover:bg-gray-200 hover:rounded-xl relative"
+      >
         Player for the Chicago Bulls. Born and raised in Compton. #Comp10
-      </p>
+        {isHoveringBio && (
+          <AiFillEdit
+            size={20}
+            class="absolute bottom-1 right-1 text-gray-800"
+          />
+        )}
+      </button>
       <button class="mt-2 text-blue-500 text-xs">
         view your public profile
       </button>
@@ -59,7 +59,6 @@ export const PrivateEditingPage = () => {
             }
           >
             {returnCorrectIcon(obj.name)}
-
             {obj.alreadyLinked ? `${obj.name} linked` : `Link ${obj.name}`}
           </button>
         ))}
