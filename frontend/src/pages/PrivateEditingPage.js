@@ -1,13 +1,30 @@
 import React, { useState } from "react";
 import avi from "../assets/images/demar_avi.png";
+import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
-    { name: "YouTube", alreadyLinked: true },
-    { name: "Facebook" },
-    { name: "Instagram" },
-    { name: "Twitter" },
+    { name: "YouTube", alreadyLinked: true, color: "#FF0000" },
+    { name: "Facebook", alreadyLinked: false, color: "#1877f2" },
+    { name: "Instagram", alreadyLinked: false, color: "#FF0000" },
+    { name: "Twitter", alreadyLinked: false, color: "#FF0000" },
   ];
+
+  const returnCorrectIcon = (objName) => {
+    switch (objName) {
+      case "YouTube":
+        return <BsYoutube size={30} class="absolute left-3" />;
+      case "Facebook":
+        return <BsFacebook size={26} class="absolute left-3" />;
+      case "Instagram":
+        return <BsInstagram size={26} class="absolute left-3" />;
+      case "Twitter":
+        return <BsTwitter size={26} class="absolute left-3" />;
+      default:
+        break;
+    }
+  };
+
   const [isPublishable, setIsPublishable] = useState(false);
   return (
     <div class="flex flex-col justify-center items-center ">
@@ -38,16 +55,22 @@ export const PrivateEditingPage = () => {
           <button
             disabled={obj.alreadyLinked}
             class={
-              obj.alreadyLinked
-                ? "w-44 rounded-full bg-gray-200 m-2 px-3 py-2 text-gray-700"
-                : "w-44 rounded-full bg-red-300 m-2 px-3 py-2 text-gray-900"
+              obj.alreadyLinked ? styles.disabledButton : styles.enabledButton
             }
           >
-            {/* <img /> */}
-            {obj.alreadyLinked ? `${obj.name} linked!` : `Link ${obj.name}`}
+            {returnCorrectIcon(obj.name)}
+
+            {obj.alreadyLinked ? `${obj.name} linked` : `Link ${obj.name}`}
           </button>
         ))}
       </div>
     </div>
   );
+};
+
+const styles = {
+  disabledButton:
+    "w-64 rounded-full bg-gray-200 m-2 px-3 py-2 text-gray-700 font-semibold flex items-center justify-center relative",
+  enabledButton:
+    "w-64 rounded-full bg-gray-800 m-2 px-3 py-2 text-gray-50 font-semibold flex items-center justify-center relative",
 };
