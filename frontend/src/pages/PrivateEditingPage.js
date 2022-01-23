@@ -5,6 +5,8 @@ import { AiFillEdit } from "react-icons/ai";
 import { IoIosShareAlt } from "react-icons/io";
 import Modal from "react-modal";
 import { linkYouTube } from "../services/linkPlatforms";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
@@ -46,7 +48,12 @@ export const PrivateEditingPage = () => {
   const fetchBio = () => {
     return "Player for the Chicago Bulls. Born and raised in Compton. #Comp10";
   };
-
+  const [alreadyLinkedMap, setAlreadyLinkedMap] = useState({
+    YouTube: false,
+    Facebook: false,
+    Instagram: false,
+    Twitter: false,
+  }); // need to get inital value from DB
   const [isHoveringBio, setIsHoveringBio] = useState(false);
   const [bio, setBio] = useState(fetchBio());
   const [bioModalVisible, setBioModalVisible] = useState(false);
@@ -84,21 +91,28 @@ export const PrivateEditingPage = () => {
       <div class="mt-14 flex flex-col">
         {allSocialMedias.map((obj) => (
           <button
-            disabled={obj.alreadyLinked}
+            disabled={alreadyLinkedMap[obj.name]}
             onClick={() => openCorrectModal(obj.name)}
             class={
-              obj.alreadyLinked ? styles.disabledButton : styles.enabledButton
+              alreadyLinkedMap[obj.name]
+                ? styles.disabledButton
+                : styles.enabledButton
             }
           >
             {returnCorrectIcon(obj.name)}
-            {obj.alreadyLinked ? `${obj.name} linked` : `Link ${obj.name}`}
+            {alreadyLinkedMap[obj.name]
+              ? `${obj.name} linked`
+              : `Link ${obj.name}`}
           </button>
         ))}
       </div>
       <LinkYouTubeModal
         ytModalVisible={ytModalVisible}
         setYTModalVisible={setYTModalVisible}
+        alreadyLinkedMap={alreadyLinkedMap}
+        setAlreadyLinkedMap={setAlreadyLinkedMap}
       />
+      <ToastContainer />
     </div>
   );
 };
@@ -132,7 +146,6 @@ const EditBioModal = ({ ...props }) => {
           <button
             onClick={() => {
               props.setBio(newBioText);
-              console.log(newBioText, "hey tehre");
               props.setBioModalVisible(false);
             }}
             class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
@@ -176,11 +189,21 @@ const LinkYouTubeModal = ({ ...props }) => {
             Cancel
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
               // make this onClick async.
               // first try to see if the inputted channelId is valid. (show loader while doing this)
-              linkYouTube(channelId);
-              props.setYTModalVisible(false);
+              const response = await linkYouTube(channelId);
+              if (response === "success") {
+                toast("Success!");
+                props.setAlreadyLinkedMap({
+                  ...props.alreadyLinkedMap,
+                  YouTube: true,
+                });
+                props.setYTModalVisible(false);
+              } else {
+                // trigger some toast alert
+                toast("Invalid channel ID");
+              }
             }}
             class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
           >
