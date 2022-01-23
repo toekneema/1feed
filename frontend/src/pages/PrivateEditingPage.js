@@ -4,15 +4,32 @@ import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
 import { IoIosShareAlt } from "react-icons/io";
 import Modal from "react-modal";
+import { linkYouTube } from "../services/linkPlatforms";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
-    { name: "YouTube", alreadyLinked: true },
+    { name: "YouTube", alreadyLinked: false },
     { name: "Facebook", alreadyLinked: false },
     { name: "Instagram", alreadyLinked: false },
     { name: "Twitter", alreadyLinked: false },
   ];
-
+  const openCorrectModal = (objName) => {
+    switch (objName) {
+      case "YouTube":
+        setYTModalVisible(true);
+        break;
+      // case "Facebook":
+      //   break;
+      // case "Instagram":
+      //   break;
+      // case "Twitter":
+      //   break;
+      default:
+        break;
+    }
+  };
   const returnCorrectIcon = (objName) => {
     switch (objName) {
       case "YouTube":
@@ -31,10 +48,16 @@ export const PrivateEditingPage = () => {
   const fetchBio = () => {
     return "Player for the Chicago Bulls. Born and raised in Compton. #Comp10";
   };
-
+  const [alreadyLinkedMap, setAlreadyLinkedMap] = useState({
+    YouTube: false,
+    Facebook: false,
+    Instagram: false,
+    Twitter: false,
+  }); // need to get inital value from DB
   const [isHoveringBio, setIsHoveringBio] = useState(false);
   const [bio, setBio] = useState(fetchBio());
-  const [modalVisible, setModalVisible] = useState(false);
+  const [bioModalVisible, setBioModalVisible] = useState(false);
+  const [ytModalVisible, setYTModalVisible] = useState(false);
 
   return (
     <div class="flex flex-col justify-center items-center ">
@@ -42,11 +65,11 @@ export const PrivateEditingPage = () => {
       <img class="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
       <h3 class="mt-1 font-semibold text-lg">@DeMar_Derozan</h3>
       <button
-        onClick={() => setModalVisible(true)}
+        onClick={() => setBioModalVisible(true)}
         onMouseOver={() => setIsHoveringBio(true)}
         onMouseLeave={() => setIsHoveringBio(false)}
         class="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-100 hover:rounded-xl relative"
-        style={{ "word-break": "break-word" }}
+        style={{ wordBreak: "break-word" }}
       >
         {bio}
         {isHoveringBio && (
@@ -58,8 +81,8 @@ export const PrivateEditingPage = () => {
       </button>
       <EditBioModal
         setBio={setBio}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        bioModalVisible={bioModalVisible}
+        setBioModalVisible={setBioModalVisible}
       />
       <button class="mt-2 text-blue-500 text-xs flex flex-row items-center">
         view your public profile
@@ -68,16 +91,28 @@ export const PrivateEditingPage = () => {
       <div class="mt-14 flex flex-col">
         {allSocialMedias.map((obj) => (
           <button
-            disabled={obj.alreadyLinked}
+            disabled={alreadyLinkedMap[obj.name]}
+            onClick={() => openCorrectModal(obj.name)}
             class={
-              obj.alreadyLinked ? styles.disabledButton : styles.enabledButton
+              alreadyLinkedMap[obj.name]
+                ? styles.disabledButton
+                : styles.enabledButton
             }
           >
             {returnCorrectIcon(obj.name)}
-            {obj.alreadyLinked ? `${obj.name} linked` : `Link ${obj.name}`}
+            {alreadyLinkedMap[obj.name]
+              ? `${obj.name} linked`
+              : `Link ${obj.name}`}
           </button>
         ))}
       </div>
+      <LinkYouTubeModal
+        ytModalVisible={ytModalVisible}
+        setYTModalVisible={setYTModalVisible}
+        alreadyLinkedMap={alreadyLinkedMap}
+        setAlreadyLinkedMap={setAlreadyLinkedMap}
+      />
+      <ToastContainer />
     </div>
   );
 };
@@ -85,7 +120,11 @@ export const PrivateEditingPage = () => {
 const EditBioModal = ({ ...props }) => {
   const [newBioText, setNewBioText] = useState("");
   return (
-    <Modal isOpen={props.modalVisible} style={styles.modal}>
+    <Modal
+      isOpen={props.bioModalVisible}
+      style={styles.modal}
+      ariaHideApp={false}
+    >
       <div class="flex items-center flex-col">
         <label class="mt-8 text-gray-800 font-semibold text-xl">
           New bio:
@@ -99,7 +138,7 @@ const EditBioModal = ({ ...props }) => {
         </label>
         <div>
           <button
-            onClick={() => props.setModalVisible(false)}
+            onClick={() => props.setBioModalVisible(false)}
             class="rounded-full bg-gray-300 m-2 py-2 px-4"
           >
             Cancel
@@ -107,12 +146,68 @@ const EditBioModal = ({ ...props }) => {
           <button
             onClick={() => {
               props.setBio(newBioText);
-              console.log(newBioText, "hey tehre");
-              props.setModalVisible(false);
+              props.setBioModalVisible(false);
             }}
             class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
           >
             Save
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
+const LinkYouTubeModal = ({ ...props }) => {
+  const [channelId, setChannelId] = useState("");
+  return (
+    <Modal
+      isOpen={props.ytModalVisible}
+      style={styles.modal}
+      ariaHideApp={false}
+    >
+      <div class="flex items-center flex-col">
+        <label class="mt-8 text-gray-800 font-semibold text-xl">
+          Enter your YouTube channel name: <br />
+          <div class="flex flex-row items-center">
+            <span class="text-sm font-normal mr-1">
+              https://www.youtube.com/channel/
+            </span>
+            <input
+              type="text"
+              class="border-2 text-sm w-96 h-10 flex rounded-xl p-2"
+              placeholder="UC-lHJZR3Gqxm24_Vd_AJ5Yw (must start with UC)"
+              onChange={(event) => setChannelId(event.target.value)}
+            />
+          </div>
+        </label>
+        <div>
+          <button
+            onClick={() => props.setYTModalVisible(false)}
+            class="rounded-full bg-gray-300 m-2 py-2 px-4"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={async () => {
+              // make this onClick async.
+              // first try to see if the inputted channelId is valid. (show loader while doing this)
+              const response = await linkYouTube(channelId);
+              if (response === "success") {
+                toast("Success!");
+                props.setAlreadyLinkedMap({
+                  ...props.alreadyLinkedMap,
+                  YouTube: true,
+                });
+                props.setYTModalVisible(false);
+              } else {
+                // trigger some toast alert
+                toast("Invalid channel ID");
+              }
+            }}
+            class="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
+          >
+            Link
           </button>
         </div>
       </div>
