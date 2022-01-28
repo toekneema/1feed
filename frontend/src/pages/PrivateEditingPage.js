@@ -10,10 +10,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
-    { name: "YouTube", alreadyLinked: false },
-    { name: "Facebook", alreadyLinked: false },
-    { name: "Instagram", alreadyLinked: false },
-    { name: "Twitter", alreadyLinked: false },
+    { name: "YouTube", isLinked: false },
+    { name: "Facebook", isLinked: false },
+    { name: "Instagram", isLinked: false },
+    { name: "Twitter", isLinked: false },
   ];
   const openCorrectModal = (objName) => {
     switch (objName) {
@@ -48,7 +48,7 @@ export const PrivateEditingPage = () => {
   const fetchBio = () => {
     return "Player for the Chicago Bulls. Born and raised in Compton. #Comp10";
   };
-  const [alreadyLinkedMap, setAlreadyLinkedMap] = useState({
+  const [isLinkedMap, setIsLinkedMap] = useState({
     YouTube: false,
     Facebook: false,
     Instagram: false,
@@ -91,26 +91,24 @@ export const PrivateEditingPage = () => {
       <div class="mt-14 flex flex-col">
         {allSocialMedias.map((obj) => (
           <button
-            disabled={alreadyLinkedMap[obj.name]}
+            disabled={isLinkedMap[obj.name]}
             onClick={() => openCorrectModal(obj.name)}
             class={
-              alreadyLinkedMap[obj.name]
+              isLinkedMap[obj.name]
                 ? styles.disabledButton
                 : styles.enabledButton
             }
           >
             {returnCorrectIcon(obj.name)}
-            {alreadyLinkedMap[obj.name]
-              ? `${obj.name} linked`
-              : `Link ${obj.name}`}
+            {isLinkedMap[obj.name] ? `${obj.name} linked` : `Link ${obj.name}`}
           </button>
         ))}
       </div>
       <LinkYouTubeModal
         ytModalVisible={ytModalVisible}
         setYTModalVisible={setYTModalVisible}
-        alreadyLinkedMap={alreadyLinkedMap}
-        setAlreadyLinkedMap={setAlreadyLinkedMap}
+        isLinkedMap={isLinkedMap}
+        setIsLinkedMap={setIsLinkedMap}
       />
       <ToastContainer />
     </div>
@@ -195,8 +193,8 @@ const LinkYouTubeModal = ({ ...props }) => {
               const response = await linkYouTube(channelId);
               if (response === "success") {
                 toast("Success!");
-                props.setAlreadyLinkedMap({
-                  ...props.alreadyLinkedMap,
+                props.setIsLinkedMap({
+                  ...props.isLinkedMap,
                   YouTube: true,
                 });
                 props.setYTModalVisible(false);
@@ -223,8 +221,6 @@ const styles = {
   modal: {
     content: {
       position: "absolute",
-      // width: "30%",
-      // height: "40%",
       display: "inline-block",
       marginLeft: "auto",
       marginRight: "auto",
