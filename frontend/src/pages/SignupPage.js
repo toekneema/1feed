@@ -4,8 +4,10 @@ import { LinkIcon } from "@heroicons/react/solid";
 export const SignupPage = () => {
   const [username, setUsername] = useState("");
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
+  const takenSet = new Set(["josh", "adam", "tony", "armaan"]);
 
   const usernameIsValid = (s) => {
+    s = s.toLowerCase();
     setUsername(s);
     if (s === "") {
       setUsernameErrorMsg("Username required");
@@ -15,6 +17,8 @@ export const SignupPage = () => {
       );
     } else if (s.length < 3 || s.length > 30) {
       setUsernameErrorMsg("Usernames must be between 3 and 30 characters");
+    } else if (takenSet.has(s)) {
+      setUsernameErrorMsg("Username taken");
     } else {
       setUsernameErrorMsg("");
     }
@@ -37,15 +41,15 @@ export const SignupPage = () => {
             <div className="rounded-md relative shadow-sm">
               <input
                 id="username"
-                placeholder="username"
+                placeholder="Username"
                 onChange={(event) => {
                   usernameIsValid(event.target.value);
                 }}
                 className="pl-32 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               />
-              <div className="absolute items-center left-2.5 top-0 bottom-0 z-50 flex">
+              <div className="absolute items-center left-3 top-0 bottom-0 z-50 flex">
                 <LinkIcon className="h-6 w-6 text-indigo-600" />
-                <p className="tracking-wider text-sm font-bold pl-0.5 text-gray-700">
+                <p className="pl-1 tracking-wider text-sm font-bold text-gray-700">
                   1feed.com/
                 </p>
               </div>
