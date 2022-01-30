@@ -13,12 +13,12 @@ export const SignupPage = () => {
       setUsernameErrorMsg("Username required");
     } else if (!s.match("^[a-zA-Z0-9_.]+$")) {
       setUsernameErrorMsg(
-        'Usernames can only contain letters, numbers, underscores ("_") and periods (".")'
+        'Usernames may only contain letters, numbers, underscores ("_") and periods (".").'
       );
     } else if (s.length < 3 || s.length > 30) {
-      setUsernameErrorMsg("Usernames must be between 3 and 30 characters");
+      setUsernameErrorMsg("Usernames must be between 3 and 30 characters.");
     } else if (takenSet.has(s)) {
-      setUsernameErrorMsg("Username taken");
+      setUsernameErrorMsg("Username taken.");
     } else {
       setUsernameErrorMsg("");
     }
