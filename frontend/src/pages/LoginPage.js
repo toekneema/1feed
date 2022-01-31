@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import { login } from "../services/auth";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  let navigate = useNavigate();
+
   return (
     <>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -23,6 +30,7 @@ export const LoginPage = () => {
                   Email address
                 </label>
                 <input
+                  onChange={(event) => setEmail(event.target.value)}
                   id="email-address"
                   name="email"
                   type="email"
@@ -37,6 +45,7 @@ export const LoginPage = () => {
                   Password
                 </label>
                 <input
+                  onChange={(event) => setPassword(event.target.value)}
                   id="password"
                   name="password"
                   type="password"
@@ -59,6 +68,10 @@ export const LoginPage = () => {
 
             <div>
               <button
+                onClick={async () => {
+                  const [error, hasError] = await login(email, password);
+                  hasError ? toast(error) : navigate("/edit");
+                }}
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
@@ -76,6 +89,7 @@ export const LoginPage = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

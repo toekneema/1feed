@@ -112,7 +112,6 @@ export const SignupPage = () => {
                     email,
                     password
                   );
-                  console.log(error, hasError, "debug");
                   hasError ? toast(error) : navigate("/edit");
                 }}
                 type="submit"
