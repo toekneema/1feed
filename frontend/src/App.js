@@ -12,6 +12,7 @@ function App() {
         <Route exact path="/signup" element={<SignupPage />}></Route>
         <Route exact path="/login" element={<LoginPage />}></Route>
         <Route exact path="/edit" element={<PrivateEditingPage />}></Route>
+        <Route exact path="/:username" element={<PublicProfilePage />}></Route>
       </Routes>
     </Router>
   );
