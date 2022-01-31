@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { LinkIcon } from "@heroicons/react/solid";
+import { register } from "../services/auth";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export const SignupPage = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const takenSet = new Set(["josh", "adam", "tony", "armaan"]);
+  let navigate = useNavigate();
 
   const usernameIsValid = (s) => {
     s = s.toLowerCase();
@@ -71,6 +77,7 @@ export const SignupPage = () => {
                   Email address
                 </label>
                 <input
+                  onChange={(event) => setEmail(event.target.value)}
                   id="email-address"
                   name="email"
                   type="email"
@@ -85,6 +92,7 @@ export const SignupPage = () => {
                   Password
                 </label>
                 <input
+                  onChange={(event) => setPassword(event.target.value)}
                   id="password"
                   name="password"
                   type="password"
@@ -98,6 +106,15 @@ export const SignupPage = () => {
 
             <div className="mb-6">
               <button
+                onClick={async () => {
+                  const [error, hasError] = await register(
+                    username,
+                    email,
+                    password
+                  );
+                  console.log(error, hasError, "debug");
+                  hasError ? toast(error) : navigate("/edit");
+                }}
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
@@ -115,6 +132,7 @@ export const SignupPage = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
