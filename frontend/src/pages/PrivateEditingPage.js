@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import avi from "../assets/images/cryptopunk.png";
+import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
 import { IoIosShareAlt } from "react-icons/io";

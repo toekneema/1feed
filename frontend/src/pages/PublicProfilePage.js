@@ -1,7 +1,6 @@
 import React from "react";
 import avi from "../assets/images/twitter_egg.png";
 import { useParams } from "react-router-dom";
-import { getBio, getIsLinkedMap, getPFP } from "../services/profile";
 import { useFetch } from "../hooks/useFetch";
 
 const usernameSet = new Set([
@@ -15,11 +14,14 @@ const usernameSet = new Set([
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
+  const username_lowercase = username.toLowerCase();
   const { data, loading } = useFetch(
-    `http://localhost:1337/api/users?filters[username][$eq]=${username}`
+    `http://localhost:1337/api/users?filters[username_lowercase][$eq]=${username_lowercase}`
   );
 
-  if (!usernameSet.has(username)) {
+  console.log("what is data obj when username doesnt exist", data);
+
+  if (data === null || data.length === 0) {
     return (
       <div>
         <p>No account with the username "{username}"</p>
