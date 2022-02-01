@@ -68,17 +68,15 @@ export const PrivateEditingPage = () => {
       <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
       <div className="relative mt-8">
         <img
-          className="rounded-full w-24 h-24"
+          className="rounded-full w-24 h-24 hover:opacity-50"
           src={avi}
           alt="pfp"
           onMouseOver={() => setIsHoveringPfp(true)}
           onMouseOut={() => setIsHoveringPfp(false)}
         />
         {isHoveringPfp && (
-          <div className="absolute top-0 bottom-0 bg-gray-200 opacity-50 rounded-full w-24 h-24">
-            <div className="flex justify-center">
-              <CameraIcon className="h-12 w-12 text-gray-800" />
-            </div>
+          <div className="absolute">
+            <CameraIcon className="h-12 w-12 text-gray-800" />
           </div>
         )}
       </div>
