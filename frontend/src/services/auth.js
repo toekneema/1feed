@@ -1,4 +1,4 @@
-import { globalJWT } from "../global";
+import { globalUserObj } from "../global";
 
 export const register = async (username, email, password) => {
   let error = null;
@@ -10,7 +10,7 @@ export const register = async (username, email, password) => {
       password: password,
     });
     const json = await res.json();
-    globalJWT.jwt = json.data.jwt;
+    globalUserObj = json.data;
     console.log("Signup success!");
     console.log("User profile", json.data.user);
   } catch (e) {
@@ -18,7 +18,7 @@ export const register = async (username, email, password) => {
     error = `Signup Error. ${e}.`;
     hasError = true;
   }
-  console.log(globalJWT, "what is globalJWT");
+  console.log(globalUserObj, "what is globalUserObj");
   return [error, hasError];
 };
 
@@ -31,7 +31,7 @@ export const login = async (email, password) => {
       password: password,
     });
     const json = await res.json();
-    globalJWT.jwt = json.data.jwt;
+    globalUserObj = json.data;
     console.log("Login success!");
     console.log("User profile", json.data.user);
   } catch (e) {
@@ -39,5 +39,6 @@ export const login = async (email, password) => {
     error = `Login Error. ${e}.`;
     hasError = true;
   }
+  console.log("what is globalUserObj", globalUserObj);
   return [error, hasError];
 };

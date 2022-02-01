@@ -10,10 +10,12 @@ export const PublicProfilePage = () => {
     `http://localhost:1337/api/users?filters[username_lowercase][$eq]=${username_lowercase}`
   );
 
-  if (data === null || data.length === 0) {
+  if (loading) {
+    return <p className="text-center">loading...</p>;
+  } else if (data === null || data.length === 0) {
     return (
       <div>
-        <p>No account with the username "{username}"</p>
+        <p className="text-center">No account with the username "{username}"</p>
       </div>
     );
   }
@@ -23,24 +25,16 @@ export const PublicProfilePage = () => {
   console.log(typeof data[0].pfp, "what is typeof pfp");
 
   return (
-    <>
-      {loading ? (
-        <p>loading...</p>
-      ) : (
-        <div className="flex flex-col justify-center items-center ">
-          <h1 className="mt-5 text-3xl font-bold">Public Profile Page</h1>
-          <img className="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
-          <h3 className="mt-1 font-semibold text-lg">
-            @{username_case_sensitive}
-          </h3>
-          <div
-            className="mt-2 text-sm w-96 text-center p-1"
-            style={{ wordBreak: "break-word" }}
-          >
-            {data[0].bio}
-          </div>
-        </div>
-      )}
-    </>
+    <div className="flex flex-col justify-center items-center ">
+      <h1 className="mt-5 text-3xl font-bold">Public Profile Page</h1>
+      <img className="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
+      <h3 className="mt-1 font-semibold text-lg">@{username_case_sensitive}</h3>
+      <div
+        className="mt-2 text-sm w-96 text-center p-1"
+        style={{ wordBreak: "break-word" }}
+      >
+        {data[0].bio}
+      </div>
+    </div>
   );
 };

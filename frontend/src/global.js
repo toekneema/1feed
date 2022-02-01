@@ -1,1 +1,1 @@
-export let globalJWT = { jwt: "" };
+export let globalUserObj = {};

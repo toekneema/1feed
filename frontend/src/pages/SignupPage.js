@@ -3,8 +3,7 @@ import { LinkIcon } from "@heroicons/react/solid";
 import { register } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { globalJWT } from "../global";
-import { useFetchWithData } from "../hooks/useFetch";
+import { globalUserObj } from "../global";
 
 export const SignupPage = () => {
   const [username, setUsername] = useState("");
@@ -34,7 +33,7 @@ export const SignupPage = () => {
   return (
     <>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
+        <div className="max-w-md w-full">
           <div>
             <img
               className="mx-auto h-12 w-auto"
