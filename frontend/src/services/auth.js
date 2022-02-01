@@ -1,6 +1,4 @@
-import axios from "axios";
-
-export let token = "";
+import { globalJWT } from "../global";
 
 export const register = async (username, email, password) => {
   let error = null;
@@ -12,7 +10,7 @@ export const register = async (username, email, password) => {
       password: password,
     });
     const json = await res.json();
-    token = json.data.jwt;
+    globalJWT.jwt = json.data.jwt;
     console.log("Signup success!");
     console.log("User profile", json.data.user);
   } catch (e) {
@@ -20,6 +18,7 @@ export const register = async (username, email, password) => {
     error = `Signup Error. ${e}.`;
     hasError = true;
   }
+  console.log(globalJWT, "what is globalJWT");
   return [error, hasError];
 };
 
@@ -32,7 +31,7 @@ export const login = async (email, password) => {
       password: password,
     });
     const json = await res.json();
-    token = json.data.jwt;
+    globalJWT.jwt = json.data.jwt;
     console.log("Login success!");
     console.log("User profile", json.data.user);
   } catch (e) {

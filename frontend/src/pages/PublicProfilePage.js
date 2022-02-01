@@ -19,6 +19,9 @@ export const PublicProfilePage = () => {
   }
   const username_case_sensitive = data[0].username;
 
+  console.log(data[0], "what is data[0]");
+  console.log(typeof data[0].pfp, "what is typeof pfp");
+
   return (
     <>
       {loading ? (

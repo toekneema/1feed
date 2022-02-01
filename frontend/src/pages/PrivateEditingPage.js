@@ -8,6 +8,7 @@ import { linkYouTube } from "../services/linkPlatforms";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
+import { CameraIcon } from "@heroicons/react/solid";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
@@ -55,6 +56,7 @@ export const PrivateEditingPage = () => {
     Instagram: false,
     Twitter: false,
   }); // need to get inital value from DB
+  const [isHoveringPfp, setIsHoveringPfp] = useState(false);
   const [isHoveringBio, setIsHoveringBio] = useState(false);
   const [bio, setBio] = useState(fetchBio());
   const [bioModalVisible, setBioModalVisible] = useState(false);
@@ -65,7 +67,22 @@ export const PrivateEditingPage = () => {
   return (
     <div className="flex flex-col justify-center items-center ">
       <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
-      <img className="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
+      <div className="relative mt-8">
+        <img
+          className="rounded-full w-24 h-24"
+          src={avi}
+          alt="pfp"
+          onMouseOver={() => setIsHoveringPfp(true)}
+          onMouseOut={() => setIsHoveringPfp(false)}
+        />
+        {isHoveringPfp && (
+          <div className="absolute top-0 bottom-0 bg-gray-200 opacity-50 rounded-full w-24 h-24">
+            <div className="flex justify-center">
+              <CameraIcon className="h-12 w-12 text-gray-800" />
+            </div>
+          </div>
+        )}
+      </div>
       <h3 className="mt-1 font-semibold text-lg">@demar</h3>
       <button
         onClick={() => setBioModalVisible(true)}
