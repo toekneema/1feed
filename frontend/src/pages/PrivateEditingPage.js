@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
-import { AiFillEdit } from "react-icons/ai";
 import { IoIosShareAlt } from "react-icons/io";
 import Modal from "react-modal";
 import { linkYouTube } from "../services/linkPlatforms";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
-import { CameraIcon } from "@heroicons/react/solid";
+import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
 
 export const PrivateEditingPage = () => {
   const allSocialMedias = [
@@ -93,10 +92,7 @@ export const PrivateEditingPage = () => {
       >
         {bio}
         {isHoveringBio && (
-          <AiFillEdit
-            size={20}
-            className="absolute bottom-1 right-1 text-gray-800"
-          />
+          <PencilAltIcon className="absolute bottom-1 w-5 h-5 right-1 text-gray-800" />
         )}
       </button>
       <EditBioModal
