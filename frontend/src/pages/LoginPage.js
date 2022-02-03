@@ -24,10 +24,10 @@ export const LoginPage = () => {
           </div>
           <form
             className="mt-8 space-y-6"
-            onSubmit={async () => {
+            onSubmit={async (event) => {
+              event.preventDefault();
               const [error, hasError] = await login(email, password);
               hasError ? toast(error) : navigate("/edit");
-              console.log(error, hasError, "error and hasErrore debug");
             }}
           >
             <div className="rounded-md shadow-sm -space-y-px">

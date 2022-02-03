@@ -1,1 +1,1 @@
-export let globalUserObj = {};
+global.globalUserObj = {};

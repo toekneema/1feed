@@ -9,15 +9,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
 import { useFetch } from "../hooks/useFetch";
-import { globalUserObj } from "../global";
+import "../global";
 
 export const PrivateEditingPage = () => {
   let navigate = useNavigate();
-  const myUserInfo = globalUserObj.user;
+  const myUserInfo = global.userObj.user;
 
   useEffect(() => {
     console.log(myUserInfo, "myUserInfo");
-    if (Object.keys(globalUserObj).length === 0) {
+    if (Object.keys(global.userObj).length === 0) {
       navigate("/login");
     }
   });
