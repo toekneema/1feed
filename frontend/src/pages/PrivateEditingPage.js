@@ -173,8 +173,9 @@ const EditBioModal = ({ ...props }) => {
             Cancel
           </button>
           <button
-            onClick={() => {
-              props.setBio(newBioText);
+            onClick={async () => {
+              const [data, hasError] = await updateUser({ bio: newBioText });
+              props.setBio(data.bio);
               props.setBioModalVisible(false);
             }}
             className="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
@@ -223,10 +224,9 @@ const LinkYouTubeModal = ({ ...props }) => {
               const response = await linkYouTube(channelId);
               if (response === "success") {
                 toast("Success!");
-                // [TODO] need to make post request to update user info
-                const [data, hasError] = await updateUser(
-                  localStorage.getItem("user").id
-                );
+                const [data, hasError] = await updateUser({
+                  isLinkedMap: { ...props.isLinkedMap, YouTube: true },
+                });
                 props.setIsLinkedMap(data.isLinkedMap);
                 props.setYTModalVisible(false);
               } else {

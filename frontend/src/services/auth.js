@@ -25,7 +25,7 @@ export const register = async (username, email, password) => {
       })
     ).json();
     localStorage.setItem("jwt", userInfo.jwt);
-    localStorage.setItem("user", userInfo.user);
+    localStorage.setItem("user", JSON.stringify(userInfo.user));
     console.log("Signup success!");
   } catch (e) {
     console.log("Signup Error:", e);
@@ -52,7 +52,7 @@ export const login = async (email, password) => {
       })
     ).json();
     localStorage.setItem("jwt", userInfo.jwt);
-    localStorage.setItem("user", userInfo.user);
+    localStorage.setItem("user", JSON.stringify(userInfo.user));
     console.log("Login success!");
   } catch (e) {
     console.log("Login Error:", e);

@@ -16,17 +16,22 @@ export const getMe = async () => {
   return [data, hasError];
 };
 
-export const updateUser = async (userId) => {
+export const updateUser = async (body) => {
   let [data, hasError] = [null, false];
   try {
     data = await (
-      await fetch(`http://localhost:1337/api/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+      await fetch(
+        `http://localhost:1337/api/users/${
+          JSON.parse(localStorage.getItem("user")).id
+        }`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
     ).json();
   } catch (e) {
     console.log("Failed to update usererror:", e);
