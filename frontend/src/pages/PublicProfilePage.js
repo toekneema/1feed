@@ -21,9 +21,6 @@ export const PublicProfilePage = () => {
   }
   const username_case_sensitive = data[0].username;
 
-  console.log(data[0], "what is data[0]");
-  console.log(typeof data[0].pfp, "what is typeof pfp");
-
   return (
     <div className="flex flex-col justify-center items-center ">
       <h1 className="mt-5 text-3xl font-bold">Public Profile Page</h1>

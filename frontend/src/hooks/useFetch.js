@@ -15,6 +15,28 @@ export const useFetch = (url) => {
   return state;
 };
 
+export const useFetchWithJWT = (url, jwt) => {
+  const [state, setState] = useState({ data: null, loading: true });
+
+  useEffect(() => {
+    setState((state) => ({ data: state.data, loading: true }));
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + jwt,
+      },
+    })
+      .then((x) => x.json())
+      .then((y) => {
+        setState({ data: y, loading: false });
+      })
+      .catch((e) => console.log("what is the useFetchWithJWT error:", e));
+  }, [url, jwt, setState]);
+
+  return state;
+};
+
 export const useFetchWithData = (url, data) => {
   const [state, setState] = useState({ data: null, loading: true });
 

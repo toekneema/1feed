@@ -8,22 +8,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
-import { useFetch } from "../hooks/useFetch";
+import { useFetch, useFetchWithJWT } from "../hooks/useFetch";
 import "../global";
 
 export const PrivateEditingPage = () => {
   let navigate = useNavigate();
-  const myUserInfo = global.userObj.user;
-  console.log(myUserInfo, "myUserInfo");
-  console.log(global.userObj, "what is global.userObj");
-
-  useEffect(() => {
-    console.log(myUserInfo, "myUserInfo inside useEffect");
-    if (Object.keys(global.userObj).length === 0) {
-      navigate("/login");
-    }
-  });
-
+  console.log("what is global.userObj", global.userObj);
+  const { data, loading } = useFetchWithJWT(
+    "http://localhost:1337/api/users/me",
+    global.userObj.jwt
+  );
+  console.log(data, "SO WHAT IS DATA!?!?!?");
   const allSocialMedias = [
     { name: "YouTube", isLinked: false },
     { name: "Facebook", isLinked: false },
@@ -76,7 +71,9 @@ export const PrivateEditingPage = () => {
 
   return (
     <>
-      {myUserInfo && (
+      {loading || !data ? (
+        <p className="text-center">loading...</p>
+      ) : (
         <div className="flex flex-col justify-center items-center ">
           <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
           <div className="relative mt-8">
@@ -95,7 +92,7 @@ export const PrivateEditingPage = () => {
               }}
             />
           </div>
-          <h3 className="mt-1 font-semibold text-lg">@{myUserInfo.username}</h3>
+          <h3 className="mt-1 font-semibold text-lg">@{data.username}</h3>
           <button
             onClick={() => setBioModalVisible(true)}
             onMouseOver={() => setIsHoveringBio(true)}
@@ -103,7 +100,7 @@ export const PrivateEditingPage = () => {
             className="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-100 hover:rounded-xl relative"
             style={{ wordBreak: "break-word" }}
           >
-            {myUserInfo.bio}
+            {data.bio}
             {isHoveringBio && (
               <PencilAltIcon className="absolute bottom-1 w-5 h-5 right-1 text-gray-800" />
             )}
@@ -114,7 +111,7 @@ export const PrivateEditingPage = () => {
             setBioModalVisible={setBioModalVisible}
           />
           <button className="mt-2 text-blue-500 text-xs flex flex-row items-center">
-            <Link to={`/${myUserInfo.username}`}>view your public profile</Link>
+            <Link to={`/${data.username}`}>view your public profile</Link>
             <IoIosShareAlt size={20} class="pb-0.5 ml-1" />
           </button>
           <div className="mt-14 flex flex-col">
