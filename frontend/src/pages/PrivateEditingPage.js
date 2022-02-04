@@ -14,9 +14,11 @@ import "../global";
 export const PrivateEditingPage = () => {
   let navigate = useNavigate();
   const myUserInfo = global.userObj.user;
+  console.log(myUserInfo, "myUserInfo");
+  console.log(global.userObj, "what is global.userObj");
 
   useEffect(() => {
-    console.log(myUserInfo, "myUserInfo");
+    console.log(myUserInfo, "myUserInfo inside useEffect");
     if (Object.keys(global.userObj).length === 0) {
       navigate("/login");
     }

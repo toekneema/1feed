@@ -44,7 +44,17 @@ export const SignupPage = () => {
               Sign Up for an account
             </h2>
           </div>
-          <form>
+          <form
+            onSubmit={async (event) => {
+              event.preventDefault();
+              const [error, hasError] = await register(
+                username,
+                email,
+                password
+              );
+              hasError ? toast(error) : navigate("/edit");
+            }}
+          >
             <div className="mt-8 rounded-md relative shadow-sm">
               <input
                 id="username"
@@ -107,14 +117,7 @@ export const SignupPage = () => {
 
             <div className="mb-6">
               <button
-                onClick={async () => {
-                  const [error, hasError] = await register(
-                    username,
-                    email,
-                    password
-                  );
-                  hasError ? toast(error) : navigate("/edit");
-                }}
+                type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Create account
