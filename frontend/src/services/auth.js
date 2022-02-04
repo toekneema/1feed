@@ -12,6 +12,12 @@ export const register = async (username, email, password) => {
           email: email,
           password: password,
           username_lowercase: username.toLowerCase(),
+          isLinkedMap: {
+            YouTube: false,
+            Facebook: false,
+            Instagram: false,
+            Twitter: false,
+          },
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",

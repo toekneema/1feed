@@ -6,19 +6,32 @@ import Modal from "react-modal";
 import { linkYouTube } from "../services/linkPlatforms";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
-import { useFetch, useFetchWithJWT } from "../hooks/useFetch";
 import "../global";
+import { getMe, updateUser } from "../services/user";
 
 export const PrivateEditingPage = () => {
-  let navigate = useNavigate();
-  const { data, loading } = useFetchWithJWT(
-    "http://localhost:1337/api/users/me",
-    localStorage.getItem("jwt")
-  );
-  localStorage.setItem("user", data);
-  console.log("what is localStorage", localStorage);
+  const [myData, setMyData] = useState(null);
+  const [bio, setBio] = useState(null);
+  const [isLinkedMap, setIsLinkedMap] = useState(null);
+  const [loading, setIsLoading] = useState(true);
+
+  const [isHoveringBio, setIsHoveringBio] = useState(false);
+  const [bioModalVisible, setBioModalVisible] = useState(false);
+  const [ytModalVisible, setYTModalVisible] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchMyData = async () => {
+      const [data, hasError] = await getMe();
+      setMyData(data);
+      setBio(data.bio);
+      setIsLinkedMap(data.isLinkedMap);
+      setIsLoading(false);
+    };
+    fetchMyData();
+  }, []);
 
   const allSocialMedias = [
     { name: "YouTube", isLinked: false },
@@ -56,23 +69,9 @@ export const PrivateEditingPage = () => {
     }
   };
 
-  const fetchBio = () => {
-    return "Player for the Chicago Bulls. Born and raised in Compton. #Comp10";
-  };
-  const [isLinkedMap, setIsLinkedMap] = useState({
-    YouTube: false,
-    Facebook: false,
-    Instagram: false,
-    Twitter: false,
-  }); // need to get inital value from DB
-  const [isHoveringBio, setIsHoveringBio] = useState(false);
-  const [bio, setBio] = useState(fetchBio());
-  const [bioModalVisible, setBioModalVisible] = useState(false);
-  const [ytModalVisible, setYTModalVisible] = useState(false);
-
   return (
     <>
-      {loading || !data ? (
+      {loading ? (
         <p className="text-center">loading...</p>
       ) : (
         <div className="flex flex-col justify-center items-center ">
@@ -93,7 +92,7 @@ export const PrivateEditingPage = () => {
               }}
             />
           </div>
-          <h3 className="mt-1 font-semibold text-lg">@{data.username}</h3>
+          <h3 className="mt-1 font-semibold text-lg">@{myData.username}</h3>
           <button
             onClick={() => setBioModalVisible(true)}
             onMouseOver={() => setIsHoveringBio(true)}
@@ -101,7 +100,7 @@ export const PrivateEditingPage = () => {
             className="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-100 hover:rounded-xl relative"
             style={{ wordBreak: "break-word" }}
           >
-            {data.bio}
+            {bio}
             {isHoveringBio && (
               <PencilAltIcon className="absolute bottom-1 w-5 h-5 right-1 text-gray-800" />
             )}
@@ -112,7 +111,7 @@ export const PrivateEditingPage = () => {
             setBioModalVisible={setBioModalVisible}
           />
           <button className="mt-2 text-blue-500 text-xs flex flex-row items-center">
-            <Link to={`/${data.username}`}>view your public profile</Link>
+            <Link to={`/${myData.username}`}>view your public profile</Link>
             <IoIosShareAlt size={20} className="pb-0.5 ml-1" />
           </button>
           <div className="mt-14 flex flex-col">
@@ -220,18 +219,17 @@ const LinkYouTubeModal = ({ ...props }) => {
           </button>
           <button
             onClick={async () => {
-              // make this onClick async.
               // first try to see if the inputted channelId is valid. (show loader while doing this)
               const response = await linkYouTube(channelId);
               if (response === "success") {
                 toast("Success!");
-                props.setIsLinkedMap({
-                  ...props.isLinkedMap,
-                  YouTube: true,
-                });
+                // [TODO] need to make post request to update user info
+                const [data, hasError] = await updateUser(
+                  localStorage.getItem("user").id
+                );
+                props.setIsLinkedMap(data.isLinkedMap);
                 props.setYTModalVisible(false);
               } else {
-                // trigger some toast alert
                 toast("Invalid channel ID");
               }
             }}
