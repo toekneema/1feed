@@ -31,7 +31,7 @@ export const useFetchWithJWT = (url, jwt) => {
       .then((y) => {
         setState({ data: y, loading: false });
       })
-      .catch((e) => console.log("what is the useFetchWithJWT error:", e));
+      .catch((e) => console.log("useFetchWithJWT error:", e));
   }, [url, jwt, setState]);
 
   return state;

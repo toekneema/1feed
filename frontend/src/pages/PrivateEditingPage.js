@@ -13,12 +13,13 @@ import "../global";
 
 export const PrivateEditingPage = () => {
   let navigate = useNavigate();
-  console.log("what is global.userObj", global.userObj);
   const { data, loading } = useFetchWithJWT(
     "http://localhost:1337/api/users/me",
-    global.userObj.jwt
+    localStorage.getItem("jwt")
   );
-  console.log(data, "SO WHAT IS DATA!?!?!?");
+  localStorage.setItem("user", data);
+  console.log("what is localStorage", localStorage);
+
   const allSocialMedias = [
     { name: "YouTube", isLinked: false },
     { name: "Facebook", isLinked: false },
@@ -112,11 +113,12 @@ export const PrivateEditingPage = () => {
           />
           <button className="mt-2 text-blue-500 text-xs flex flex-row items-center">
             <Link to={`/${data.username}`}>view your public profile</Link>
-            <IoIosShareAlt size={20} class="pb-0.5 ml-1" />
+            <IoIosShareAlt size={20} className="pb-0.5 ml-1" />
           </button>
           <div className="mt-14 flex flex-col">
-            {allSocialMedias.map((obj) => (
+            {allSocialMedias.map((obj, idx) => (
               <button
+                key={idx}
                 disabled={isLinkedMap[obj.name]}
                 onClick={() => openCorrectModal(obj.name)}
                 className={

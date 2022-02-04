@@ -11,13 +11,15 @@ export const register = async (username, email, password) => {
           username: username,
           email: email,
           password: password,
+          username_lowercase: username.toLowerCase(),
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
       })
     ).json();
-    global.userObj = userInfo;
+    localStorage.setItem("jwt", userInfo.jwt);
+    localStorage.setItem("user", userInfo.user);
     console.log("Signup success!");
   } catch (e) {
     console.log("Signup Error:", e);
@@ -43,7 +45,8 @@ export const login = async (email, password) => {
         },
       })
     ).json();
-    global.userObj = userInfo;
+    localStorage.setItem("jwt", userInfo.jwt);
+    localStorage.setItem("user", userInfo.user);
     console.log("Login success!");
   } catch (e) {
     console.log("Login Error:", e);
