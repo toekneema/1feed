@@ -63,14 +63,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "pfp": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
     "bio": {
       "type": "text",
       "default": "No bio.",
