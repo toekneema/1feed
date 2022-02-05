@@ -5,10 +5,12 @@ import { useFetch } from "../hooks/useFetch";
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
-  const username_lowercase = username.toLowerCase();
+  const usernameLowercase = username.toLowerCase();
   const { data, loading } = useFetch(
-    `http://localhost:1337/api/users?filters[username_lowercase][$eq]=${username_lowercase}`
+    `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
   );
+
+  console.log(data, "what is data !?!?!?");
 
   if (loading) {
     return <p className="text-center">loading...</p>;
@@ -19,13 +21,17 @@ export const PublicProfilePage = () => {
       </div>
     );
   }
-  const username_case_sensitive = data[0].username;
+  const usernameCaseSensitive = data[0].username;
 
   return (
     <div className="flex flex-col justify-center items-center ">
       <h1 className="mt-5 text-3xl font-bold">Public Profile Page</h1>
-      <img className="rounded-full w-24 h-24 mt-8" src={avi} alt="pfp" />
-      <h3 className="mt-1 font-semibold text-lg">@{username_case_sensitive}</h3>
+      <img
+        className="rounded-full w-24 h-24 mt-8 object-cover"
+        src={data[0].avatarUrl}
+        alt="avatar"
+      />
+      <h3 className="mt-1 font-semibold text-lg">@{usernameCaseSensitive}</h3>
       <div
         className="mt-2 text-sm w-96 text-center p-1"
         style={{ wordBreak: "break-word" }}

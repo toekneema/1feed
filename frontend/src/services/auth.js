@@ -11,7 +11,8 @@ export const register = async (username, email, password) => {
           username: username,
           email: email,
           password: password,
-          username_lowercase: username.toLowerCase(),
+          usernameLowercase: username.toLowerCase(),
+          avatarUrl: "https://duwpq7vr7cr0y.cloudfront.net/default.png",
           isLinkedMap: {
             YouTube: false,
             Facebook: false,

@@ -71,9 +71,14 @@
     "isLinkedMap": {
       "type": "json"
     },
-    "username_lowercase": {
+    "usernameLowercase": {
       "type": "string",
       "unique": true,
+      "required": true
+    },
+    "avatarUrl": {
+      "type": "string",
+      "default": "https://duwpq7vr7cr0y.cloudfront.net/default.png",
       "required": true
     }
   }
