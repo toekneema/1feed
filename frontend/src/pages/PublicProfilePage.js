@@ -2,6 +2,7 @@ import React from "react";
 import avi from "../assets/images/twitter_egg.png";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
+import { Navbar } from "../components/Navbar";
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
@@ -24,20 +25,22 @@ export const PublicProfilePage = () => {
   const usernameCaseSensitive = data[0].username;
 
   return (
-    <div className="flex flex-col justify-center items-center ">
-      <h1 className="mt-5 text-3xl font-bold">Public Profile Page</h1>
-      <img
-        className="rounded-full w-24 h-24 mt-8 object-cover"
-        src={data[0].avatarUrl}
-        alt="avatar"
-      />
-      <h3 className="mt-1 font-semibold text-lg">@{usernameCaseSensitive}</h3>
-      <div
-        className="mt-2 text-sm w-96 text-center p-1"
-        style={{ wordBreak: "break-word" }}
-      >
-        {data[0].bio}
+    <>
+      <Navbar />
+      <div className="flex flex-col justify-center items-center ">
+        <img
+          className="rounded-full w-24 h-24 mt-8 object-cover"
+          src={data[0].avatarUrl}
+          alt="avatar"
+        />
+        <h3 className="mt-1 font-semibold text-lg">@{usernameCaseSensitive}</h3>
+        <div
+          className="mt-2 text-sm w-96 text-center p-1"
+          style={{ wordBreak: "break-word" }}
+        >
+          {data[0].bio}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

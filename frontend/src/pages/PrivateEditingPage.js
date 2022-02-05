@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
 import "../global";
 import { getMe, updateUser } from "../services/user";
+import { Navbar } from "../components/Navbar";
 
 export const PrivateEditingPage = () => {
   const [myData, setMyData] = useState(null);
@@ -74,73 +75,76 @@ export const PrivateEditingPage = () => {
       {loading ? (
         <p className="text-center">loading...</p>
       ) : (
-        <div className="flex flex-col justify-center items-center ">
-          <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
-          <div className="relative mt-8">
-            <img
-              className="rounded-full w-24 h-24 hover:opacity-50"
-              src={avi}
-              alt="pfp"
+        <>
+          <Navbar />
+          <div className="flex flex-col justify-center items-center ">
+            <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
+            <div className="relative mt-8">
+              <img
+                className="rounded-full w-24 h-24 hover:opacity-50"
+                src={avi}
+                alt="pfp"
+              />
+              <CameraIcon
+                className="absolute w-10 h-10 text-gray-700"
+                style={{
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: -1,
+                }}
+              />
+            </div>
+            <h3 className="mt-1 font-semibold text-lg">@{myData.username}</h3>
+            <button
+              onClick={() => setBioModalVisible(true)}
+              onMouseOver={() => setIsHoveringBio(true)}
+              onMouseLeave={() => setIsHoveringBio(false)}
+              className="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-100 hover:rounded-xl relative"
+              style={{ wordBreak: "break-word" }}
+            >
+              {bio}
+              {isHoveringBio && (
+                <PencilAltIcon className="absolute bottom-1 w-5 h-5 right-1 text-gray-800" />
+              )}
+            </button>
+            <EditBioModal
+              setBio={setBio}
+              bioModalVisible={bioModalVisible}
+              setBioModalVisible={setBioModalVisible}
             />
-            <CameraIcon
-              className="absolute w-10 h-10 text-gray-700"
-              style={{
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-                zIndex: -1,
-              }}
+            <button className="mt-2 text-blue-500 text-xs flex flex-row items-center">
+              <Link to={`/${myData.username}`}>view your public profile</Link>
+              <IoIosShareAlt size={20} className="pb-0.5 ml-1" />
+            </button>
+            <div className="mt-14 flex flex-col">
+              {allSocialMedias.map((obj, idx) => (
+                <button
+                  key={idx}
+                  disabled={isLinkedMap[obj.name]}
+                  onClick={() => openCorrectModal(obj.name)}
+                  className={
+                    isLinkedMap[obj.name]
+                      ? styles.disabledButton
+                      : styles.enabledButton
+                  }
+                >
+                  {returnCorrectIcon(obj.name)}
+                  {isLinkedMap[obj.name]
+                    ? `${obj.name} linked`
+                    : `Link ${obj.name}`}
+                </button>
+              ))}
+            </div>
+            <LinkYouTubeModal
+              ytModalVisible={ytModalVisible}
+              setYTModalVisible={setYTModalVisible}
+              isLinkedMap={isLinkedMap}
+              setIsLinkedMap={setIsLinkedMap}
             />
+            <ToastContainer />
           </div>
-          <h3 className="mt-1 font-semibold text-lg">@{myData.username}</h3>
-          <button
-            onClick={() => setBioModalVisible(true)}
-            onMouseOver={() => setIsHoveringBio(true)}
-            onMouseLeave={() => setIsHoveringBio(false)}
-            className="mt-2 text-sm w-96 text-center p-1 hover:bg-gray-100 hover:rounded-xl relative"
-            style={{ wordBreak: "break-word" }}
-          >
-            {bio}
-            {isHoveringBio && (
-              <PencilAltIcon className="absolute bottom-1 w-5 h-5 right-1 text-gray-800" />
-            )}
-          </button>
-          <EditBioModal
-            setBio={setBio}
-            bioModalVisible={bioModalVisible}
-            setBioModalVisible={setBioModalVisible}
-          />
-          <button className="mt-2 text-blue-500 text-xs flex flex-row items-center">
-            <Link to={`/${myData.username}`}>view your public profile</Link>
-            <IoIosShareAlt size={20} className="pb-0.5 ml-1" />
-          </button>
-          <div className="mt-14 flex flex-col">
-            {allSocialMedias.map((obj, idx) => (
-              <button
-                key={idx}
-                disabled={isLinkedMap[obj.name]}
-                onClick={() => openCorrectModal(obj.name)}
-                className={
-                  isLinkedMap[obj.name]
-                    ? styles.disabledButton
-                    : styles.enabledButton
-                }
-              >
-                {returnCorrectIcon(obj.name)}
-                {isLinkedMap[obj.name]
-                  ? `${obj.name} linked`
-                  : `Link ${obj.name}`}
-              </button>
-            ))}
-          </div>
-          <LinkYouTubeModal
-            ytModalVisible={ytModalVisible}
-            setYTModalVisible={setYTModalVisible}
-            isLinkedMap={isLinkedMap}
-            setIsLinkedMap={setIsLinkedMap}
-          />
-          <ToastContainer />
-        </div>
+        </>
       )}
     </>
   );
