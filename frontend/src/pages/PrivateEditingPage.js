@@ -85,6 +85,7 @@ export const PrivateEditingPage = () => {
             <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
             <div className="relative mt-8">
               <img
+                onClick={() => setAvatarModalVisible(true)}
                 className="rounded-full w-24 h-24 object-cover hover:opacity-50"
                 src={avatarUrl}
                 alt="pfp"
@@ -163,18 +164,39 @@ const AvatarModal = ({ ...props }) => {
     if (rejectedFiles && rejectedFiles.length > 0) {
       const rejectFileType = rejectedFiles[0].type;
       const rejectFileSize = rejectedFiles[0].size;
-      if (rejectFileSize > 2000000) {
-        toast("File must be <= 2MB");
-      }
+      rejectFileSize > 2000000
+        ? toast("File must be <= 2MB")
+        : toast("File upload failed. Make sure it is an image type.");
+    } else {
+      toast("Successfully uploaded image");
     }
   };
+
   return (
     <Modal
       isOpen={props.avatarModalVisible}
       style={styles.modal}
       ariaHideApp={false}
     >
-      <Dropzone multiple={false} accept="image/*" maxSize={2000000} />;
+      <div className="border-2 border-dashed rounded-lg border-gray-800 w-full h-full flex items-center justify-center">
+        <Dropzone
+          onDrop={handleOnDrop}
+          multiple={false}
+          accept="image/*"
+          maxSize={2000000}
+          maxFiles={1}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+              <p className="text-center text-xl text-gray-800">
+                Drag and drop file here, or click to select file.
+              </p>
+              <p className="text-center text-gray-800">Max size 2MB.</p>
+            </div>
+          )}
+        </Dropzone>
+      </div>
     </Modal>
   );
 };
