@@ -1,5 +1,4 @@
 import React from "react";
-import avi from "../assets/images/twitter_egg.png";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { Navbar } from "../components/Navbar";

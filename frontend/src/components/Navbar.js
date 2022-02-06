@@ -28,7 +28,7 @@ export const Navbar = () => {
               fill="#1C64F2"
             />
           </svg>
-          <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-lg font-semibold whitespace-nowrap hover:text-gray-200 dark:text-white">
             1Feed
           </span>
         </a>

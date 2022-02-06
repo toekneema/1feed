@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import avi from "../assets/images/demar_avi.png";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { IoIosShareAlt } from "react-icons/io";
 import Modal from "react-modal";
@@ -7,7 +6,12 @@ import { linkYouTube } from "../services/linkPlatforms";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
-import { CameraIcon, PencilAltIcon, XIcon } from "@heroicons/react/solid";
+import {
+  CameraIcon,
+  PencilAltIcon,
+  XIcon,
+  ArrowSmLeftIcon,
+} from "@heroicons/react/solid";
 import "../global";
 import { getMe, updateUser } from "../services/user";
 import { Navbar } from "../components/Navbar";
@@ -122,7 +126,7 @@ export const PrivateEditingPage = () => {
               bioModalVisible={bioModalVisible}
               setBioModalVisible={setBioModalVisible}
             />
-            <button className="mt-2 text-blue-500 text-xs flex flex-row items-center">
+            <button className="mt-2 text-blue-500 hover:text-blue-700 text-xs flex flex-row items-center">
               <Link to={`/${myData.username}`}>view your public profile</Link>
               <IoIosShareAlt size={20} className="pb-0.5 ml-1" />
             </button>
@@ -140,7 +144,7 @@ export const PrivateEditingPage = () => {
                 >
                   {returnCorrectIcon(obj.name)}
                   {isLinkedMap[obj.name]
-                    ? `${obj.name} linked`
+                    ? `Unlink ${obj.name}`
                     : `Link ${obj.name}`}
                 </button>
               ))}
@@ -160,12 +164,23 @@ export const PrivateEditingPage = () => {
 };
 
 const AvatarModal = ({ ...props }) => {
+  const [imgPreviewUrl, setImgPreviewUrl] = useState(null);
   const handleOnDrop = (files, rejectedFiles) => {
     if (rejectedFiles && rejectedFiles.length > 0) {
       toast("❌" + rejectedFiles[0].errors[0].message);
     } else {
       toast("✅ Valid image");
       // now send to next stage, cropping
+      const reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        () => {
+          console.log(reader.result, "heyoooooo");
+          setImgPreviewUrl(reader.result);
+        },
+        false
+      );
+      reader.readAsDataURL(files[0]);
     }
   };
 
@@ -175,34 +190,60 @@ const AvatarModal = ({ ...props }) => {
       style={styles.modal}
       ariaHideApp={false}
     >
-      <div className="flex flex-col w-full h-full items-center">
-        <button
-          onClick={() => props.setAvatarModalVisible(false)}
-          className="w-10 h-8 rounded-full bg-gray-200 hover:bg-gray-300 mb-4 flex items-center justify-center"
-        >
-          <XIcon className="h-6 w-6 text-gray-400" />
-        </button>
-        <Dropzone
-          onDrop={(files, rejectedFiles) => handleOnDrop(files, rejectedFiles)}
-          multiple={false}
-          accept="image/x-png, image/png, image/jpg, image/jpeg, image/gif"
-          maxSize={2000000}
-          maxFiles={1}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <div
-              className="border-2 border-dashed rounded-lg border-gray-800 w-full h-full flex flex-col items-center justify-center"
-              {...getRootProps()}
+      {imgPreviewUrl ? (
+        <div className="flex flex-col w-full h-full">
+          <div className="flex justify-between mb-4">
+            <button
+              onClick={() => setImgPreviewUrl(null)}
+              className="w-10 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
             >
-              <input {...getInputProps()} />
-              <p className="text-center text-xl text-gray-800">
-                Drag and drop file here, or click to select file.
-              </p>
-              <p className="text-center text-gray-800">Max size 2MB.</p>
-            </div>
-          )}
-        </Dropzone>
-      </div>
+              <ArrowSmLeftIcon className="h-6 w-6 text-gray-400" />
+            </button>
+            <button
+              onClick={() => {
+                props.setAvatarModalVisible(false);
+              }}
+              className="rounded-3xl font-semibold bg-blue-500 text-gray-50 hover:bg-blue-600 px-5 py-1"
+            >
+              Apply
+            </button>
+          </div>
+          <div className="flex-1 border-2 justify-center items-center border-gray-800 rounded-full overflow-hidden">
+            <img src={imgPreviewUrl} alt="avatar-preview" />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col w-full h-full items-center">
+          <button
+            onClick={() => props.setAvatarModalVisible(false)}
+            className="w-10 h-8 rounded-full bg-gray-200 hover:bg-gray-300 mb-4 flex items-center justify-center"
+          >
+            <XIcon className="h-6 w-6 text-gray-400" />
+          </button>
+          <Dropzone
+            onDrop={(files, rejectedFiles) =>
+              handleOnDrop(files, rejectedFiles)
+            }
+            multiple={false}
+            accept="image/x-png, image/png, image/jpg, image/jpeg, image/gif"
+            maxSize={2000000}
+            maxFiles={1}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <div
+                className="border-2 border-dashed rounded-lg border-gray-800 w-full h-full flex flex-col items-center justify-center"
+                {...getRootProps()}
+              >
+                <input {...getInputProps()} />
+                <p className="text-center text-xl text-gray-800">
+                  Drag and drop file here, or click to select file.
+                </p>
+                <p className="text-center text-gray-800">Max size 2MB.</p>
+              </div>
+            )}
+          </Dropzone>
+        </div>
+      )}
     </Modal>
   );
 };
@@ -257,25 +298,28 @@ const LinkYouTubeModal = ({ ...props }) => {
       style={styles.modal}
       ariaHideApp={false}
     >
-      <div className="flex items-center flex-col">
-        <label className="mt-8 text-gray-800 font-semibold text-xl">
-          Enter your YouTube channel name: <br />
-          <div className="flex flex-row items-center">
-            <span className="text-sm font-normal mr-1">
+      <div className="flex w-full h-full items-center flex-col">
+        <label className="mt-8 text-gray-800 font-semibold text-xl text-center">
+          Enter your YouTube channel ID:
+          <p className="text-sm font-normal italic text-start text-gray-600">
+            (Must start with UC)
+          </p>
+          <div className="mt-4 flex w-full flex-row items-center flex-wrap justify-center">
+            <span className="text-sm font-semibold mr-1">
               https://www.youtube.com/channel/
             </span>
             <input
               type="text"
               className="border-2 border-gray-800 text-sm w-96 h-10 flex rounded-xl p-2"
-              placeholder="UC-lHJZR3Gqxm24_Vd_AJ5Yw (must start with UC)"
+              placeholder="UC-lHJZR3Gqxm24_Vd_AJ5Yw"
               onChange={(event) => setChannelId(event.target.value)}
             />
           </div>
         </label>
-        <div>
+        <div className="mt-8">
           <button
             onClick={() => props.setYTModalVisible(false)}
-            className="rounded-full bg-gray-300 m-2 py-2 px-4"
+            className="rounded-full font-semibold bg-gray-300 hover:bg-gray-400 m-2 py-2 px-4"
           >
             Cancel
           </button>
@@ -294,7 +338,7 @@ const LinkYouTubeModal = ({ ...props }) => {
                 toast("Invalid channel ID");
               }
             }}
-            className="rounded-full bg-gray-300 m-2 py-2 px-4 bg-blue-600 text-white"
+            className="rounded-full font-semibold bg-blue-600 hover:bg-blue-800 m-2 py-2 px-4 text-white"
           >
             Link
           </button>
@@ -308,7 +352,7 @@ const styles = {
   disabledButton:
     "w-64 rounded-full bg-gray-200 m-2 px-3 py-2 text-gray-700 font-semibold flex items-center justify-center relative",
   enabledButton:
-    "w-64 rounded-full bg-gray-800 m-2 px-3 py-2 text-gray-50 font-semibold flex items-center justify-center relative",
+    "w-64 rounded-full bg-gray-800 hover:bg-gray-700 m-2 px-3 py-2 text-gray-50 font-semibold flex items-center justify-center relative",
   modal: {
     content: {
       position: "absolute",
