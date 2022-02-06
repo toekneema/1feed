@@ -185,7 +185,7 @@ const AvatarModal = ({ ...props }) => {
         <Dropzone
           onDrop={(files, rejectedFiles) => handleOnDrop(files, rejectedFiles)}
           multiple={false}
-          accept="image/*"
+          accept="image/x-png, image/png, image/jpg, image/jpeg, image/gif"
           maxSize={2000000}
           maxFiles={1}
         >
@@ -221,7 +221,7 @@ const EditBioModal = ({ ...props }) => {
           <textarea
             type="text"
             maxLength="140"
-            className="border-2 text-sm w-96 h-40 flex rounded-xl p-2"
+            className="border-2 border-gray-800 text-sm w-96 h-40 flex rounded-xl p-2"
             placeholder="Limit 140 characters."
             onChange={(event) => setNewBioText(event.target.value)}
           />
@@ -266,7 +266,7 @@ const LinkYouTubeModal = ({ ...props }) => {
             </span>
             <input
               type="text"
-              className="border-2 text-sm w-96 h-10 flex rounded-xl p-2"
+              className="border-2 border-gray-800 text-sm w-96 h-10 flex rounded-xl p-2"
               placeholder="UC-lHJZR3Gqxm24_Vd_AJ5Yw (must start with UC)"
               onChange={(event) => setChannelId(event.target.value)}
             />
