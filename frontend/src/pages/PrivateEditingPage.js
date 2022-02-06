@@ -11,14 +11,17 @@ import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
 import "../global";
 import { getMe, updateUser } from "../services/user";
 import { Navbar } from "../components/Navbar";
+import Dropzone from "react-dropzone";
 
 export const PrivateEditingPage = () => {
   const [myData, setMyData] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState(null);
   const [bio, setBio] = useState(null);
   const [isLinkedMap, setIsLinkedMap] = useState(null);
   const [loading, setIsLoading] = useState(true);
 
   const [isHoveringBio, setIsHoveringBio] = useState(false);
+  const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [bioModalVisible, setBioModalVisible] = useState(false);
   const [ytModalVisible, setYTModalVisible] = useState(false);
 
@@ -27,6 +30,7 @@ export const PrivateEditingPage = () => {
     const fetchMyData = async () => {
       const [data, hasError] = await getMe();
       setMyData(data);
+      setAvatarUrl(data.avatarUrl);
       setBio(data.bio);
       setIsLinkedMap(data.isLinkedMap);
       setIsLoading(false);
@@ -81,8 +85,8 @@ export const PrivateEditingPage = () => {
             <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
             <div className="relative mt-8">
               <img
-                className="rounded-full w-24 h-24 hover:opacity-50"
-                src={avi}
+                className="rounded-full w-24 h-24 object-cover hover:opacity-50"
+                src={avatarUrl}
                 alt="pfp"
               />
               <CameraIcon
@@ -95,6 +99,10 @@ export const PrivateEditingPage = () => {
                 }}
               />
             </div>
+            <AvatarModal
+              avatarModalVisible={avatarModalVisible}
+              setAvatarModalVisible={setAvatarModalVisible}
+            />
             <h3 className="mt-1 font-semibold text-lg">@{myData.username}</h3>
             <button
               onClick={() => setBioModalVisible(true)}
@@ -147,6 +155,27 @@ export const PrivateEditingPage = () => {
         </>
       )}
     </>
+  );
+};
+
+const AvatarModal = ({ ...props }) => {
+  const handleOnDrop = (files, rejectedFiles) => {
+    if (rejectedFiles && rejectedFiles.length > 0) {
+      const rejectFileType = rejectedFiles[0].type;
+      const rejectFileSize = rejectedFiles[0].size;
+      if (rejectFileSize > 2000000) {
+        toast("File must be <= 2MB");
+      }
+    }
+  };
+  return (
+    <Modal
+      isOpen={props.avatarModalVisible}
+      style={styles.modal}
+      ariaHideApp={false}
+    >
+      <Dropzone multiple={false} accept="image/*" maxSize={2000000} />;
+    </Modal>
   );
 };
 
@@ -260,6 +289,11 @@ const styles = {
       marginRight: "auto",
       overflow: "hidden",
       borderRadius: "12px",
+      width: "40%",
+      height: "50%",
+      background: "linear-gradient(to bottom right, #fffff5, #fdf5ff)",
+      boxShadow: "12px 12px",
+      border: "2px solid rgba(0,0,0,1)",
     },
   },
 };
