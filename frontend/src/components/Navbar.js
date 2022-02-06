@@ -6,11 +6,11 @@ export const Navbar = () => {
   let navigate = useNavigate();
 
   return (
-    <nav class="bg-gray-800 py-3">
-      <div class="flex flex-wrap justify-between items-center mx-8">
-        <a href="/" class="flex">
+    <nav className="bg-gray-800 py-3">
+      <div className="flex flex-wrap justify-between items-center mx-8">
+        <a href="/" className="flex">
           <svg
-            class="mr-3 h-10"
+            className="mr-3 h-10"
             viewBox="0 0 52 72"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@ export const Navbar = () => {
               fill="#1C64F2"
             />
           </svg>
-          <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">
             1Feed
           </span>
         </a>
