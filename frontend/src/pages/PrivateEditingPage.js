@@ -162,13 +162,10 @@ export const PrivateEditingPage = () => {
 const AvatarModal = ({ ...props }) => {
   const handleOnDrop = (files, rejectedFiles) => {
     if (rejectedFiles && rejectedFiles.length > 0) {
-      const rejectFileType = rejectedFiles[0].type;
-      const rejectFileSize = rejectedFiles[0].size;
-      rejectFileSize > 2000000
-        ? toast("File must be <= 2MB")
-        : toast("File upload failed. Make sure it is an image type.");
+      toast("❌" + rejectedFiles[0].errors[0].message);
     } else {
-      toast("Successfully uploaded image");
+      toast("✅ Valid image");
+      // now send to next stage, cropping
     }
   };
 
@@ -178,25 +175,26 @@ const AvatarModal = ({ ...props }) => {
       style={styles.modal}
       ariaHideApp={false}
     >
-      <div className="border-2 border-dashed rounded-lg border-gray-800 w-full h-full flex items-center justify-center">
-        <Dropzone
-          onDrop={handleOnDrop}
-          multiple={false}
-          accept="image/*"
-          maxSize={2000000}
-          maxFiles={1}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              <p className="text-center text-xl text-gray-800">
-                Drag and drop file here, or click to select file.
-              </p>
-              <p className="text-center text-gray-800">Max size 2MB.</p>
-            </div>
-          )}
-        </Dropzone>
-      </div>
+      <Dropzone
+        onDrop={(files, rejectedFiles) => handleOnDrop(files, rejectedFiles)}
+        multiple={false}
+        accept="image/*"
+        maxSize={2000000}
+        maxFiles={1}
+      >
+        {({ getRootProps, getInputProps }) => (
+          <div
+            className="border-2 border-dashed rounded-lg border-gray-800 w-full h-full flex flex-col items-center justify-center"
+            {...getRootProps()}
+          >
+            <input {...getInputProps()} />
+            <p className="text-center text-xl text-gray-800">
+              Drag and drop file here, or click to select file.
+            </p>
+            <p className="text-center text-gray-800">Max size 2MB.</p>
+          </div>
+        )}
+      </Dropzone>
     </Modal>
   );
 };
