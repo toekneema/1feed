@@ -7,7 +7,7 @@ import { linkYouTube } from "../services/linkPlatforms";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
-import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
+import { CameraIcon, PencilAltIcon, XIcon } from "@heroicons/react/solid";
 import "../global";
 import { getMe, updateUser } from "../services/user";
 import { Navbar } from "../components/Navbar";
@@ -83,7 +83,7 @@ export const PrivateEditingPage = () => {
           <Navbar />
           <div className="flex flex-col justify-center items-center ">
             <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
-            <div className="relative mt-8">
+            <div className="relative mt-8 hover:cursor-pointer">
               <img
                 onClick={() => setAvatarModalVisible(true)}
                 className="rounded-full w-24 h-24 object-cover hover:opacity-50"
@@ -175,26 +175,34 @@ const AvatarModal = ({ ...props }) => {
       style={styles.modal}
       ariaHideApp={false}
     >
-      <Dropzone
-        onDrop={(files, rejectedFiles) => handleOnDrop(files, rejectedFiles)}
-        multiple={false}
-        accept="image/*"
-        maxSize={2000000}
-        maxFiles={1}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div
-            className="border-2 border-dashed rounded-lg border-gray-800 w-full h-full flex flex-col items-center justify-center"
-            {...getRootProps()}
-          >
-            <input {...getInputProps()} />
-            <p className="text-center text-xl text-gray-800">
-              Drag and drop file here, or click to select file.
-            </p>
-            <p className="text-center text-gray-800">Max size 2MB.</p>
-          </div>
-        )}
-      </Dropzone>
+      <div className="flex flex-col w-full h-full items-center">
+        <button
+          onClick={() => props.setAvatarModalVisible(false)}
+          className="w-10 h-8 rounded-full bg-gray-200 hover:bg-gray-300 mb-4 flex items-center justify-center"
+        >
+          <XIcon className="h-6 w-6 text-gray-400" />
+        </button>
+        <Dropzone
+          onDrop={(files, rejectedFiles) => handleOnDrop(files, rejectedFiles)}
+          multiple={false}
+          accept="image/*"
+          maxSize={2000000}
+          maxFiles={1}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div
+              className="border-2 border-dashed rounded-lg border-gray-800 w-full h-full flex flex-col items-center justify-center"
+              {...getRootProps()}
+            >
+              <input {...getInputProps()} />
+              <p className="text-center text-xl text-gray-800">
+                Drag and drop file here, or click to select file.
+              </p>
+              <p className="text-center text-gray-800">Max size 2MB.</p>
+            </div>
+          )}
+        </Dropzone>
+      </div>
     </Modal>
   );
 };
