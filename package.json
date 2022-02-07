@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "react-avatar-editor": "^12.0.0",
     "react-dropzone": "^11.7.0"
   }
 }

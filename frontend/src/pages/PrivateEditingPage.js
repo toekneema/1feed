@@ -11,11 +11,14 @@ import {
   PencilAltIcon,
   XIcon,
   ArrowSmLeftIcon,
+  ZoomOutIcon,
+  ZoomInIcon,
 } from "@heroicons/react/solid";
 import "../global";
 import { getMe, updateUser } from "../services/user";
 import { Navbar } from "../components/Navbar";
 import Dropzone from "react-dropzone";
+import AvatarEditor from "react-avatar-editor";
 
 export const PrivateEditingPage = () => {
   const [myData, setMyData] = useState(null);
@@ -165,11 +168,11 @@ export const PrivateEditingPage = () => {
 
 const AvatarModal = ({ ...props }) => {
   const [imgPreviewUrl, setImgPreviewUrl] = useState(null);
+  const [scaleValue, setScaleValue] = useState(1);
   const handleOnDrop = (files, rejectedFiles) => {
     if (rejectedFiles && rejectedFiles.length > 0) {
-      toast("❌" + rejectedFiles[0].errors[0].message);
+      toast(rejectedFiles[0].errors[0].message + ".");
     } else {
-      toast("✅ Valid image");
       // now send to next stage, cropping
       const reader = new FileReader();
       reader.addEventListener(
@@ -201,6 +204,7 @@ const AvatarModal = ({ ...props }) => {
             </button>
             <button
               onClick={() => {
+                setImgPreviewUrl(null);
                 props.setAvatarModalVisible(false);
               }}
               className="rounded-3xl font-semibold bg-blue-500 text-gray-50 hover:bg-blue-600 px-5 py-1"
@@ -208,8 +212,33 @@ const AvatarModal = ({ ...props }) => {
               Apply
             </button>
           </div>
-          <div className="flex-1 border-2 justify-center items-center border-gray-800 rounded-full overflow-hidden">
+          {/* <div className="flex-1 border-2 justify-center items-center border-gray-800 rounded-full overflow-hidden">
             <img src={imgPreviewUrl} alt="avatar-preview" />
+          </div> */}
+          <div className="flex justify-center">
+            <AvatarEditor
+              image={imgPreviewUrl}
+              width={200}
+              height={200}
+              borderRadius={100}
+              scale={scaleValue}
+              color={[255, 0, 0, 0.3]}
+              className="border-4 border-gray-800"
+            />
+          </div>
+          <div className="flex flex-row justify-center mt-2">
+            <ZoomOutIcon className="w-5 h-5 text-gray-700" />
+            <input
+              type="range"
+              min="1"
+              max="5"
+              defaultValue={1}
+              onChange={(event) => {
+                setScaleValue(event.target.value);
+              }}
+              className="mx-2"
+            />
+            <ZoomInIcon className="w-5 h-5 text-gray-700" />
           </div>
         </div>
       ) : (
