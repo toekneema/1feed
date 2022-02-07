@@ -230,11 +230,11 @@ const AvatarModal = ({ ...props }) => {
             <ZoomOutIcon className="w-5 h-5 text-gray-700" />
             <input
               type="range"
-              min="1"
-              max="5"
-              defaultValue={1}
+              min="50"
+              max="100"
+              defaultValue={50}
               onChange={(event) => {
-                setScaleValue(event.target.value);
+                setScaleValue(event.target.value / 50);
               }}
               className="mx-2"
             />
