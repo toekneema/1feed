@@ -103,7 +103,6 @@ export const PrivateEditingPage = () => {
               avatarModalVisible={avatarModalVisible}
               setAvatarModalVisible={setAvatarModalVisible}
               setAvatarUrl={setAvatarUrl}
-              myData={myData}
             />
             <h3 className="mt-1 font-semibold text-lg">@{myData.username}</h3>
             <button

@@ -54,19 +54,16 @@ export const AvatarModal = ({ ...props }) => {
                 if (avatarEditorRef.current) {
                   // returns a HTMLCanvasElement
                   const canvas = avatarEditorRef.current.getImage();
-                  const [data, hasError] = uploadToS3(
-                    props.myData.username,
-                    canvas
-                  );
+                  const [data, hasError] = await uploadToS3(canvas);
                   if (data) {
                     const newAvatarUrl =
                       "https://duwpq7vr7cr0y.cloudfront.net/" + data;
                     const [_, __] = await updateUser({
                       avatarUrl: newAvatarUrl,
                     });
-                    props.setAvatarUrl(newAvatarUrl);
                     setImgPreviewUrl(null);
                     setScaleValue(1);
+                    props.setAvatarUrl(newAvatarUrl);
                     props.setAvatarModalVisible(false);
                   } else {
                     toast("Error uploading file to AWS S3");

@@ -13,18 +13,18 @@ const config = {
   secretAccessKey: AWS_SECRET_ACCESS_KEY,
 };
 
-export const uploadToS3 = (username, canvas) => {
+export const uploadToS3 = async (canvas) => {
+  let hasError = false;
   var randomlyGeneratedImageName = generateId();
-  console.log(randomlyGeneratedImageName, "what is this rGIN");
-  canvas.toBlob((blob) => {
-    const file = new File([blob], randomlyGeneratedImageName);
-    uploadFile(file, config)
-      .then((data) => {})
-      .catch((err) => {
-        console.error("Error during S3 file upload:", err);
-      });
-  });
-  return [randomlyGeneratedImageName, false]; // [data, hasError]
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve));
+  const file = new File([blob], randomlyGeneratedImageName);
+
+  try {
+    const response = await uploadFile(file, config);
+  } catch {
+    hasError = true;
+  }
+  return [randomlyGeneratedImageName, hasError];
 };
 
 // dec2hex :: Integer -> String

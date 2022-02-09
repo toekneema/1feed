@@ -34,9 +34,8 @@ export const updateUser = async (body) => {
       )
     ).json();
   } catch (e) {
-    console.log("Failed to update usererror:", e);
+    console.log("Failed to update user error:", e);
     hasError = true;
   }
-
   return [data, hasError];
 };
