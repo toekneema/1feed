@@ -3,7 +3,7 @@ import { updateUser } from "../services/user";
 import Modal from "react-modal";
 import { styles } from "../styles";
 import { toast } from "react-toastify";
-import { linkYouTube } from "../services/linkPlatforms";
+import { getYouTube } from "../services/youtube";
 
 export const LinkYouTubeModal = ({ ...props }) => {
   const [channelId, setChannelId] = useState("");
@@ -41,7 +41,7 @@ export const LinkYouTubeModal = ({ ...props }) => {
           <button
             onClick={async () => {
               // first try to see if the inputted channelId is valid. (show loader while doing this)
-              const response = await linkYouTube(channelId);
+              const response = await getYouTube(channelId);
               if (response === "success") {
                 toast("Success!");
                 const [data, hasError] = await updateUser({

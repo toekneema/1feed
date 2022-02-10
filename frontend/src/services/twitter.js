@@ -1,9 +1,14 @@
-const getTwitter = async (twitterHandle) => {
+export const getTwitter = async (twitterUsername) => {
   const theme = "light";
   let [data, hasError] = [null, false];
-  const requestURL = `https://publish.twitter.com/oembed?url=https://twitter.com/${twitterHandle}`;
+  const requestURL = `https://publish.twitter.com/oembed?url=https://twitter.com/${twitterUsername}`;
   try {
-    data = await (await fetch(requestURL)).json();
+    data = await (
+      await fetch(requestURL, {
+        method: "GET",
+        mode: "cors",
+      })
+    ).json();
   } catch (e) {
     console.log("Error fetching Twitter data:", e);
     hasError = true;
