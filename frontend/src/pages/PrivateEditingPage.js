@@ -11,6 +11,7 @@ import { Navbar } from "../components/Navbar";
 import { EditBioModal } from "../components/EditBioModal";
 import { LinkYouTubeModal } from "../components/LinkYouTubeModal";
 import { AvatarModal } from "../components/AvatarModal";
+import { LinkTwitterModal } from "../components/LinkTwitterModal";
 
 export const PrivateEditingPage = () => {
   const [myData, setMyData] = useState(null);
@@ -23,6 +24,7 @@ export const PrivateEditingPage = () => {
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [bioModalVisible, setBioModalVisible] = useState(false);
   const [ytModalVisible, setYTModalVisible] = useState(false);
+  const [twitterModalVisible, setTwitterModalVisible] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -52,8 +54,9 @@ export const PrivateEditingPage = () => {
       //   break;
       // case "Instagram":
       //   break;
-      // case "Twitter":
-      //   break;
+      case "Twitter":
+        setTwitterModalVisible(true);
+        break;
       default:
         break;
     }
@@ -148,6 +151,12 @@ export const PrivateEditingPage = () => {
             <LinkYouTubeModal
               ytModalVisible={ytModalVisible}
               setYTModalVisible={setYTModalVisible}
+              isLinkedMap={isLinkedMap}
+              setIsLinkedMap={setIsLinkedMap}
+            />
+            <LinkTwitterModal
+              twitterModalVisible={twitterModalVisible}
+              setTwitterModalVisible={setTwitterModalVisible}
               isLinkedMap={isLinkedMap}
               setIsLinkedMap={setIsLinkedMap}
             />
