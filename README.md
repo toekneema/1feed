@@ -1,3 +1,4 @@
-Instructions to run:
-Frontend: `npm start`
-Backend: `npm run develop`
+Instructions to run: <br>
+Frontend: `npm start` <br>
+Backend: `npm run develop` <br>
+Misc-Backend: `node server.js` <br>
