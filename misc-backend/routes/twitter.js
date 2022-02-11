@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const twitterService = require("../services/twitter.service");
-
-router.get("/twitter", twitterService.getTweets);
+// Get all tweets using passed in Twitter username
+router.get("/:id", (req, res) => {
+  res.send("Hello World");
+});
 
 module.exports = router;
