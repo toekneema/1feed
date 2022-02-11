@@ -1,7 +1,9 @@
 const express = require("express");
+const cors = require("cors");
 const app = require("./index");
 
 app.use(express.json());
+app.use(cors());
 
 const twitterRouter = require("./routes/twitter");
 app.use("/twitter", twitterRouter);
