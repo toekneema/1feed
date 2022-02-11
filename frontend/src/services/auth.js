@@ -13,11 +13,11 @@ export const register = async (username, email, password) => {
           password: password,
           usernameLowercase: username.toLowerCase(),
           avatarUrl: "https://duwpq7vr7cr0y.cloudfront.net/default.png",
-          isLinkedMap: {
-            YouTube: false,
-            Facebook: false,
-            Instagram: false,
-            Twitter: false,
+          linksMap: {
+            YouTube: [],
+            Facebook: [],
+            Instagram: [],
+            Twitter: [],
           },
         }),
         headers: {

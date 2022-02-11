@@ -45,9 +45,12 @@ export const LinkYouTubeModal = ({ ...props }) => {
               if (response === "success") {
                 toast("Success!");
                 const [data, hasError] = await updateUser({
-                  isLinkedMap: { ...props.isLinkedMap, YouTube: true },
+                  linksMap: {
+                    ...props.linksMap,
+                    YouTube: [...props.linksMap.YouTube, channelId],
+                  },
                 });
-                props.setIsLinkedMap(data.isLinkedMap);
+                props.setLinksMap(data.linksMap);
                 props.setYTModalVisible(false);
               } else {
                 toast("Invalid channel ID");

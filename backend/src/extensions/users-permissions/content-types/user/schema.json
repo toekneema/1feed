@@ -68,7 +68,7 @@
       "default": "No bio.",
       "maxLength": 140
     },
-    "isLinkedMap": {
+    "linksMap": {
       "type": "json"
     },
     "usernameLowercase": {

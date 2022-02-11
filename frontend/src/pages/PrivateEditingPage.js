@@ -17,7 +17,7 @@ export const PrivateEditingPage = () => {
   const [myData, setMyData] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [bio, setBio] = useState(null);
-  const [isLinkedMap, setIsLinkedMap] = useState(null);
+  const [linksMap, setLinksMap] = useState(null);
   const [loading, setIsLoading] = useState(true);
 
   const [isHoveringBio, setIsHoveringBio] = useState(false);
@@ -33,7 +33,7 @@ export const PrivateEditingPage = () => {
       setMyData(data);
       setAvatarUrl(data.avatarUrl);
       setBio(data.bio);
-      setIsLinkedMap(data.isLinkedMap);
+      setLinksMap(data.linksMap);
       setIsLoading(false);
     };
     fetchMyData();
@@ -133,17 +133,16 @@ export const PrivateEditingPage = () => {
               {allSocialMedias.map((obj, idx) => (
                 <button
                   key={idx}
-                  disabled={isLinkedMap[obj.name]}
                   onClick={() => openCorrectModal(obj.name)}
                   className={
-                    isLinkedMap[obj.name]
+                    linksMap[obj.name].length > 0
                       ? styles.disabledButton
                       : styles.enabledButton
                   }
                 >
                   {returnCorrectIcon(obj.name)}
-                  {isLinkedMap[obj.name]
-                    ? `Unlink ${obj.name}`
+                  {linksMap[obj.name].length > 0
+                    ? `Edit ${obj.name}`
                     : `Link ${obj.name}`}
                 </button>
               ))}
@@ -151,14 +150,14 @@ export const PrivateEditingPage = () => {
             <LinkYouTubeModal
               ytModalVisible={ytModalVisible}
               setYTModalVisible={setYTModalVisible}
-              isLinkedMap={isLinkedMap}
-              setIsLinkedMap={setIsLinkedMap}
+              linksMap={linksMap}
+              setLinksMap={setLinksMap}
             />
             <LinkTwitterModal
               twitterModalVisible={twitterModalVisible}
               setTwitterModalVisible={setTwitterModalVisible}
-              isLinkedMap={isLinkedMap}
-              setIsLinkedMap={setIsLinkedMap}
+              linksMap={linksMap}
+              setLinksMap={setLinksMap}
             />
             <ToastContainer />
           </div>
