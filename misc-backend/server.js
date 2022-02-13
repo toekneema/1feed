@@ -1,11 +1,8 @@
 const express = require("express");
-const cors = require("cors");
 const app = require("./index");
+const twitterRouter = require("./routes/twitter");
 
 app.use(express.json());
-app.use(cors());
-
-const twitterRouter = require("./routes/twitter");
 app.use("/twitter", twitterRouter);
 
 app.listen(8080, (err) => {

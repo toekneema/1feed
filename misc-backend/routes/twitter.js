@@ -9,7 +9,7 @@ router.get("/:id", (req, res) => {
   axios
     .get(requestURL)
     .then((response) => {
-      res.send(response.data.html);
+      res.send(response.data);
     })
     .catch((e) => {
       hasError = true;
