@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { styles } from "../styles";
 import { toast } from "react-toastify";
 import { getFormattedTwitterUsernameIfExists } from "../services/twitter";
-
+import { TrashIcon } from "@heroicons/react/solid";
 export const LinkTwitterModal = ({ ...props }) => {
   const [twitterUsername, setTwitterUsername] = useState("");
   return (
@@ -75,7 +75,7 @@ export const LinkTwitterModal = ({ ...props }) => {
 
 const DisabledUsernameInput = ({ username }) => {
   return (
-    <div className="mt-4 flex w-2/3 flex-row items-center flex-wrap justify-center">
+    <div className="mt-4 flex w-2/3 flex-row items-center justify-center relative">
       <span className="text-2xl font-normal mr-1">@</span>
       <input
         disabled
@@ -83,13 +83,16 @@ const DisabledUsernameInput = ({ username }) => {
         className="border-2 border-gray-400 text-sm w-5/6 h-10 flex rounded-xl p-2"
         placeholder={username}
       />
+      <button className="absolute text-red-500" style={{ right: "-12px" }}>
+        <TrashIcon className="w-6 h-6" />
+      </button>
     </div>
   );
 };
 
 const UsernameInput = ({ setTwitterUsername }) => {
   return (
-    <div className="mt-4 flex w-2/3 flex-row items-center flex-wrap justify-center">
+    <div className="mt-4 flex w-2/3 flex-row items-center justify-center">
       <span className="text-2xl font-normal mr-1">@</span>
       <input
         type="text"
