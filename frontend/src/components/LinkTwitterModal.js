@@ -9,8 +9,6 @@ export const LinkTwitterModal = ({ ...props }) => {
   const [twitterUsername, setTwitterUsername] = useState("");
   const [linksMapHook, setLinksMapHook] = useState(props.linksMap); // only necessary since i want to re-render based on this variable changing
 
-  useEffect(() => {}, [props.linksMap]);
-
   return (
     <Modal
       isOpen={props.twitterModalVisible}

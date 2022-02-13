@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { IoIosShareAlt } from "react-icons/io";
 import { ToastContainer } from "react-toastify";
