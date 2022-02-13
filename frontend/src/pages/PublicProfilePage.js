@@ -10,8 +10,6 @@ export const PublicProfilePage = () => {
     `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
   );
 
-  console.log(data, "what is data !?!?!?");
-
   if (loading) {
     return <p className="text-center">loading...</p>;
   } else if (data === null || data.length === 0) {
