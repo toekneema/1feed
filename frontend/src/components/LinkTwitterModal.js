@@ -17,7 +17,7 @@ export const LinkTwitterModal = ({ ...props }) => {
       style={styles.modal}
       ariaHideApp={false}
     >
-      <div className="flex w-full h-full items-center flex-col">
+      <div className="flex w-full h-full items-center flex-col overflow-auto">
         <label className="mt-8 text-gray-800 font-semibold text-xl text-center">
           Enter your Twitter username:
         </label>
@@ -72,7 +72,7 @@ export const LinkTwitterModal = ({ ...props }) => {
                 props.setLinksMap(userData.linksMap); // passes the data to parent (outside of modal)
                 setLinksMapHook(userData.linksMap); // used to update the current modal
                 toast(
-                  `Successfully linked Twitter account ${formattedTwitterUsername}!`
+                  `Successfully linked Twitter account "${formattedTwitterUsername}".`
                 );
               }
             }}
@@ -111,7 +111,7 @@ const DisabledUsernameInput = ({ ...props }) => {
             hasError
               ? toast(`Error unlinking ${props.username}.`)
               : toast(
-                  `Successfully unlinked Twitter account: ${props.username}.`
+                  `Successfully unlinked Twitter account "${props.username}".`
                 );
           }}
         />
