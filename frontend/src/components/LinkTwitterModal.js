@@ -40,15 +40,22 @@ export const LinkTwitterModal = ({ ...props }) => {
             onClick={async () => {
               const [twitterApiData, hasError] =
                 await getFormattedTwitterUsernameIfExists(twitterUsername);
+              const formattedTwitterUsername = parseUsernameFromUrl(
+                twitterApiData.url
+              );
               if (hasError) {
-                toast("Error linking Twitter account.");
+                toast("Username does not exist on Twitter.");
+              } else if (
+                props.linksMap.Twitter.includes(formattedTwitterUsername)
+              ) {
+                toast("Cannot link the same username again.");
               } else {
                 const [userData, hasError] = await updateUser({
                   linksMap: {
                     ...props.linksMap,
                     Twitter: [
                       ...props.linksMap.Twitter,
-                      parseUsernameFromUrl(twitterApiData.url),
+                      formattedTwitterUsername,
                     ],
                   },
                 });
