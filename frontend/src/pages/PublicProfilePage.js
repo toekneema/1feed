@@ -4,6 +4,7 @@ import { useFetch } from "../hooks/useFetch";
 import { Navbar } from "../components/Navbar";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 import YouTube from "react-youtube";
+import { FacebookProvider, EmbeddedPost } from "react-facebook";
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
@@ -29,7 +30,7 @@ export const PublicProfilePage = () => {
   };
 
   return (
-    <>
+    <FacebookProvider appId="352763356378643">
       <Navbar />
       <div
         className="flex flex-row mt-16"
@@ -65,8 +66,9 @@ export const PublicProfilePage = () => {
         <div className="flex flex-col basis-3/6 items-end border-2 border-red-500">
           <TwitterTweetEmbed tweetId={"1493391199310258176"} />
           <YouTube videoId="2g811Eo7K8U" opts={ytOpts} />
+          <EmbeddedPost href="https://fb.watch/bb0VQIROXv/" width="500" />
         </div>
       </div>
-    </>
+    </FacebookProvider>
   );
 };
