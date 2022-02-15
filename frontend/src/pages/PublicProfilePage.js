@@ -52,7 +52,10 @@ export const PublicProfilePage = () => {
             <p className="text-black font-semibold mb-4">Accounts</p>
             {Object.entries(data[0].linksMap).map(([key, value], idx) => (
               <div key={idx} className="mt-3">
-                <button className="p-2 border-2 border-black w-1/2">
+                <button
+                  className="p-2 border-2 border-black w-1/2"
+                  style={{ boxShadow: "4px 4px" }}
+                >
                   {key}
                 </button>
               </div>

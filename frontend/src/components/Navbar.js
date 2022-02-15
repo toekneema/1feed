@@ -31,8 +31,8 @@ export const Navbar = () => {
               fill="#1C64F2"
             />
           </svg>
-          <span className="self-center text-lg text-black font-semibold whitespace-nowrap hover:text-gray-600">
-            1Feed
+          <span className="self-center text-lg text-black font-semibold whitespace-nowrap hover:text-blue-600">
+            1FEED
           </span>
         </a>
         {isLoggedIn ? (
@@ -42,9 +42,9 @@ export const Navbar = () => {
               localStorage.removeItem("user");
               navigate("/login");
             }}
-            className="text-white font-semibold rounded-3xl bg-gray-700 hover:bg-gray-500 px-4 py-2"
+            className="font-semibold  hover:text-red-600 px-4 py-2"
           >
-            Logout
+            LOGOUT
           </button>
         ) : (
           <div>
