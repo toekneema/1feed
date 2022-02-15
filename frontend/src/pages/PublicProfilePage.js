@@ -33,7 +33,7 @@ export const PublicProfilePage = () => {
     <>
       <Navbar />
       <div
-        className="flex flex-row my-16"
+        className="flex flex-row mt-16"
         style={{ marginLeft: "32rem", marginRight: "32rem" }}
       >
         <div className="flex flex-col basis-2/5 border-2 border-red-500">
