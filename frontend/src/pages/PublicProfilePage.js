@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { Navbar } from "../components/Navbar";
+import { TwitterTweetEmbed } from "react-twitter-embed";
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
@@ -20,14 +21,6 @@ export const PublicProfilePage = () => {
     );
   }
   const usernameCaseSensitive = data[0].username;
-
-  const fakeTweetHTML =
-    '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Lock in! <a href="https://twitter.com/hashtag/dubnation?src=hash&amp;ref_src=twsrc%5Etfw">#dubnation</a></p>&mdash; Stephen Curry (@StephenCurry30) <a href="https://twitter.com/StephenCurry30/status/1492663882195693570?ref_src=twsrc%5Etfw">February 13, 2022</a></blockquote>';
-
-  // Optimizes the render time of oEmbed tweets
-  // Also needs to be called when a new Twitter oEmbed is pushed to the feed
-  // So maybe use this inside a useEffect()
-  window.twttr.widgets.load(document.getElementById("oEmbed_container"));
 
   return (
     <>
@@ -64,10 +57,8 @@ export const PublicProfilePage = () => {
         </div>
         <div className="basis-1/6" />
         <div className="flex flex-col basis-3/6 items-end border-2 border-red-500">
-          <div
-            id="oEmbed_container"
-            dangerouslySetInnerHTML={{ __html: fakeTweetHTML }}
-          ></div>
+          <TwitterTweetEmbed tweetId={"933354946111705097"} />
+          <div id="player"></div>
         </div>
       </div>
     </>
