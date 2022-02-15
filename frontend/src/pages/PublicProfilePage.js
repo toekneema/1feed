@@ -22,31 +22,49 @@ export const PublicProfilePage = () => {
   const usernameCaseSensitive = data[0].username;
 
   const fakeTweetHTML =
-    '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Wordle 237 6/6<br><br>⬛🟨⬛🟨⬛<br>🟨🟨⬛⬛🟨<br>🟨⬛⬛🟩⬛<br>⬛⬛🟨🟨🟨<br>⬛🟩⬛🟩⬛<br>🟩🟩🟩🟩🟩 today&#39;s was tough</p>&mdash; Tony (@officialtonyma) <a href="https://twitter.com/officialtonyma/status/1492003735924584471?ref_src=twsrc%5Etfw">February 11, 2022</a></blockquote>\n';
+    '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Lock in! <a href="https://twitter.com/hashtag/dubnation?src=hash&amp;ref_src=twsrc%5Etfw">#dubnation</a></p>&mdash; Stephen Curry (@StephenCurry30) <a href="https://twitter.com/StephenCurry30/status/1492663882195693570?ref_src=twsrc%5Etfw">February 13, 2022</a></blockquote>';
 
   // Optimizes the render time of oEmbed tweets
-  window.twttr.widgets.load(document.getElementById("container"));
+  // Also needs to be called when a new Twitter oEmbed is pushed to the feed
+  // So maybe use this inside a useEffect()
+  window.twttr.widgets.load(document.getElementById("oEmbed_container"));
 
   return (
     <>
       <Navbar />
-      <div className="flex flex-col justify-center items-center">
-        <img
-          className="rounded-full w-24 h-24 mt-8 object-cover"
-          src={data[0].avatarUrl}
-          alt="avatar"
-        />
-        <h3 className="mt-1 font-semibold text-lg">@{usernameCaseSensitive}</h3>
-        <div
-          className="mt-2 text-sm w-96 text-center p-1"
-          style={{ wordBreak: "break-word" }}
-        >
-          {data[0].bio}
+      <div
+        className="flex flex-row my-16"
+        style={{ marginLeft: "32rem", marginRight: "32rem" }}
+      >
+        <div className="flex flex-col basis-2/5 border-2 border-red-500">
+          <img
+            className="w-1/2 h-auto object-cover"
+            src={data[0].avatarUrl}
+            alt="avatar"
+          />
+          <h3 className="mt-3 font-semibold text-xl">
+            @{usernameCaseSensitive}
+          </h3>
+          <div className="mt-6 text w-96" style={{ wordBreak: "break-word" }}>
+            {data[0].bio}
+          </div>
+          <div className="mt-10">
+            <p className="text-black font-semibold mb-4">Accounts</p>
+            {Object.entries(data[0].linksMap).map(([key, value], idx) => (
+              <div key={idx} className="mt-3">
+                <button className="p-2 border-2 border-black w-1/2">
+                  {key}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-        <div
-          id="oEmbed"
-          dangerouslySetInnerHTML={{ __html: fakeTweetHTML }}
-        ></div>
+        <div className="flex flex-col basis-3/5 items-end border-2 border-red-500">
+          <div
+            id="oEmbed_container"
+            dangerouslySetInnerHTML={{ __html: fakeTweetHTML }}
+          ></div>
+        </div>
       </div>
     </>
   );
