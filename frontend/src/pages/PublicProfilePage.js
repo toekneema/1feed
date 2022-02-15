@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { Navbar } from "../components/Navbar";
 import { TwitterTweetEmbed } from "react-twitter-embed";
+import YouTube from "react-youtube";
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
@@ -21,6 +22,11 @@ export const PublicProfilePage = () => {
     );
   }
   const usernameCaseSensitive = data[0].username;
+
+  const ytOpts = {
+    height: "195",
+    width: "320",
+  };
 
   return (
     <>
@@ -57,8 +63,8 @@ export const PublicProfilePage = () => {
         </div>
         <div className="basis-1/6" />
         <div className="flex flex-col basis-3/6 items-end border-2 border-red-500">
-          <TwitterTweetEmbed tweetId={"933354946111705097"} />
-          <div id="player"></div>
+          <TwitterTweetEmbed tweetId={"1493391199310258176"} />
+          <YouTube videoId="2g811Eo7K8U" opts={ytOpts} />
         </div>
       </div>
     </>
