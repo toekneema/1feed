@@ -24,8 +24,8 @@ const extractIdsAndDate = (items) => {
   let urls = [];
   items.forEach((item) => {
     urls.push({
-      publishedAt: item.snippet.publishedAt,
-      videoId: item.snippet.resourceId.videoId,
+      timestamp: item.snippet.publishedAt,
+      payload: { type: "YouTube", id: item.snippet.resourceId.videoId },
     });
   });
   console.log(urls);
