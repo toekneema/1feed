@@ -7,6 +7,9 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
+// Middleware for YouTube related requests
+const youtube = require("./routes/youtube");
+app.use("/youtube", youtube);
 // Middleware for Twitter related requests
 const twitter = require("./routes/twitter");
 app.use("/twitter", twitter);

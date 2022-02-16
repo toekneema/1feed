@@ -1,9 +1,11 @@
 const express = require("express");
 const app = require("./index");
+const youtubeRouter = require("./routes/youtube");
 const twitterRouter = require("./routes/twitter");
 const feedRouter = require("./routes/feed");
 
 app.use(express.json());
+app.use("/youtube", youtubeRouter);
 app.use("/twitter", twitterRouter);
 app.use("/feed", feedRouter);
 

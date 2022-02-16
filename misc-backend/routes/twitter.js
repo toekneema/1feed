@@ -4,7 +4,6 @@ const router = express.Router();
 
 // Get all tweets using passed in Twitter username
 router.get("/:username", (req, res) => {
-  let [data, hasError] = [null, false];
   const requestURL = `https://publish.twitter.com/oembed?url=https://twitter.com/${req.params.username}&omit_script=1`;
   axios
     .get(requestURL)
@@ -12,7 +11,6 @@ router.get("/:username", (req, res) => {
       res.send(response.data);
     })
     .catch((e) => {
-      hasError = true;
       res.send(`Error fetching Twitter data: ${e}`);
     });
 });

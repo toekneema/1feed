@@ -48,8 +48,8 @@ export const LinkYouTubeModal = ({ ...props }) => {
           <button
             onClick={async () => {
               // first try to see if the inputted channelId is valid. (show loader while doing this)
-              const response = await getYouTube(channelId);
-              if (response !== "success") {
+              const [data, hasError] = await getYouTube(channelId);
+              if (hasError) {
                 toast(`Invalid channel ID "${channelId}".`);
               } else if (linksMapHook.YouTube.includes(channelId)) {
                 toast("Cannot link the same channel ID again.");
