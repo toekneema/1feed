@@ -69,7 +69,7 @@ export const PublicProfilePage = () => {
         </div>
         <div className="basis-1/6" />
         <div className="flex flex-col basis-3/6 items-end border-2 border-red-500">
-          <TwitterTweetEmbed tweetId={"1493391199310258176"} />
+          {/* <TwitterTweetEmbed tweetId={"1493391199310258176"} />
           <InstagramEmbed
             url="https://instagr.am/p/Zw9o4/"
             clientAccessToken={FB_ACCESS_TOKEN}
@@ -86,7 +86,7 @@ export const PublicProfilePage = () => {
             }}
           />
           <YouTube videoId="2g811Eo7K8U" opts={ytOpts} />
-          <EmbeddedPost href="https://fb.watch/bb0VQIROXv/" width="500" />
+          <EmbeddedPost href="https://fb.watch/bb0VQIROXv/" width="500" /> */}
         </div>
       </div>
     </FacebookProvider>
