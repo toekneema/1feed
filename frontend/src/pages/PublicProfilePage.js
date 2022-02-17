@@ -37,39 +37,40 @@ export const PublicProfilePage = () => {
   return (
     <FacebookProvider appId={FB_APP_ID}>
       <Navbar />
-      <div
-        className="flex flex-row mt-16"
-        style={{ marginLeft: "32rem", marginRight: "32rem" }}
-      >
-        <div className="flex flex-col basis-2/6 border-2 border-red-500">
-          <img
-            className="w-full h-auto object-cover"
-            src={data[0].avatarUrl}
-            alt="avatar"
-          />
-          <h3 className="mt-3 font-semibold text-xl">
-            @{usernameCaseSensitive}
-          </h3>
-          <div className="mt-6 text w-full" style={{ wordBreak: "break-word" }}>
-            {data[0].bio}
+      <div className="flex justify-center">
+        <div className="flex flex-row w-3/5 mt-16">
+          <div className="flex flex-col basis-1/4 border-2 border-red-500">
+            <img
+              className="w-full h-auto object-cover"
+              src={data[0].avatarUrl}
+              alt="avatar"
+            />
+            <h3 className="mt-3 font-semibold text-xl">
+              @{usernameCaseSensitive}
+            </h3>
+            <div
+              className="mt-6 text w-full"
+              style={{ wordBreak: "break-word" }}
+            >
+              {data[0].bio}
+            </div>
+            <div className="mt-10">
+              <p className="text-black font-semibold mb-4">Accounts</p>
+              {Object.entries(data[0].linksMap).map(([key, value], idx) => (
+                <div key={idx} className="mt-3">
+                  <button
+                    className="p-2 border-2 border-black w-full"
+                    style={{ boxShadow: "4px 4px" }}
+                  >
+                    {key}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mt-10">
-            <p className="text-black font-semibold mb-4">Accounts</p>
-            {Object.entries(data[0].linksMap).map(([key, value], idx) => (
-              <div key={idx} className="mt-3">
-                <button
-                  className="p-2 border-2 border-black w-full"
-                  style={{ boxShadow: "4px 4px" }}
-                >
-                  {key}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="basis-1/6" />
-        <div className="flex flex-col basis-3/6 items-end border-2 border-red-500">
-          {/* <TwitterTweetEmbed tweetId={"1493391199310258176"} />
+          <div className="basis-1/12" />
+          <div className="flex flex-col basis-8/12 items-end border-2 border-red-500">
+            {/* <TwitterTweetEmbed tweetId={"1493391199310258176"} />
           <InstagramEmbed
             url="https://instagr.am/p/Zw9o4/"
             clientAccessToken={FB_ACCESS_TOKEN}
@@ -87,6 +88,7 @@ export const PublicProfilePage = () => {
           />
           <YouTube videoId="2g811Eo7K8U" opts={ytOpts} />
           <EmbeddedPost href="https://fb.watch/bb0VQIROXv/" width="500" /> */}
+          </div>
         </div>
       </div>
     </FacebookProvider>
