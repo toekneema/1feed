@@ -39,13 +39,13 @@ export const PublicProfilePage = () => {
       <Navbar />
       <div className="flex justify-center">
         <div className="flex flex-row w-3/5 mt-16">
-          <div className="flex flex-col basis-1/4 border-2 border-red-500">
+          <div className="flex flex-col basis-1/4">
             <img
               className="w-full h-auto object-cover"
               src={data[0].avatarUrl}
               alt="avatar"
             />
-            <h3 className="mt-3 font-semibold text-xl">
+            <h3 className="mt-3 font-bold text-lg uppercase">
               @{usernameCaseSensitive}
             </h3>
             <div
@@ -54,12 +54,17 @@ export const PublicProfilePage = () => {
             >
               {data[0].bio}
             </div>
-            <div className="mt-10">
-              <p className="text-black font-semibold mb-4">Accounts</p>
+            <div className="mt-20">
+              <p
+                className="text-black font-semibold text-lg mb-4"
+                style={{ fontFamily: "Inter" }}
+              >
+                Accounts
+              </p>
               {Object.entries(data[0].linksMap).map(([key, value], idx) => (
                 <div key={idx} className="mt-3">
                   <button
-                    className="p-2 border-2 border-black w-full"
+                    className="p-2 border-2 border-black w-full font-medium"
                     style={{ boxShadow: "4px 4px" }}
                   >
                     {key}
@@ -69,7 +74,7 @@ export const PublicProfilePage = () => {
             </div>
           </div>
           <div className="basis-1/12" />
-          <div className="flex flex-col basis-8/12 items-end border-2 border-red-500">
+          <div className="flex flex-col basis-8/12 items-end">
             {/* <TwitterTweetEmbed tweetId={"1493391199310258176"} />
           <InstagramEmbed
             url="https://instagr.am/p/Zw9o4/"
