@@ -1,4 +1,4 @@
-// Calls the Node.js misc-backend and gets the feed of {username}
+// Calls the Node.js misc-backend and gets the feed for {username}
 export const getFeed = async (username) => {
   let [data, hasError] = [null, false];
   const requestURL = `http://localhost:8080/feed/${username}`;
