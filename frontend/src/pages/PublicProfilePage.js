@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { Navbar } from "../components/Navbar";
@@ -13,9 +13,37 @@ import { LinkedInEmbedWrapper } from "../components/wrappers/LinkedInEmbedWrappe
 import { TikTokEmbedWrapper } from "../components/wrappers/TikTokEmbedWrapper";
 import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrapper";
 
-const FB_APP_ID = "352763356378643";
-const FB_ACCESS_TOKEN =
-  "EAAFA1h6L9hMBAFxRAeMLSftafkIZCWHlIRdzj7nQlbGCpVOolzG1oXG3aWRRjPVV8gFpSQ489JI5XoDTu92MB8hKXwJghDHJ6RzVHRgl7nZAFg3cuzsZB9w2OFvQRTMBUzmQ3sSjTrO2XoUZBC0ciXP8eOlZCjDrXkpSedyCs83b9FYA087u4";
+const getFakeFeedData = () => {
+  return [
+    {
+      type: "YouTube",
+      timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
+      payload: "https://www.youtube.com/watch?v=DwcM_oIzryo",
+    },
+    {
+      type: "Twitter",
+      timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
+      payload: "https://twitter.com/StephenCurry30/status/1494378407173492741",
+    },
+    {
+      type: "Twitter",
+      timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
+      payload: "https://twitter.com/StephenCurry30/status/1494134685672173568",
+    },
+    {
+      type: "LinkedIn",
+      timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
+      payload:
+        "https://www.linkedin.com/posts/stephencurry30_blackwomenimpact-activity-6823395742749732864-MO17",
+    },
+    {
+      type: "Facebook",
+      timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
+      payload:
+        "https://www.facebook.com/StephenCurryOfficial/posts/505173140972885",
+    },
+  ];
+};
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
@@ -23,8 +51,9 @@ export const PublicProfilePage = () => {
   const { data, loading } = useFetch(
     `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
   );
+  const [feedData, setFeedData] = useState(getFakeFeedData());
 
-  if (loading) {
+  if (loading || feedData == null) {
     return <p className="text-center">loading...</p>;
   } else if (data === null || data.length === 0) {
     return (
@@ -34,11 +63,6 @@ export const PublicProfilePage = () => {
     );
   }
   const usernameCaseSensitive = data[0].username;
-
-  const ytOpts = {
-    height: "195",
-    width: "320",
-  };
 
   return (
     <>
