@@ -12,6 +12,7 @@ import { TwitterEmbedWrapper } from "../components/wrappers/TwitterEmbedWrapper"
 import { LinkedInEmbedWrapper } from "../components/wrappers/LinkedInEmbedWrapper";
 import { TikTokEmbedWrapper } from "../components/wrappers/TikTokEmbedWrapper";
 import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrapper";
+import { Masonry } from "masonic";
 
 const getFakeFeedData = () => {
   return [
@@ -35,6 +36,12 @@ const getFakeFeedData = () => {
       timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
       payload:
         "https://www.linkedin.com/posts/stephencurry30_blackwomenimpact-activity-6823395742749732864-MO17",
+    },
+    {
+      type: "TikTok",
+      timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
+      payload:
+        "https://www.tiktok.com/@stephencurry30/video/7039154936587816198",
     },
     {
       type: "Facebook",
@@ -124,7 +131,33 @@ export const PublicProfilePage = () => {
           </div>
           <div className="basis-1/12" />
           <div className="flex flex-col basis-8/12 items-end">
-            <FacebookEmbedWrapper url="https://fb.watch/b67iYbdzNm/" />
+            <Masonry
+              columnCount={2}
+              columnGutter={24}
+              items={feedData}
+              render={(item) => {
+                const data = item.data;
+                switch (data.type) {
+                  case "YouTube":
+                    return <YouTubeEmbedWrapper url={data.payload} />;
+                  case "Facebook":
+                    return <FacebookEmbedWrapper url={data.payload} />;
+                  case "Instagram":
+                    return <InstagramEmbedWrapper url={data.payload} />;
+                  case "Twitter":
+                    return <TwitterEmbedWrapper url={data.payload} />;
+                  case "TikTok":
+                    return <TikTokEmbedWrapper url={data.payload} />;
+                  case "LinkedIn":
+                    return <LinkedInEmbedWrapper url={data.payload} />;
+                  default:
+                    return (
+                      <p>Error: Social media "{data.type}" is not supported.</p>
+                    );
+                }
+              }}
+            />
+            {/* <FacebookEmbedWrapper url="https://fb.watch/b67iYbdzNm/" />
             <div className="my-2"></div>
             <FacebookEmbedWrapper url="https://www.facebook.com/CarolinaPongTT/posts/345545574245969" />
             <InstagramEmbedWrapper url="https://www.instagram.com/p/CUbHfhpswxt/" />
@@ -136,7 +169,7 @@ export const PublicProfilePage = () => {
             />
             <TikTokEmbedWrapper url="https://www.tiktok.com/@epicgardening/video/7055411162212633903?is_copy_url=1&is_from_webapp=v1" />
             <TwitterEmbedWrapper url="https://twitter.com/PixelAndBracket/status/1356633038717923333" />
-            <YouTubeEmbedWrapper url="https://www.youtube.com/watch?v=d-qqom30TZA" />
+            <YouTubeEmbedWrapper url="https://www.youtube.com/watch?v=d-qqom30TZA" /> */}
           </div>
         </div>
       </div>

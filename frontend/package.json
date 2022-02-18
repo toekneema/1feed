@@ -10,6 +10,7 @@
     "axios": "^0.25.0",
     "buffer": "^6.0.3",
     "dotenv": "^16.0.0",
+    "masonic": "^3.6.2",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
     "react-avatar-editor": "^12.0.0",
