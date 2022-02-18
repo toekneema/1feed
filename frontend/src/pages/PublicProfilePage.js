@@ -132,6 +132,7 @@ export const PublicProfilePage = () => {
           <div className="basis-1/12" />
           <div className="flex flex-col basis-8/12 items-end">
             <Masonry
+              className="border-2 border-red-500"
               columnCount={2}
               columnGutter={24}
               items={feedData}
