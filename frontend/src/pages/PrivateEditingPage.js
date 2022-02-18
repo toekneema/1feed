@@ -107,7 +107,9 @@ export const PrivateEditingPage = () => {
               setAvatarModalVisible={setAvatarModalVisible}
               setAvatarUrl={setAvatarUrl}
             />
-            <h3 className="mt-1 font-semibold text-lg">@{myData.username}</h3>
+            <h3 className="mt-1 font-bold text-lg uppercase">
+              @{myData.username}
+            </h3>
             <button
               onClick={() => setBioModalVisible(true)}
               onMouseOver={() => setIsHoveringBio(true)}

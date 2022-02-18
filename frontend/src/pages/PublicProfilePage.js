@@ -2,10 +2,16 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { Navbar } from "../components/Navbar";
-import { TwitterTweetEmbed } from "react-twitter-embed";
-import YouTube from "react-youtube";
-import { FacebookProvider, EmbeddedPost } from "react-facebook";
-import InstagramEmbed from "react-instagram-embed";
+import youtubePng from "../assets/images/youtube.png";
+import facebookPng from "../assets/images/facebook.png";
+import instagramPng from "../assets/images/instagram.png";
+import twitterPng from "../assets/images/twitter.png";
+import { FacebookEmbedWrapper } from "../components/wrappers/FacebookEmbedWrapper";
+import { YouTubeEmbedWrapper } from "../components/wrappers/YouTubeEmbedWrapper";
+import { TwitterEmbedWrapper } from "../components/wrappers/TwitterEmbedWrapper";
+import { LinkedInEmbedWrapper } from "../components/wrappers/LinkedInEmbedWrapper";
+import { TikTokEmbedWrapper } from "../components/wrappers/TikTokEmbedWrapper";
+import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrapper";
 
 const FB_APP_ID = "352763356378643";
 const FB_ACCESS_TOKEN =
@@ -35,7 +41,7 @@ export const PublicProfilePage = () => {
   };
 
   return (
-    <FacebookProvider appId={FB_APP_ID}>
+    <>
       <Navbar />
       <div className="flex justify-center">
         <div className="flex flex-row w-3/5 mt-16">
@@ -61,41 +67,87 @@ export const PublicProfilePage = () => {
               >
                 Accounts
               </p>
-              {Object.entries(data[0].linksMap).map(([key, value], idx) => (
-                <div key={idx} className="mt-3">
+              {Object.entries(data[0].linksMap).map(([key, value], idx) => {
+                let socialMediaIcon = getCorrectSocialMediaIcon(key);
+                return (
                   <button
-                    className="p-2 border-2 border-black w-full font-medium"
+                    onClick={() => {
+                      if (value.length === 0) {
+                        // no-op
+                        return;
+                      } else if (value.length > 1) {
+                        // if more than 1 account connected for that social media
+                        // open a modal
+                      } else {
+                        window.open(constructCorrectLink(key, value), "_blank");
+                      }
+                    }}
+                    className="py-2 mt-5 border-2 border-black w-full text-center font-medium flex items-center justify-center"
                     style={{ boxShadow: "4px 4px" }}
+                    key={idx}
                   >
+                    <img
+                      src={socialMediaIcon}
+                      className="w-9 h-9"
+                      style={{ marginRight: "24px" }}
+                      alt="social media icon"
+                    />
                     {key}
                   </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           <div className="basis-1/12" />
           <div className="flex flex-col basis-8/12 items-end">
-            {/* <TwitterTweetEmbed tweetId={"1493391199310258176"} />
-          <InstagramEmbed
-            url="https://instagr.am/p/Zw9o4/"
-            clientAccessToken={FB_ACCESS_TOKEN}
-            maxWidth={320}
-            hideCaption={false}
-            containerTagName="div"
-            protocol=""
-            injectScript
-            onLoading={() => {}}
-            onSuccess={() => {}}
-            onAfterRender={() => {}}
-            onFailure={() => {
-              console.log("instagram embed FAILED!");
-            }}
-          />
-          <YouTube videoId="2g811Eo7K8U" opts={ytOpts} />
-          <EmbeddedPost href="https://fb.watch/bb0VQIROXv/" width="500" /> */}
+            <FacebookEmbedWrapper url="https://fb.watch/b67iYbdzNm/" />
+            <div className="my-2"></div>
+            <FacebookEmbedWrapper url="https://www.facebook.com/CarolinaPongTT/posts/345545574245969" />
+            <InstagramEmbedWrapper url="https://www.instagram.com/p/CUbHfhpswxt/" />
+            <LinkedInEmbedWrapper
+              url="https://www.linkedin.com/embed/feed/update/urn:li:share:6892528764350185473"
+              postUrl="https://www.linkedin.com/posts/garyvaynerchuk_join-our-discord-its-consistently-fun-activity-6892528765080002561-mFyb"
+              width={504}
+              height={592}
+            />
+            <TikTokEmbedWrapper url="https://www.tiktok.com/@epicgardening/video/7055411162212633903?is_copy_url=1&is_from_webapp=v1" />
+            <TwitterEmbedWrapper url="https://twitter.com/PixelAndBracket/status/1356633038717923333" />
+            <YouTubeEmbedWrapper url="https://www.youtube.com/watch?v=d-qqom30TZA" />
           </div>
         </div>
       </div>
-    </FacebookProvider>
+    </>
   );
+};
+
+// When passed in the key (social media platform) and value (id/username): construct the full URL.
+// But if a certain platform has multiple links, may need to bring up a modal to choose from several options instead.
+const constructCorrectLink = (key, value) => {
+  switch (key) {
+    case "YouTube":
+      return `https://www.youtube.com/channel/${value}`;
+    case "Facebook":
+      return `https://www.facebook.com/${value}`;
+    case "Instagram":
+      return `https://www.instagram.com/${value}`;
+    case "Twitter":
+      return `https://www.twitter.com/${value}`;
+    default:
+      return "#";
+  }
+};
+
+const getCorrectSocialMediaIcon = (key) => {
+  switch (key) {
+    case "YouTube":
+      return youtubePng;
+    case "Facebook":
+      return facebookPng;
+    case "Instagram":
+      return instagramPng;
+    case "Twitter":
+      return twitterPng;
+    default:
+      return null;
+  }
 };
