@@ -9,32 +9,111 @@ export const LoginPage = () => {
   let navigate = useNavigate();
 
   return (
+    // <>
+    //   <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    //     <div className="max-w-md w-full space-y-8">
+    //       <div>
+    //         <img
+    //           className="mx-auto h-12 w-auto"
+    //           src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+    //           alt="Workflow"
+    //         />
+    //         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    //           Login to your account
+    //         </h2>
+    //       </div>
+    //       <form
+    //         className="mt-8 space-y-6"
+    //         onSubmit={async (event) => {
+    //           event.preventDefault();
+    //           const [error, hasError] = await login(email, password);
+    //           hasError ? toast(error) : navigate("/edit");
+    //         }}
+    //       >
+    //         <div className="rounded-md shadow-sm -space-y-px">
+    //           <div>
+    //             <label htmlFor="email-address" className="sr-only">
+    //               Email address
+    //             </label>
+    //             <input
+    //               onChange={(event) => setEmail(event.target.value)}
+    //               id="email-address"
+    //               name="email"
+    //               type="email"
+    //               autoComplete="email"
+    //               required
+    //               className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+    //               placeholder="Email address"
+    //             />
+    //           </div>
+    //           <div>
+    //             <label htmlFor="password" className="sr-only">
+    //               Password
+    //             </label>
+    //             <input
+    //               onChange={(event) => setPassword(event.target.value)}
+    //               id="password"
+    //               name="password"
+    //               type="password"
+    //               autoComplete="current-password"
+    //               required
+    //               className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+    //               placeholder="Password"
+    //             />
+    //           </div>
+    //         </div>
+
+    //         <div className="flex items-center justify-end text-sm">
+    //           <a
+    //             href="#"
+    //             className="font-medium text-indigo-600 hover:text-indigo-500"
+    //           >
+    //             Forgot your password?
+    //           </a>
+    //         </div>
+
+    //         <div>
+    //           <button
+    //             type="submit"
+    //             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    //           >
+    //             Login
+    //           </button>
+    //         </div>
+    //         <div className="flex items-center justify-center text-sm">
+    //           <a
+    //             href="/signup"
+    //             className="flex items-center font-medium text-indigo-600 hover:text-indigo-500"
+    //           >
+    //             No account yet? Sign Up
+    //           </a>
+    //         </div>
+    //       </form>
+    //     </div>
+    //   </div>
+    //   <ToastContainer />
+    // </>
     <>
-      <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <img
-              className="mx-auto h-12 w-auto"
-              src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-              alt="Workflow"
-            />
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Login to your account
-            </h2>
-          </div>
+      <div className="min-h-full flex flex-col items-center justify-center mt-16 px-4 sm:px-6 lg:px-8">
+        <h2
+          className="text-black font-semibold text-center leading-9"
+          style={{ fontFamily: "Inter", fontSize: "36px" }}
+        >
+          Welcome back to{" "}
+          <span className="text-gray-400 hover:text-indigo-500">onefeed</span>
+        </h2>
+
+        <div className="max-w-sm w-full">
           <form
-            className="mt-8 space-y-6"
+            className="mt-16 space-y-12"
             onSubmit={async (event) => {
               event.preventDefault();
               const [error, hasError] = await login(email, password);
               hasError ? toast(error) : navigate("/edit");
             }}
           >
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div>
-                <label htmlFor="email-address" className="sr-only">
-                  Email address
-                </label>
+            <div>
+              <div className="mb-3 relative">
                 <input
                   onChange={(event) => setEmail(event.target.value)}
                   id="email-address"
@@ -42,14 +121,11 @@ export const LoginPage = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Email address"
+                  className="tracking-wider w-full px-3 py-2 placeholder:text-gray-400 border-2 border-gray-400 focus:outline-black sm:text-sm"
+                  placeholder="EMAIL ADDRESS"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
                 <input
                   onChange={(event) => setPassword(event.target.value)}
                   id="password"
@@ -57,38 +133,37 @@ export const LoginPage = () => {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Password"
+                  className="tracking-wider w-full px-3 py-2 placeholder:text-gray-400 border-2 border-gray-400 focus:outline-black sm:text-sm"
+                  placeholder="PASSWORD"
                 />
               </div>
-            </div>
-
-            <div className="flex items-center justify-end text-sm">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                Forgot your password?
-              </a>
+              <div className="mt-2 flex justify-end text-sm">
+                <a
+                  href="https://www.youtube.com"
+                  className="font-medium hover:text-indigo-500"
+                >
+                  Forgot your password?
+                </a>
+              </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="group relative w-full flex tracking-widest justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-black hover:bg-indigo-500 focus:outline-none"
               >
-                Login
+                LOGIN
               </button>
             </div>
-            <div className="flex items-center justify-center text-sm">
-              <a
-                href="/signup"
-                className="flex items-center font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                No account yet? Sign Up
-              </a>
-            </div>
           </form>
+          <div className="flex items-center justify-center text-sm mt-6">
+            <a
+              href="/signup"
+              className="flex items-center font-medium hover:text-indigo-500"
+            >
+              No account yet? Sign Up
+            </a>
+          </div>
         </div>
       </div>
       <ToastContainer />
