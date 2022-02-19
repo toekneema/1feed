@@ -51,15 +51,15 @@ export const Navbar = () => {
             <div>
               <button
                 onClick={() => navigate("/signup")}
-                className="text-white font-semibold rounded-3xl bg-gray-700 hover:bg-gray-500 px-4 py-2"
+                className="font-semibold  hover:text-indigo-700 px-4 py-2"
               >
-                Sign Up
+                SIGN UP
               </button>
               <button
                 onClick={() => navigate("/login")}
-                className="text-white font-semibold rounded-3xl bg-gray-700 hover:bg-gray-500 px-4 py-2"
+                className="font-semibold  hover:text-indigo-700 px-4 ml-2 py-2"
               >
-                Login
+                LOGIN
               </button>
             </div>
           )}
