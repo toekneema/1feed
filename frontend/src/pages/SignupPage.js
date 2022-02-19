@@ -11,6 +11,9 @@ export const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const takenSet = new Set(["josh", "adam", "tony", "armaan"]);
+  const [firstInputFocused, setFirstInputFocused] = useState(false);
+  const [secondInputFocused, setSecondInputFocused] = useState(false);
+
   let navigate = useNavigate();
 
   const usernameIsValid = (s) => {
@@ -32,23 +35,23 @@ export const SignupPage = () => {
   };
   return (
     <>
-      <div className="min-h-full flex items-center justify-center mt-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-lg w-full">
-          <h2
-            className="text-black font-semibold text-center"
-            style={{ fontFamily: "Inter", fontSize: "36px" }}
-          >
-            Welcome to{" "}
-            <span className="text-gray-400 hover:text-indigo-500">onefeed</span>
-          </h2>
-          <h2
-            className="text-black font-semibold -mt-3 mb-4 text-center"
-            style={{ fontFamily: "Inter", fontSize: "36px" }}
-          >
-            Start by naming your feed
-          </h2>
+      <div className="min-h-full flex flex-col items-center justify-center mt-16 px-4 sm:px-6 lg:px-8">
+        <h2
+          className="text-black font-semibold text-center leading-9"
+          style={{ fontFamily: "Inter", fontSize: "36px" }}
+        >
+          Welcome to{" "}
+          <span className="text-gray-400 hover:text-indigo-500">onefeed</span>
+        </h2>
+        <h2
+          className="text-black font-semibold mb-4 text-center"
+          style={{ fontFamily: "Inter", fontSize: "36px" }}
+        >
+          Start by naming your feed
+        </h2>{" "}
+        <div className="max-w-sm w-full">
           <form
-            className="mt-16 space-y-16"
+            className="mt-16 space-y-12"
             onSubmit={async (event) => {
               event.preventDefault();
               const [error, hasError] = await register(
@@ -59,51 +62,85 @@ export const SignupPage = () => {
               hasError ? toast(error) : navigate("/edit");
             }}
           >
-            <div>
+            <div className="relative">
               <div className="relative">
-                <input
-                  id="username"
-                  placeholder="Username"
-                  onChange={(event) => {
-                    usernameIsValid(event.target.value);
-                  }}
-                  className="pl-32 appearance-none tracking-wider w-full relative px-3 py-2 placeholder:text-gray-500 border-2 border-gray-500 focus:outline-black sm:text-sm"
-                  style={{ textTransform: "uppercase" }}
-                />
-                <div className="absolute items-center left-3 top-0 bottom-0 z-50 flex tracking-wide font-bold text-gray-700 pl-1">
-                  1FEED.COM/
+                <div className="relative">
+                  <input
+                    id="username"
+                    placeholder="Username"
+                    onChange={(event) => {
+                      usernameIsValid(event.target.value);
+                    }}
+                    onFocus={() => setFirstInputFocused(true)}
+                    onBlur={() => setFirstInputFocused(false)}
+                    className="pl-32 appearance-none tracking-wider w-full relative py-2 placeholder:text-gray-400 border-2 border-gray-400 focus:outline-black sm:text-sm"
+                    style={{ textTransform: "uppercase" }}
+                  />
+                  <div
+                    className={
+                      firstInputFocused || (username && !usernameErrorMsg)
+                        ? "absolute items-center left-3 top-0 bottom-0 z-50 flex tracking-wide font-bold text-black pl-1"
+                        : "absolute items-center left-3 top-0 bottom-0 z-50 flex tracking-wide font-bold text-gray-400 pl-1"
+                    }
+                  >
+                    1FEED.COM/
+                  </div>
+                </div>
+                <div
+                  className={
+                    firstInputFocused || (username && !usernameErrorMsg)
+                      ? "absolute -left-12 top-2.5 rounded-full bg-black p-0.5"
+                      : "absolute -left-12 top-2.5 rounded-full bg-gray-400 p-0.5"
+                  }
+                >
+                  <CheckIcon className="w-4 h-4 text-white" />
                 </div>
               </div>
-
               {usernameErrorMsg !== "valid" && (
-                <p className="text-red-500 ml-2" style={{ fontSize: "13px" }}>
+                <p
+                  className="text-red-500 ml-1 flex-wrap"
+                  style={{ fontSize: "13px" }}
+                >
                   {usernameErrorMsg}
                 </p>
               )}
             </div>
 
             <div>
-              <div className="mb-3">
+              <div className="mb-3 relative">
                 <input
+                  onFocus={() => setSecondInputFocused(true)}
+                  onBlur={() => setSecondInputFocused(false)}
                   onChange={(event) => setEmail(event.target.value)}
                   id="email-address"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
-                  className="tracking-wider w-full px-3 py-2 placeholder:text-gray-500 border-2 border-gray-500 focus:outline-black sm:text-sm"
+                  className="tracking-wider w-full px-3 py-2 placeholder:text-gray-400 border-2 border-gray-400 focus:outline-black sm:text-sm"
                   placeholder="EMAIL ADDRESS"
                 />
+                <div
+                  className={
+                    secondInputFocused || (email && password)
+                      ? "absolute -left-12 top-2.5 rounded-full bg-black p-0.5"
+                      : "absolute -left-12 top-2.5 rounded-full bg-gray-400 p-0.5"
+                  }
+                >
+                  <CheckIcon className="w-4 h-4 text-white" />
+                </div>
               </div>
               <div>
                 <input
+                  onFocus={() => setSecondInputFocused(true)}
+                  onBlur={() => setSecondInputFocused(false)}
                   onChange={(event) => setPassword(event.target.value)}
                   id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="tracking-wider w-full px-3 py-2 placeholder:text-gray-500 border-2 border-gray-500 focus:outline-black sm:text-sm"
+                  className="tracking-wider w-full px-3 py-2 placeholder:text-gray-400 border-2 border-gray-400 focus:outline-black sm:text-sm"
                   placeholder="PASSWORD"
                 />
               </div>
