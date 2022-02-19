@@ -18,6 +18,7 @@ export const register = async (username, email, password) => {
             Facebook: [],
             Instagram: [],
             Twitter: [],
+            TikTok: [],
           },
         }),
         headers: {

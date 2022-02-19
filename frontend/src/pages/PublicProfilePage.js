@@ -6,6 +6,7 @@ import youtubePng from "../assets/images/youtube.png";
 import facebookPng from "../assets/images/facebook.png";
 import instagramPng from "../assets/images/instagram.png";
 import twitterPng from "../assets/images/twitter.png";
+import tiktokPng from "../assets/images/tiktok.png";
 import { FacebookEmbedWrapper } from "../components/wrappers/FacebookEmbedWrapper";
 import { YouTubeEmbedWrapper } from "../components/wrappers/YouTubeEmbedWrapper";
 import { TwitterEmbedWrapper } from "../components/wrappers/TwitterEmbedWrapper";
@@ -204,6 +205,8 @@ const getCorrectSocialMediaIcon = (key) => {
       return instagramPng;
     case "Twitter":
       return twitterPng;
+    case "TikTok":
+      return tiktokPng;
     default:
       return null;
   }

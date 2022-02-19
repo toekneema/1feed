@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsYoutube, BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
+import { FaTiktok } from "react-icons/fa";
 import { IoIosShareAlt } from "react-icons/io";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,6 +45,7 @@ export const PrivateEditingPage = () => {
     { name: "Facebook", isLinked: false },
     { name: "Instagram", isLinked: false },
     { name: "Twitter", isLinked: false },
+    { name: "TikTok", isLinked: false },
   ];
   const openCorrectModal = (objName) => {
     switch (objName) {
@@ -71,6 +73,8 @@ export const PrivateEditingPage = () => {
         return <BsInstagram size={26} className="absolute left-3" />;
       case "Twitter":
         return <BsTwitter size={26} className="absolute left-3" />;
+      case "TikTok":
+        return <FaTiktok size={24} className="absolute left-3" />;
       default:
         break;
     }
