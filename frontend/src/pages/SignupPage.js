@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckIcon } from "@heroicons/react/solid";
 import { register } from "../services/auth";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,18 @@ import { ToastContainer, toast } from "react-toastify";
 import "../global";
 
 export const SignupPage = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => {
+        const ismobile = window.innerWidth < 1200;
+        if (ismobile !== isMobile) setIsMobile(ismobile);
+      },
+      false
+    );
+  }, [isMobile]);
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +59,7 @@ export const SignupPage = () => {
           className="text-black font-semibold mb-4 text-center"
           style={{ fontFamily: "Inter", fontSize: "36px" }}
         >
-          Start by naming your feed
+          {!isMobile ? "Start by naming your feed" : "Name your feed"}
         </h2>{" "}
         <div className="max-w-sm w-full">
           <form

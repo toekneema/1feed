@@ -87,8 +87,8 @@ export const PrivateEditingPage = () => {
       ) : (
         <>
           <Navbar />
-          <div className="flex flex-col justify-center items-center ">
-            <h1 className="mt-5 text-3xl font-bold">Private Editing Page</h1>
+          <div className="flex flex-col justify-center items-center mb-16">
+            <h1 className="mt-5 text-3xl font-bold">Your Editing Page</h1>
             <div className="relative mt-8 hover:cursor-pointer">
               <img
                 onClick={() => setAvatarModalVisible(true)}

@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => {
+        const ismobile = window.innerWidth < 1200;
+        if (ismobile !== isMobile) setIsMobile(ismobile);
+      },
+      false
+    );
+  }, [isMobile]);
+
   const isLoggedIn = localStorage.getItem("jwt") ? true : false;
   let navigate = useNavigate();
 
@@ -32,9 +44,11 @@ export const Navbar = () => {
                 fill="#1C64F2"
               />
             </svg>
-            <span className="self-center text-lg text-black font-semibold whitespace-nowrap hover:text-blue-600">
-              1FEED
-            </span>
+            {!isMobile && (
+              <span className="self-center text-lg text-black font-semibold whitespace-nowrap hover:text-blue-600">
+                1FEED
+              </span>
+            )}
           </a>
           {isLoggedIn ? (
             <button
@@ -43,7 +57,11 @@ export const Navbar = () => {
                 localStorage.removeItem("user");
                 navigate("/login");
               }}
-              className="font-semibold  hover:text-red-600 px-4 py-2"
+              className={
+                !isMobile
+                  ? "font-semibold hover:text-red-600 px-4"
+                  : "font-semibold hover:text-red-600"
+              }
             >
               LOGOUT
             </button>

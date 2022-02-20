@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { Navbar } from "../components/Navbar";
@@ -13,45 +13,8 @@ import { TwitterEmbedWrapper } from "../components/wrappers/TwitterEmbedWrapper"
 import { LinkedInEmbedWrapper } from "../components/wrappers/LinkedInEmbedWrapper";
 import { TikTokEmbedWrapper } from "../components/wrappers/TikTokEmbedWrapper";
 import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrapper";
-import { Masonry } from "masonic";
-
-const getFakeFeedData = () => {
-  return [
-    {
-      type: "YouTube",
-      timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
-      payload: "https://www.youtube.com/watch?v=DwcM_oIzryo",
-    },
-    {
-      type: "Twitter",
-      timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
-      payload: "https://twitter.com/StephenCurry30/status/1494378407173492741",
-    },
-    {
-      type: "Twitter",
-      timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
-      payload: "https://twitter.com/StephenCurry30/status/1494134685672173568",
-    },
-    {
-      type: "LinkedIn",
-      timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
-      payload:
-        "https://www.linkedin.com/posts/stephencurry30_blackwomenimpact-activity-6823395742749732864-MO17",
-    },
-    {
-      type: "TikTok",
-      timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
-      payload:
-        "https://www.tiktok.com/@stephencurry30/video/7039154936587816198",
-    },
-    {
-      type: "Facebook",
-      timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
-      payload:
-        "https://www.facebook.com/StephenCurryOfficial/posts/505173140972885",
-    },
-  ];
-};
+import { Masonry, useInfiniteLoader } from "masonic";
+import { getFakeFeedData } from "../services/feed";
 
 export const PublicProfilePage = () => {
   const { username } = useParams();
@@ -59,7 +22,30 @@ export const PublicProfilePage = () => {
   const { data, loading } = useFetch(
     `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
   );
-  const [feedData, setFeedData] = useState(getFakeFeedData());
+  const [feedData, setFeedData] = useState(null);
+  const maybeLoadMore = useInfiniteLoader(
+    async (startIdx, stopIdx, currentItems) => {
+      const nextItems = await getFakeFeedData(startIdx, stopIdx);
+      console.log(nextItems, "whaet is nextItems:");
+      setFeedData((current) => [...current, ...nextItems]);
+      console.log("new feedData", feedData);
+    },
+    {
+      isItemLoaded: (index, items) => !!items[index],
+      minimumBatchSize: 5,
+      threshold: 3,
+    }
+  );
+
+  useEffect(() => {
+    const firstLoadOfFeed = async () => {
+      setFeedData(await getFakeFeedData());
+    };
+    firstLoadOfFeed();
+    return () => {
+      setFeedData([]);
+    };
+  }, []);
 
   if (loading || feedData == null) {
     return <p className="text-center">loading...</p>;
@@ -132,10 +118,11 @@ export const PublicProfilePage = () => {
           </div>
           <div className="basis-1/12" />
           <div className="flex flex-col basis-8/12 items-end">
-            <Masonry
+            {/* <Masonry
               columnCount={2}
               columnGutter={48}
               items={feedData}
+              // onRender={maybeLoadMore}
               render={(item) => {
                 const data = item.data;
                 switch (data.type) {
@@ -157,20 +144,7 @@ export const PublicProfilePage = () => {
                     );
                 }
               }}
-            />
-            {/* <FacebookEmbedWrapper url="https://fb.watch/b67iYbdzNm/" />
-            <div className="my-2"></div>
-            <FacebookEmbedWrapper url="https://www.facebook.com/CarolinaPongTT/posts/345545574245969" />
-            <InstagramEmbedWrapper url="https://www.instagram.com/p/CUbHfhpswxt/" />
-            <LinkedInEmbedWrapper
-              url="https://www.linkedin.com/embed/feed/update/urn:li:share:6892528764350185473"
-              postUrl="https://www.linkedin.com/posts/garyvaynerchuk_join-our-discord-its-consistently-fun-activity-6892528765080002561-mFyb"
-              width={504}
-              height={592}
-            />
-            <TikTokEmbedWrapper url="https://www.tiktok.com/@epicgardening/video/7055411162212633903?is_copy_url=1&is_from_webapp=v1" />
-            <TwitterEmbedWrapper url="https://twitter.com/PixelAndBracket/status/1356633038717923333" />
-            <YouTubeEmbedWrapper url="https://www.youtube.com/watch?v=d-qqom30TZA" /> */}
+            /> */}
           </div>
         </div>
       </div>

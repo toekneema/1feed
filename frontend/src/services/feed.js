@@ -14,6 +14,12 @@ export const getFeed = async (username) => {
 // just for testing purposes
 const fakeFeedData = [
   {
+    type: "TikTok",
+    timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
+    payload:
+      "https://www.tiktok.com/@espn/video/7066576957256944943?is_copy_url=1",
+  },
+  {
     type: "YouTube",
     timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
     payload: "https://www.youtube.com/watch?v=DwcM_oIzryo",
@@ -34,11 +40,7 @@ const fakeFeedData = [
     payload:
       "https://www.linkedin.com/posts/stephencurry30_blackwomenimpact-activity-6823395742749732864-MO17",
   },
-  {
-    type: "TikTok",
-    timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
-    payload: "https://www.tiktok.com/@stephencurry30/video/7039154936587816198",
-  },
+
   {
     type: "Facebook",
     timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
@@ -73,6 +75,6 @@ const fakeFeedData = [
   },
 ];
 // just for testing purposes
-export const getFakeFeedData = async (startIdx = 0, endIdx = 8) => {
+export const getFakeFeedData = async (startIdx = 0, endIdx = 5) => {
   return fakeFeedData.slice(startIdx, endIdx);
 };
