@@ -20,7 +20,11 @@ export const Navbar = () => {
   return (
     <div className="flex justify-center">
       <nav
-        className="border-2 border-black py-3 w-2/3 my-6"
+        className={
+          !isMobile
+            ? "border-2 border-black py-3 w-2/3 my-6"
+            : "border-2 border-black py-3 w-11/12 my-6"
+        }
         style={{ boxShadow: "6px 6px" }}
       >
         <div className="flex flex-wrap justify-between items-center mx-8">
