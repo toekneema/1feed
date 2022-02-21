@@ -134,33 +134,35 @@ export const PublicProfilePage = () => {
             </div>
             <div className="basis-1/12" />
             <div className="flex flex-col basis-8/12 items-end">
-              {/* <Masonry
-              columnCount={2}
-              columnGutter={48}
-              items={feedData}
-              // onRender={maybeLoadMore}
-              render={(item) => {
-                const data = item.data;
-                switch (data.type) {
-                  case "YouTube":
-                    return <YouTubeEmbedWrapper url={data.payload} />;
-                  case "Facebook":
-                    return <FacebookEmbedWrapper url={data.payload} />;
-                  case "Instagram":
-                    return <InstagramEmbedWrapper url={data.payload} />;
-                  case "Twitter":
-                    return <TwitterEmbedWrapper url={data.payload} />;
-                  case "TikTok":
-                    return <TikTokEmbedWrapper url={data.payload} />;
-                  case "LinkedIn":
-                    return <LinkedInEmbedWrapper url={data.payload} />;
-                  default:
-                    return (
-                      <p>Error: Social media "{data.type}" is not supported.</p>
-                    );
-                }
-              }}
-            /> */}
+              <Masonry
+                columnCount={2}
+                columnGutter={48}
+                items={feedData}
+                // onRender={maybeLoadMore}
+                render={(item) => {
+                  const data = item.data;
+                  switch (data.type) {
+                    case "YouTube":
+                      return <YouTubeEmbedWrapper url={data.payload} />;
+                    case "Facebook":
+                      return <FacebookEmbedWrapper url={data.payload} />;
+                    case "Instagram":
+                      return <InstagramEmbedWrapper url={data.payload} />;
+                    case "Twitter":
+                      return <TwitterEmbedWrapper url={data.payload} />;
+                    case "TikTok":
+                      return <TikTokEmbedWrapper url={data.payload} />;
+                    case "LinkedIn":
+                      return <LinkedInEmbedWrapper url={data.payload} />;
+                    default:
+                      return (
+                        <p>
+                          Error: Social media "{data.type}" is not supported.
+                        </p>
+                      );
+                  }
+                }}
+              />
             </div>
           </div>
         ) : (
