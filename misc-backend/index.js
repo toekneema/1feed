@@ -13,6 +13,9 @@ app.use("/youtube", youtube);
 // Middleware for Twitter related requests
 const twitter = require("./routes/twitter");
 app.use("/twitter", twitter);
+// Middleware for TikTok related requests
+const tiktok = require("./routes/tiktok");
+app.use("/tiktok", tiktok);
 // Middleware for constructing a feed for the public profile
 const feed = require("./routes/feed");
 app.use("/feed", feed);

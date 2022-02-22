@@ -20,6 +20,11 @@ const fakeFeedData = [
       "https://www.tiktok.com/@espn/video/7066576957256944943?is_copy_url=1",
   },
   {
+    type: "Instagram",
+    timestamp: new Date(2022, 11, 24, 10, 33, 30, 0),
+    payload: "https://www.instagram.com/p/CaPk1xtlS1u/",
+  },
+  {
     type: "YouTube",
     timestamp: new Date(2022, 2, 24, 10, 33, 30, 0),
     payload: "https://www.youtube.com/watch?v=DwcM_oIzryo",
