@@ -13,11 +13,12 @@ const getRecentYouTubeVideos = async (channelId) => {
 // [Helper method] Takes in an array of video items, and extracts the videoId and the publishedAt fields
 const extractIdsAndDate = (items) => {
   let urls = [];
+  const urlPrefix = "https://www.youtube.com/watch?v=";
   items.forEach((item) => {
     urls.push({
       type: "YouTube",
       timestamp: item.snippet.publishedAt,
-      payload: item.snippet.resourceId.videoId,
+      payload: urlPrefix + item.snippet.resourceId.videoId,
     });
   });
   return urls;

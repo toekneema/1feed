@@ -14,7 +14,8 @@ import { LinkedInEmbedWrapper } from "../components/wrappers/LinkedInEmbedWrappe
 import { TikTokEmbedWrapper } from "../components/wrappers/TikTokEmbedWrapper";
 import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrapper";
 import { Masonry, useInfiniteLoader } from "masonic";
-import { getFakeFeedData } from "../services/feed";
+import { getFakeFeedData, getFeed } from "../services/feed";
+import { getMe } from "../services/user";
 
 export const PublicProfilePage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
@@ -35,23 +36,27 @@ export const PublicProfilePage = () => {
     `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
   );
   const [feedData, setFeedData] = useState(null);
-  const maybeLoadMore = useInfiniteLoader(
-    async (startIdx, stopIdx, currentItems) => {
-      const nextItems = await getFakeFeedData(startIdx, stopIdx);
-      console.log(nextItems, "whaet is nextItems:");
-      setFeedData((current) => [...current, ...nextItems]);
-      console.log("new feedData", feedData);
-    },
-    {
-      isItemLoaded: (index, items) => !!items[index],
-      minimumBatchSize: 5,
-      threshold: 3,
-    }
-  );
+  // const maybeLoadMore = useInfiniteLoader(
+  //   async (startIdx, stopIdx, currentItems) => {
+  //     const nextItems = await getFakeFeedData(startIdx, stopIdx);
+  //     console.log(nextItems, "whaet is nextItems:");
+  //     setFeedData((current) => [...current, ...nextItems]);
+  //     console.log("new feedData", feedData);
+  //   },
+  //   {
+  //     isItemLoaded: (index, items) => !!items[index],
+  //     minimumBatchSize: 5,
+  //     threshold: 3,
+  //   }
+  // );
 
   useEffect(() => {
     const firstLoadOfFeed = async () => {
-      setFeedData(await getFakeFeedData());
+      const [data, _] = await getMe();
+      console.log(data.linksMap, "what is linksMap right now");
+      // setFeedData(await getFakeFeedData());
+      setFeedData(await getFeed(data.linksMap));
+      console.log(feedData, "what is feed data");
     };
     firstLoadOfFeed();
     return () => {
@@ -59,7 +64,7 @@ export const PublicProfilePage = () => {
     };
   }, []);
 
-  if (loading || feedData == null) {
+  if (loading || feedData === null) {
     return <p className="text-center">loading...</p>;
   } else if (data === null || data.length === 0) {
     return (
@@ -141,6 +146,7 @@ export const PublicProfilePage = () => {
                 // onRender={maybeLoadMore}
                 render={(item) => {
                   const data = item.data;
+                  console.log(data, "what is data inside Masonry component");
                   switch (data.type) {
                     case "YouTube":
                       return <YouTubeEmbedWrapper url={data.payload} />;

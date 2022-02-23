@@ -1,14 +1,22 @@
 // Calls the Node.js misc-backend and gets the feed for {username}
-export const getFeed = async (username) => {
-  let [data, hasError] = [null, false];
-  const requestURL = `http://localhost:8080/feed/${username}`;
+export const getFeed = async (linksMap) => {
+  let data = null;
+  const requestURL = `http://localhost:8080/feed`;
   try {
-    data = await (await fetch(requestURL)).json();
+    const dataJson = await (
+      await fetch(requestURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(linksMap),
+      })
+    ).json();
+    data = dataJson.feed;
   } catch (e) {
-    console.log(`Error fetching feed for "${username}"`, e);
-    hasError = true;
+    console.log(`Error fetching feed:`, e);
   }
-  return [data, hasError];
+  return data;
 };
 
 // just for testing purposes
@@ -81,5 +89,8 @@ const fakeFeedData = [
 ];
 // just for testing purposes
 export const getFakeFeedData = async (startIdx = 0, endIdx = 5) => {
+  const wait = (timeToDelay) =>
+    new Promise((resolve) => setTimeout(resolve, timeToDelay));
+  await wait(1500);
   return fakeFeedData.slice(startIdx, endIdx);
 };

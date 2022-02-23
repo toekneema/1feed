@@ -5,9 +5,8 @@ const util = require("./util");
 
 // Constructs a feed for the given user
 // (it's really a GET request but it takes in json data (linksMap) so i made it a POST request)
-router.post("/:username", async (req, res) => {
+router.post("/", async (req, res) => {
   let allContent = [];
-  const oneFeedUsername = req.params.username;
   const linksMap = req.body;
 
   try {
@@ -29,8 +28,8 @@ router.post("/:username", async (req, res) => {
         allContent.push(...data);
       }
     }
-    allContent.push();
-    res.send(allContent);
+    feed = sortAll(allContent);
+    res.json({ feed });
   } catch (e) {
     res.send(`Error during getFeed misc-backend: ${e}`);
   }
@@ -38,12 +37,11 @@ router.post("/:username", async (req, res) => {
 
 module.exports = router;
 
-//   // Params: arr of social media posts
-//   // Returns: arr of social media posts, sorted in reverse chronological order
-//   const sortAll = (allContent) => {
-//     //   allContent.sort()
-//     let allSortedContent = [];
-//     return null;
-//   };
+// Params: arr of social media posts
+// Returns: arr of social media posts, sorted in reverse chronological order
+const sortAll = (allContent) => {
+  //   allContent.sort()
+  return allContent;
+};
 
 //   // May need a helper function to sort by datetime field
