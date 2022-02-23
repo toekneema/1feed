@@ -4,16 +4,21 @@ const router = express.Router();
 
 // Get all tweets using passed in Twitter username
 router.get("/:username", (req, res) => {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  // } catch (error) {
+  //   console.log(error);
+  // }
 });
 
-const constructTikTokData = (items) => {
+const constructTikTokData = (username, items) => {
   let urls = [];
+  const urlPrefix = `https://www.tiktok.com/@${username}/video/`;
   items.forEach((item) => {
-    urls.push({});
+    urls.push({
+      type: "TikTok",
+      timestamp: new Date(),
+      payload: urlPrefix + item,
+    });
   });
 };
 
