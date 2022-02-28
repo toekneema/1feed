@@ -78,52 +78,59 @@ export const LinkYouTubeModal = ({ ...props }) => {
 
 const DisabledChannelInput = ({ ...props }) => {
   return (
-    <div className="mt-4 flex w-full flex-row items-center justify-center relative">
+    <div className="mt-4 flex w-full flex-col items-center relative">
       <span className="text-sm font-semibold text-gray-500 mr-1">
         https://www.youtube.com/channel/
       </span>
-      <input
-        disabled
-        type="text"
-        className="border-2 border-gray-400 text-sm w-96 h-10 flex rounded-xl p-2"
-        placeholder={props.channelId}
-      />
-      <button className="absolute text-red-500" style={{ right: "20px" }}>
-        <TrashIcon
-          className="w-6 h-6"
-          onClick={async () => {
-            const [userData, hasError] = await updateUser({
-              linksMap: {
-                ...props.linksMapHook,
-                YouTube: props.linksMapHook.YouTube.filter(
-                  (item) => item !== props.channelId
-                ),
-              },
-            });
-            props.setLinksMapHook(userData.linksMap);
-            hasError
-              ? toast(`Error unlinking ${props.channelId}.`)
-              : toast(
-                  `Successfully unlinked YouTube channel ID "${props.channelId}".`
-                );
-          }}
+      <div className="flex items-center relative">
+        <input
+          disabled
+          type="text"
+          className="border-2 border-gray-400 text-sm w-96 h-10 flex rounded-xl p-2"
+          placeholder={props.channelId}
         />
-      </button>
+        <button className="absolute right-1 text-red-500">
+          <TrashIcon
+            className="w-6 h-6"
+            onClick={async () => {
+              const [userData, hasError] = await updateUser({
+                linksMap: {
+                  ...props.linksMapHook,
+                  YouTube: props.linksMapHook.YouTube.filter(
+                    (item) => item !== props.channelId
+                  ),
+                },
+              });
+              props.setLinksMapHook(userData.linksMap);
+              hasError
+                ? toast(`Error unlinking ${props.channelId}.`)
+                : toast(
+                    `Successfully unlinked YouTube channel ID "${props.channelId}".`
+                  );
+            }}
+          />
+        </button>
+      </div>
     </div>
   );
 };
 
 const ChannelInput = ({ setChannelId }) => {
+  const [currInput, setCurrInput] = useState("");
   return (
-    <div className="mt-4 flex w-full flex-row items-center justify-center">
-      <span className="text-sm font-semibold mr-1">
+    <div className="mt-4 flex w-full flex-col items-center">
+      <span className="text-sm font-semibold text-left">
         https://www.youtube.com/channel/
+        <span className="text-gray-600 text-base">{currInput}</span>
       </span>
       <input
         type="text"
         className="border-2 border-gray-800 text-sm w-96 h-10 flex rounded-xl p-2"
         placeholder="UC-lHJZR3Gqxm24_Vd_AJ5Yw"
-        onChange={(event) => setChannelId(event.target.value)}
+        onChange={(event) => {
+          setCurrInput(event.target.value);
+          setChannelId(event.target.value);
+        }}
       />
     </div>
   );
