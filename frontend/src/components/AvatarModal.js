@@ -37,7 +37,7 @@ export const AvatarModal = ({ ...props }) => {
   return (
     <Modal
       isOpen={props.avatarModalVisible}
-      style={styles.modal}
+      style={styles.webModal}
       ariaHideApp={false}
     >
       {imgPreviewUrl ? (

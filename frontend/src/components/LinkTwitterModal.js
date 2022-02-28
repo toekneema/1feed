@@ -12,7 +12,7 @@ export const LinkTwitterModal = ({ ...props }) => {
   return (
     <Modal
       isOpen={props.twitterModalVisible}
-      style={styles.modal}
+      style={styles.webModal}
       ariaHideApp={false}
     >
       <div className="flex w-full h-full items-center flex-col overflow-auto">

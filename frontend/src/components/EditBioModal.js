@@ -8,7 +8,7 @@ export const EditBioModal = ({ ...props }) => {
   return (
     <Modal
       isOpen={props.bioModalVisible}
-      style={styles.modal}
+      style={styles.webModal}
       ariaHideApp={false}
     >
       <div className="flex items-center flex-col">
