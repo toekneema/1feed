@@ -53,10 +53,8 @@ export const PublicProfilePage = () => {
   useEffect(() => {
     const firstLoadOfFeed = async () => {
       const [data, _] = await getMe();
-      console.log(data.linksMap, "what is linksMap right now");
       // setFeedData(await getFakeFeedData());
       setFeedData(await getFeed(data.linksMap));
-      console.log(feedData, "what is feed data");
     };
     firstLoadOfFeed();
     return () => {
