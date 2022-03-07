@@ -1,4 +1,5 @@
 const axios = require("axios");
+const bigInt = require("big-integer");
 
 const YT_API_KEY = "AIzaSyCx9gQHRQQqQnc5oYBcRxEjJ4nqL-vb5R4";
 
@@ -10,7 +11,7 @@ const getRecentYouTubeVideos = async (channelId) => {
   return recentVids;
 };
 
-// [Helper method] Takes in an array of video items, and extracts the videoId and the publishedAt fields
+// [YouTube Helper method] Takes in an array of video items, and extracts the videoId and the publishedAt fields
 const extractIdsAndDate = (items) => {
   let urls = [];
   const urlPrefix = "https://www.youtube.com/watch?v=";
@@ -24,4 +25,19 @@ const extractIdsAndDate = (items) => {
   return urls;
 };
 
-module.exports = { getRecentYouTubeVideos };
+const getRecentInstagramPosts = async (username) => {
+  const requestURL = `https://www.instagram.com/${username}/?__a=1`;
+  const edges = (await axios.get(requestURL)).data.graphql.user
+    .edge_owner_to_timeline_media.edges;
+  let urls = [];
+  for (const edge of edges) {
+    urls.push({
+      type: "Instagram",
+      timestamp: new Date(),
+      payload: "https://www.instagram.com/p/" + edge.node.shortcode,
+    });
+  }
+  return urls;
+};
+
+module.exports = { getRecentYouTubeVideos, getRecentInstagramPosts };

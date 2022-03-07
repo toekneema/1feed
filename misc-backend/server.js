@@ -1,12 +1,14 @@
 const express = require("express");
 const app = require("./index");
 const youtubeRouter = require("./routes/youtube");
+const instagramRouter = require("./routes/instagram");
 const twitterRouter = require("./routes/twitter");
 const tiktokRouter = require("./routes/tiktok");
 const feedRouter = require("./routes/feed");
 
 app.use(express.json());
 app.use("/youtube", youtubeRouter);
+app.use("/instagram", instagramRouter);
 app.use("/twitter", twitterRouter);
 app.use("/tiktok", tiktokRouter);
 app.use("/feed", feedRouter);
