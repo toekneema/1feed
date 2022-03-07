@@ -13,6 +13,7 @@ import { EditBioModal } from "../components/EditBioModal";
 import { LinkYouTubeModal } from "../components/LinkYouTubeModal";
 import { AvatarModal } from "../components/AvatarModal";
 import { LinkTwitterModal } from "../components/LinkTwitterModal";
+import { LinkInstagramModal } from "../components/LinkInstagramModal";
 
 export const PrivateEditingPage = () => {
   const [myData, setMyData] = useState(null);
@@ -25,6 +26,7 @@ export const PrivateEditingPage = () => {
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [bioModalVisible, setBioModalVisible] = useState(false);
   const [ytModalVisible, setYTModalVisible] = useState(false);
+  const [instagramModalVisible, setInstagramModalVisible] = useState(false);
   const [twitterModalVisible, setTwitterModalVisible] = useState(false);
 
   useEffect(() => {
@@ -54,8 +56,9 @@ export const PrivateEditingPage = () => {
         break;
       // case "Facebook":
       //   break;
-      // case "Instagram":
-      //   break;
+      case "Instagram":
+        setInstagramModalVisible(true);
+        break;
       case "Twitter":
         setTwitterModalVisible(true);
         break;
@@ -162,6 +165,12 @@ export const PrivateEditingPage = () => {
             <LinkTwitterModal
               twitterModalVisible={twitterModalVisible}
               setTwitterModalVisible={setTwitterModalVisible}
+              linksMap={linksMap}
+              setLinksMap={setLinksMap}
+            />
+            <LinkInstagramModal
+              instagramModalVisible={instagramModalVisible}
+              setInstagramModalVisible={setInstagramModalVisible}
               linksMap={linksMap}
               setLinksMap={setLinksMap}
             />

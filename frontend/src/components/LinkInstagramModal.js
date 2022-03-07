@@ -3,26 +3,26 @@ import { updateUser } from "../services/user";
 import Modal from "react-modal";
 import { styles } from "../styles";
 import { toast } from "react-toastify";
-import { getFormattedTwitterUsernameIfExists } from "../services/twitter";
 import { TrashIcon } from "@heroicons/react/solid";
+import { getInstagram } from "../services/instagram";
 
-export const LinkTwitterModal = ({ ...props }) => {
-  const [twitterUsername, setTwitterUsername] = useState("");
+export const LinkInstagramModal = ({ ...props }) => {
+  const [instagramUsername, setInstagramUsername] = useState("");
   const [linksMapHook, setLinksMapHook] = useState(props.linksMap); // only necessary since i want to re-render based on this variable changing
 
   return (
     <Modal
-      isOpen={props.twitterModalVisible}
+      isOpen={props.instagramModalVisible}
       style={styles.webModal}
       ariaHideApp={false}
     >
       <div className="flex w-full h-full items-center flex-col overflow-auto">
         <label className="mt-8 text-gray-800 font-semibold text-xl text-center">
-          Enter your Twitter username:
+          Enter your Instagram username:
         </label>
-        {linksMapHook.Twitter.length > 0 ? (
+        {linksMapHook.Instagram.length > 0 ? (
           <>
-            {linksMapHook.Twitter.map((username, idx) => (
+            {linksMapHook.Instagram.map((username, idx) => (
               <DisabledUsernameInput
                 key={idx}
                 username={username}
@@ -30,48 +30,53 @@ export const LinkTwitterModal = ({ ...props }) => {
                 setLinksMapHook={setLinksMapHook}
               />
             ))}
-            <UsernameInput setTwitterUsername={setTwitterUsername} />
+            <UsernameInput setInstagramUsername={setInstagramUsername} />
           </>
         ) : (
-          <UsernameInput setTwitterUsername={setTwitterUsername} />
+          <UsernameInput setInstagramUsername={setInstagramUsername} />
         )}
 
         <div className="mt-8">
           <button
             className="rounded-full font-semibold bg-gray-300 hover:bg-gray-400 m-2 py-2 px-4"
-            onClick={() => props.setTwitterModalVisible(false)}
+            onClick={() => props.setInstagramModalVisible(false)}
           >
             Cancel
           </button>
           <button
             className="rounded-full font-semibold bg-blue-600 hover:bg-blue-800 m-2 py-2 px-4 text-white"
             onClick={async () => {
-              const [twitterApiData, hasError] =
-                await getFormattedTwitterUsernameIfExists(twitterUsername);
+              const lowercaseInstagramUsername =
+                instagramUsername.toLowerCase();
+              const [instagramApiData, hasError, isPrivate] =
+                await getInstagram(lowercaseInstagramUsername);
               if (hasError) {
-                toast("Username does not exist on Twitter.");
+                toast("Username does not exist on Instagram.");
+                return;
+              } else if (isPrivate) {
+                toast(
+                  `Username ${lowercaseInstagramUsername} is private on Instagram.`
+                );
                 return;
               }
-              const formattedTwitterUsername = parseUsernameFromUrl(
-                twitterApiData.url
-              );
-              if (linksMapHook.Twitter.includes(formattedTwitterUsername)) {
+
+              if (linksMapHook.Instagram.includes(lowercaseInstagramUsername)) {
                 toast("Cannot link the same username again.");
               } else {
                 const [userData, hasError] = await updateUser({
                   linksMap: {
                     ...linksMapHook,
-                    Twitter: [
-                      ...linksMapHook.Twitter,
-                      formattedTwitterUsername,
+                    Instagram: [
+                      ...linksMapHook.Instagram,
+                      lowercaseInstagramUsername,
                     ],
                   },
                 });
-                props.setTwitterModalVisible(false);
+                props.setInstagramModalVisible(false);
                 props.setLinksMap(userData.linksMap); // passes the data to parent (outside of modal)
                 setLinksMapHook(userData.linksMap); // used to update the current modal
                 toast(
-                  `Successfully linked Twitter account "${formattedTwitterUsername}".`
+                  `Successfully linked Instagram account "${lowercaseInstagramUsername}".`
                 );
               }
             }}
@@ -101,7 +106,7 @@ const DisabledUsernameInput = ({ ...props }) => {
             const [userData, hasError] = await updateUser({
               linksMap: {
                 ...props.linksMapHook,
-                Twitter: props.linksMapHook.Twitter.filter(
+                Instagram: props.linksMapHook.Instagram.filter(
                   (item) => item !== props.username
                 ),
               },
@@ -110,7 +115,7 @@ const DisabledUsernameInput = ({ ...props }) => {
             hasError
               ? toast(`Error unlinking ${props.username}.`)
               : toast(
-                  `Successfully unlinked Twitter account "${props.username}".`
+                  `Successfully unlinked Instagram account "${props.username}".`
                 );
           }}
         />
@@ -119,7 +124,7 @@ const DisabledUsernameInput = ({ ...props }) => {
   );
 };
 
-const UsernameInput = ({ setTwitterUsername }) => {
+const UsernameInput = ({ setInstagramUsername }) => {
   return (
     <div className="mt-4 flex w-2/3 flex-row items-center justify-center">
       <span className="text-2xl font-normal mr-1">@</span>
@@ -127,14 +132,8 @@ const UsernameInput = ({ setTwitterUsername }) => {
         type="text"
         className="border-2 border-gray-800 text-sm w-5/6 h-10 flex rounded-xl p-2"
         placeholder="username"
-        onChange={(event) => setTwitterUsername(event.target.value)}
+        onChange={(event) => setInstagramUsername(event.target.value)}
       />
     </div>
   );
-};
-
-const parseUsernameFromUrl = (url) => {
-  const splitArr = url.split("/");
-  const twitterUsername = splitArr[splitArr.length - 1];
-  return twitterUsername;
 };
