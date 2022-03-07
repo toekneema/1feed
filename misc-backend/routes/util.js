@@ -26,8 +26,9 @@ const extractIdsAndDate = (items) => {
 };
 
 const getRecentInstagramPosts = async (username) => {
-  const requestURL = `https://www.instagram.com/${username}/?__a=1`;
-  const data = (await axios.get(requestURL)).data.graphql.user;
+  const requestURL = `https://www.instagram.com/${username}/channel/?__a=1`;
+  // const data = (await axios.get(requestURL)).data.graphql.user;
+  const data = (await axios.get(requestURL)).data;
   const edges = data.edge_owner_to_timeline_media.edges;
   const isPrivate = data.is_private;
   let urls = [];
