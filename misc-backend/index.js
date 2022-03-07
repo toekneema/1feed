@@ -10,6 +10,9 @@ app.use(cors());
 // Middleware for YouTube related requests
 const youtube = require("./routes/youtube");
 app.use("/youtube", youtube);
+// Middleware for Instagram related requests
+const instagram = require("./routes/instagram");
+app.use("/instagram", instagram);
 // Middleware for Twitter related requests
 const twitter = require("./routes/twitter");
 app.use("/twitter", twitter);
