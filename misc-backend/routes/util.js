@@ -27,8 +27,9 @@ const extractIdsAndDate = (items) => {
 
 const getRecentInstagramPosts = async (username) => {
   const requestURL = `https://www.instagram.com/${username}/?__a=1`;
-  const edges = (await axios.get(requestURL)).data.graphql.user
-    .edge_owner_to_timeline_media.edges;
+  const data = (await axios.get(requestURL)).data.graphql.user;
+  const edges = data.edge_owner_to_timeline_media.edges;
+  const isPrivate = data.is_private;
   let urls = [];
   for (const edge of edges) {
     urls.push({
@@ -37,7 +38,7 @@ const getRecentInstagramPosts = async (username) => {
       payload: "https://www.instagram.com/p/" + edge.node.shortcode,
     });
   }
-  return urls;
+  return [urls, isPrivate];
 };
 
 module.exports = { getRecentYouTubeVideos, getRecentInstagramPosts };
