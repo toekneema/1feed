@@ -16,6 +16,9 @@ import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrap
 import { Masonry, useInfiniteLoader } from "masonic";
 import { getFakeFeedData, getFeed } from "../services/feed";
 import { getMe } from "../services/user";
+import { Responsive, WidthProvider } from "react-grid-layout";
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export const PublicProfilePage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
@@ -36,6 +39,7 @@ export const PublicProfilePage = () => {
     `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
   );
   const [feedData, setFeedData] = useState(null);
+  const [layout, setLayout] = useState(null);
   // const maybeLoadMore = useInfiniteLoader(
   //   async (startIdx, stopIdx, currentItems) => {
   //     const nextItems = await getFakeFeedData(startIdx, stopIdx);
@@ -53,8 +57,8 @@ export const PublicProfilePage = () => {
   useEffect(() => {
     const firstLoadOfFeed = async () => {
       const [data, _] = await getMe();
-      // setFeedData(await getFakeFeedData());
-      setFeedData(await getFeed(data.linksMap));
+      setFeedData(await getFakeFeedData());
+      // setFeedData(await getFeed(data.linksMap));
     };
     firstLoadOfFeed();
     return () => {
@@ -62,7 +66,63 @@ export const PublicProfilePage = () => {
     };
   }, []);
 
-  if (loading || feedData === null) {
+  useEffect(() => {
+    if (feedData != null) {
+      constructLayout();
+    }
+  }, [feedData]);
+
+  const constructLayout = () => {
+    let lgLayout = [];
+    let [prevX, prevY, currX, currY] = [0, 0, 0, 0];
+    console.log(feedData, "whjat is feedData rn");
+    feedData.map((item, idx) => {
+      switch (item.type) {
+        case "YouTube":
+          currX = prevX + 2;
+          currY = prevY = 1;
+          break;
+        case "Facebook":
+          currX = prevX + 2;
+          currY = prevY = 2;
+          break;
+        case "Instagram":
+          currX = prevX + 1;
+          currY = prevY = 2;
+          break;
+        case "Twitter":
+          currX = prevX + 1;
+          currY = prevY = 2;
+          break;
+        case "TikTok":
+          currX = prevX + 1;
+          currY = prevY = 2;
+          break;
+        case "LinkedIn":
+          currX = prevX + 1;
+          currY = prevY = 2;
+          break;
+        default:
+          currX = prevX + 1;
+          currY = prevY = 1;
+          break;
+      }
+      lgLayout.push({
+        i: idx,
+        x: prevX,
+        y: prevY,
+        w: currX - prevX,
+        h: currY - prevY,
+        static: true,
+      });
+      prevX = currX;
+      prevY = currY;
+    });
+    setLayout({ lg: lgLayout });
+    console.log(layout, "whjat is layout rn");
+  };
+
+  if (loading || feedData == null || layout === null) {
     return <p className="text-center">loading...</p>;
   } else if (data === null || data.length === 0) {
     return (
@@ -137,26 +197,38 @@ export const PublicProfilePage = () => {
             </div>
             <div className="basis-1/12" />
             <div className="flex flex-col basis-8/12 items-end">
-              <Masonry
-                columnCount={2}
-                columnGutter={48}
-                items={feedData}
-                render={(item) => {
-                  const data = item.data;
-                  console.log(data, "what is data inside Masonry component");
-                  switch (data.type) {
+              <ResponsiveGridLayout
+                className="layout"
+                layouts={layout}
+                breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+                cols={{ lg: 2, md: 1, sm: 1, xs: 1, xxs: 1 }}
+              >
+                {feedData.map((item, idx) => {
+                  switch (item.type) {
                     case "YouTube":
-                      return <YouTubeEmbedWrapper url={data.payload} />;
+                      return (
+                        <YouTubeEmbedWrapper key={idx} url={item.payload} />
+                      );
                     case "Facebook":
-                      return <FacebookEmbedWrapper url={data.payload} />;
+                      return (
+                        <FacebookEmbedWrapper key={idx} url={item.payload} />
+                      );
                     case "Instagram":
-                      return <InstagramEmbedWrapper url={data.payload} />;
+                      return (
+                        <InstagramEmbedWrapper key={idx} url={item.payload} />
+                      );
                     case "Twitter":
-                      return <TwitterEmbedWrapper url={data.payload} />;
+                      return (
+                        <TwitterEmbedWrapper key={idx} url={item.payload} />
+                      );
                     case "TikTok":
-                      return <TikTokEmbedWrapper url={data.payload} />;
+                      return (
+                        <TikTokEmbedWrapper key={idx} url={item.payload} />
+                      );
                     case "LinkedIn":
-                      return <LinkedInEmbedWrapper url={data.payload} />;
+                      return (
+                        <LinkedInEmbedWrapper key={idx} url={item.payload} />
+                      );
                     default:
                       return (
                         <p>
@@ -164,8 +236,8 @@ export const PublicProfilePage = () => {
                         </p>
                       );
                   }
-                }}
-              />
+                })}
+              </ResponsiveGridLayout>
             </div>
           </div>
         ) : (
@@ -217,34 +289,6 @@ export const PublicProfilePage = () => {
                   );
                 })}
               </div>
-              <Masonry
-                columnGutter={48}
-                items={feedData}
-                // onRender={maybeLoadMore}
-                render={(item) => {
-                  const data = item.data;
-                  switch (data.type) {
-                    case "YouTube":
-                      return <YouTubeEmbedWrapper url={data.payload} />;
-                    case "Facebook":
-                      return <FacebookEmbedWrapper url={data.payload} />;
-                    case "Instagram":
-                      return <InstagramEmbedWrapper url={data.payload} />;
-                    case "Twitter":
-                      return <TwitterEmbedWrapper url={data.payload} />;
-                    case "TikTok":
-                      return <TikTokEmbedWrapper url={data.payload} />;
-                    case "LinkedIn":
-                      return <LinkedInEmbedWrapper url={data.payload} />;
-                    default:
-                      return (
-                        <p>
-                          Error: Social media "{data.type}" is not supported.
-                        </p>
-                      );
-                  }
-                }}
-              />
             </div>
           </div>
         )}
