@@ -141,7 +141,6 @@ export const PublicProfilePage = () => {
                 columnCount={2}
                 columnGutter={48}
                 items={feedData}
-                // onRender={maybeLoadMore}
                 render={(item) => {
                   const data = item.data;
                   console.log(data, "what is data inside Masonry component");
