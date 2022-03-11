@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
 
   try {
     for (const [key, value] of Object.entries(linksMap)) {
-      for (const id of value) {
+      for (const id of value.auto) {
         let data = [];
         switch (key) {
           case "YouTube":

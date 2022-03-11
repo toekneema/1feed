@@ -106,10 +106,10 @@ export const PublicProfilePage = () => {
                   return (
                     <button
                       onClick={() => {
-                        if (value.length === 0) {
+                        if (value.manual.length === 0) {
                           // no-op
                           return;
-                        } else if (value.length > 1) {
+                        } else if (value.manual.length > 1) {
                           // if more than 1 account connected for that social media
                           // open a modal
                         } else {
