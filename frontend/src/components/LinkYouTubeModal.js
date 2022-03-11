@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { getYouTube } from "../services/youtube";
 import { TrashIcon, XIcon } from "@heroicons/react/solid";
 import youtubePng from "../assets/images/youtube.png";
+import { validateYouTubeUrl } from "../utils/validateYouTubeUrl";
 
 export const LinkYouTubeModal = ({ ...props }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
@@ -19,6 +20,7 @@ export const LinkYouTubeModal = ({ ...props }) => {
       false
     );
   }, [isMobile]);
+  const [videoUrl, setVideoUrl] = useState("");
   const [channelId, setChannelId] = useState("");
   const [linksMapHook, setLinksMapHook] = useState(props.linksMap); // only necessary since i want to re-render based on this variable changing
 
@@ -51,8 +53,42 @@ export const LinkYouTubeModal = ({ ...props }) => {
           <input
             className="border-2 border-black p-2"
             placeholder="youtube.com/watch?v=dQw4w9WgXcQ"
+            onChange={(event) => {
+              setVideoUrl(event.target.value);
+            }}
           />
-          <button className="flex w-1/2 bg-black p-2 text-white justify-center text-sm font-bold">
+          <button
+            className="flex w-1/2 bg-black p-2 text-white justify-center text-sm font-bold"
+            onClick={async () => {
+              // first try to see if the inputted videoUrl is valid. (show loader while doing this)
+              const [formattedVideoUrl, hasError] =
+                validateYouTubeUrl(videoUrl);
+              if (hasError) {
+                toast(`Invalid YouTube media url "${videoUrl}".`);
+              } else if (
+                linksMapHook.YouTube.individual.includes(formattedVideoUrl)
+              ) {
+                toast("Cannot link the same media url again.");
+              } else {
+                const [userData, hasError] = await updateUser({
+                  linksMap: {
+                    ...props.linksMap,
+                    YouTube: {
+                      auto: props.linksMap.YouTube.auto,
+                      individual: [
+                        ...props.linksMap.YouTube.individual,
+                        videoUrl,
+                      ],
+                    },
+                  },
+                });
+                props.setYTModalVisible(false);
+                props.setLinksMap(userData.linksMap);
+                setLinksMapHook(userData.linksMap);
+                toast(`Successfully uploaded YouTube media url "${videoUrl}".`);
+              }
+            }}
+          >
             UPLOAD
           </button>
         </div>
@@ -68,9 +104,37 @@ export const LinkYouTubeModal = ({ ...props }) => {
           </p>
           <input
             className="border-2 border-black p-2"
-            placeholder="youtube.com/channel/UCuAXFkgsw1L7xaCfnd5JJOw"
+            placeholder="UCuAXFkgsw1L7xaCfnd5JJOw"
+            onChange={(event) => {
+              setChannelId(event.target.value);
+            }}
           />
-          <button className="flex w-1/2 bg-black p-2 text-white justify-center text-sm font-bold">
+          <button
+            className="flex w-1/2 bg-black p-2 text-white justify-center text-sm font-bold"
+            onClick={async () => {
+              // first try to see if the inputted channelId is valid. (show loader while doing this)
+              const [data, hasError] = await getYouTube(channelId);
+              if (hasError) {
+                toast(`Invalid channel ID "${channelId}".`);
+              } else if (linksMapHook.YouTube.auto.includes(channelId)) {
+                toast("Cannot link the same channel ID again.");
+              } else {
+                const [userData, hasError] = await updateUser({
+                  linksMap: {
+                    ...props.linksMap,
+                    YouTube: {
+                      auto: [...props.linksMap.YouTube.auto, channelId],
+                      individual: props.linksMap.YouTube.individual,
+                    },
+                  },
+                });
+                props.setYTModalVisible(false);
+                props.setLinksMap(userData.linksMap);
+                setLinksMapHook(userData.linksMap);
+                toast(`Successfully linked YouTube channel ID "${channelId}".`);
+              }
+            }}
+          >
             UPLOAD
           </button>
         </div>
