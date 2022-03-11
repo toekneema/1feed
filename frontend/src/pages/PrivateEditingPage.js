@@ -144,13 +144,13 @@ export const PrivateEditingPage = () => {
                   key={idx}
                   onClick={() => openCorrectModal(obj.name)}
                   className={
-                    linksMap[obj.name].length > 0
+                    linksMap[obj.name].auto.length > 0
                       ? styles.disabledButton
                       : styles.enabledButton
                   }
                 >
                   {returnCorrectIcon(obj.name)}
-                  {linksMap[obj.name].length > 0
+                  {linksMap[obj.name].auto.length > 0
                     ? `Edit ${obj.name}`
                     : `Link ${obj.name}`}
                 </button>

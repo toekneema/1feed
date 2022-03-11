@@ -14,11 +14,11 @@ export const register = async (username, email, password) => {
           usernameLowercase: username.toLowerCase(),
           avatarUrl: "https://duwpq7vr7cr0y.cloudfront.net/default.png",
           linksMap: {
-            YouTube: { auto: [], manual: [] },
-            Facebook: { auto: [], manual: [] },
-            Instagram: { auto: [], manual: [] },
-            Twitter: { auto: [], manual: [] },
-            TikTok: { auto: [], manual: [] },
+            YouTube: { auto: [], individual: [] },
+            Facebook: { auto: [], individual: [] },
+            Instagram: { auto: [], individual: [] },
+            Twitter: { auto: [], individual: [] },
+            TikTok: { auto: [], individual: [] },
           },
         }),
         headers: {
