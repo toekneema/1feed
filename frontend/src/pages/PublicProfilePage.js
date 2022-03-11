@@ -113,6 +113,10 @@ export const PublicProfilePage = () => {
         y: prevY,
         w: currX - prevX,
         h: currY - prevY,
+        minW: currX - prevX,
+        maxW: currX - prevX,
+        minH: currY - prevY,
+        maxH: currY - prevY,
         static: true,
       });
       prevX = currX;
