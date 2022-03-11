@@ -4,7 +4,8 @@ import Modal from "react-modal";
 import { styles } from "../styles";
 import { toast } from "react-toastify";
 import { getYouTube } from "../services/youtube";
-import { TrashIcon } from "@heroicons/react/solid";
+import { TrashIcon, XIcon } from "@heroicons/react/solid";
+import youtubePng from "../assets/images/youtube.png";
 
 export const LinkYouTubeModal = ({ ...props }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
@@ -27,7 +28,53 @@ export const LinkYouTubeModal = ({ ...props }) => {
       style={isMobile ? styles.mobileModal : styles.webModal}
       ariaHideApp={false}
     >
-      <div className="flex w-full h-full items-center flex-col overflow-auto">
+      <div className="flex w-full h-full space-y-8 items-center flex-col overflow-auto relative">
+        <button
+          onClick={() => props.setYTModalVisible(false)}
+          className="absolute left-1 top-1 w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+        >
+          <XIcon className="h-4 w-4 text-gray-400" />
+        </button>
+        <div className="flex items-center justify-center text-2xl font-bold">
+          <img
+            src={youtubePng}
+            className="w-9 h-9"
+            style={{ marginRight: "24px" }}
+            alt="social media icon"
+          />
+          YouTube
+        </div>
+        <div className="flex flex-col w-full space-y-4">
+          <p className="text-lg font-semibold" style={{ fontFamily: "Inter" }}>
+            Individual Upload
+          </p>
+          <input
+            className="border-2 border-black p-2"
+            placeholder="youtube.com/watch?v=dQw4w9WgXcQ"
+          />
+          <button className="flex w-1/2 bg-black p-2 text-white justify-center text-sm font-bold">
+            UPLOAD
+          </button>
+        </div>
+
+        <div className="flex flex-col w-full space-y-4">
+          <p className="text-lg font-semibold" style={{ fontFamily: "Inter" }}>
+            Auto Upload
+          </p>
+          <p className="text-sm" style={{ fontFamily: "Inter" }}>
+            Connecting your account will allow you to auto upload any new videos
+            which have been uploaded on YouTube. Must use the default channel ID
+            which begins with UC.
+          </p>
+          <input
+            className="border-2 border-black p-2"
+            placeholder="youtube.com/channel/UCuAXFkgsw1L7xaCfnd5JJOw"
+          />
+          <button className="flex w-1/2 bg-black p-2 text-white justify-center text-sm font-bold">
+            UPLOAD
+          </button>
+        </div>
+
         <label
           className={
             isMobile
@@ -40,9 +87,9 @@ export const LinkYouTubeModal = ({ ...props }) => {
             (Must start with UC)
           </p>
         </label>
-        {linksMapHook.YouTube.length > 0 ? (
+        {linksMapHook.YouTube.auto.length > 0 ? (
           <>
-            {linksMapHook.YouTube.map((channelId, idx) => (
+            {linksMapHook.YouTube.auto.map((channelId, idx) => (
               <DisabledChannelInput
                 key={idx}
                 channelId={channelId}
@@ -57,12 +104,6 @@ export const LinkYouTubeModal = ({ ...props }) => {
           <ChannelInput setChannelId={setChannelId} isMobile={isMobile} />
         )}
         <div className="mt-8">
-          <button
-            onClick={() => props.setYTModalVisible(false)}
-            className="rounded-full font-semibold bg-gray-300 hover:bg-gray-400 m-2 py-2 px-4"
-          >
-            Cancel
-          </button>
           <button
             onClick={async () => {
               // first try to see if the inputted channelId is valid. (show loader while doing this)
@@ -84,7 +125,7 @@ export const LinkYouTubeModal = ({ ...props }) => {
                 toast(`Successfully linked YouTube channel ID "${channelId}".`);
               }
             }}
-            className="rounded-full font-semibold bg-blue-600 hover:bg-blue-800 m-2 py-2 px-4 text-white"
+            className="rounded-full font-semibold bg-blue-600 hover:bg-blue-800 py-2 px-4 text-white"
           >
             Link
           </button>

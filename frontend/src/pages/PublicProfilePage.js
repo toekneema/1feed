@@ -106,10 +106,10 @@ export const PublicProfilePage = () => {
                   return (
                     <button
                       onClick={() => {
-                        if (value.manual.length === 0) {
+                        if (value.individual.length === 0) {
                           // no-op
                           return;
-                        } else if (value.manual.length > 1) {
+                        } else if (value.individual.length > 1) {
                           // if more than 1 account connected for that social media
                           // open a modal
                         } else {
@@ -143,7 +143,6 @@ export const PublicProfilePage = () => {
                 items={feedData}
                 render={(item) => {
                   const data = item.data;
-                  console.log(data, "what is data inside Masonry component");
                   switch (data.type) {
                     case "YouTube":
                       return <YouTubeEmbedWrapper url={data.payload} />;

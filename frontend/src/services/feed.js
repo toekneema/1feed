@@ -1,8 +1,9 @@
-// Calls the Node.js misc-backend and gets the feed for {username}
+// Calls the Node.js misc-backend /feed endpoint which aggregates the AUTO + individual feeds for {username}
 export const getFeed = async (linksMap) => {
   let data = null;
   const requestURL = `http://localhost:8080/feed`;
   try {
+    // AUTO feed fetch
     const dataJson = await (
       await fetch(requestURL, {
         method: "POST",
@@ -16,6 +17,7 @@ export const getFeed = async (linksMap) => {
   } catch (e) {
     console.log(`Error fetching feed:`, e);
   }
+  console.log("what is data", data);
   return data;
 };
 
