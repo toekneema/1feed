@@ -15,7 +15,7 @@ import { TikTokEmbedWrapper } from "../components/wrappers/TikTokEmbedWrapper";
 import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrapper";
 import { Masonry, useInfiniteLoader } from "masonic";
 import { getFakeFeedData, getFeed } from "../services/feed";
-import { getMe } from "../services/user";
+import { getMe, getUser } from "../services/user";
 
 export const PublicProfilePage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
@@ -32,10 +32,12 @@ export const PublicProfilePage = () => {
 
   const { username } = useParams();
   const usernameLowercase = username.toLowerCase();
-  const { data, loading } = useFetch(
-    `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
-  );
+
+  const [loading, setLoading] = useState(true);
+  const [myData, setMyData] = useState(null);
+  const [thisPageData, setThisPageData] = useState(null);
   const [feedData, setFeedData] = useState(null);
+  const [isOwnPage, setIsOwnPage] = useState(false);
   // const maybeLoadMore = useInfiniteLoader(
   //   async (startIdx, stopIdx, currentItems) => {
   //     const nextItems = await getFakeFeedData(startIdx, stopIdx);
@@ -51,10 +53,16 @@ export const PublicProfilePage = () => {
   // );
 
   useEffect(() => {
+    setLoading(true);
     const firstLoadOfFeed = async () => {
-      const [data, _] = await getMe();
+      const [tmpMyData, hasError] = await getMe();
+      setMyData(tmpMyData);
+      const [tmpThisPageData, _hasError] = await getUser(usernameLowercase);
+      setThisPageData(tmpThisPageData[0]);
       // setFeedData(await getFakeFeedData());
-      setFeedData(await getFeed(data.linksMap));
+      setFeedData(await getFeed(tmpThisPageData[0].linksMap));
+      setIsOwnPage(tmpMyData.usernameLowercase === usernameLowercase);
+      setLoading(false);
     };
     firstLoadOfFeed();
     return () => {
@@ -64,14 +72,14 @@ export const PublicProfilePage = () => {
 
   if (loading || feedData === null) {
     return <p className="text-center">loading...</p>;
-  } else if (data === null || data.length === 0) {
+  } else if (thisPageData === null || thisPageData.length === 0) {
     return (
       <div>
         <p className="text-center">No account with the username "{username}"</p>
       </div>
     );
   }
-  const usernameCaseSensitive = data[0].username;
+  const usernameCaseSensitive = thisPageData.username;
 
   return (
     <>
@@ -82,7 +90,7 @@ export const PublicProfilePage = () => {
             <div className="flex flex-col basis-1/4">
               <img
                 className="w-full h-auto object-cover"
-                src={data[0].avatarUrl}
+                src={thisPageData.avatarUrl}
                 alt="avatar"
               />
               <h3 className="mt-3 font-bold text-lg uppercase">
@@ -92,47 +100,49 @@ export const PublicProfilePage = () => {
                 className="mt-6 text w-full"
                 style={{ wordBreak: "break-word" }}
               >
-                {data[0].bio}
+                {thisPageData.bio}
               </div>
               <div className="mt-20">
                 <p
                   className="text-black font-semibold text-lg mb-4"
                   style={{ fontFamily: "Inter" }}
                 >
-                  Accounts
+                  {isOwnPage ? "Manage Accounts" : "Visit Accounts"}
                 </p>
-                {Object.entries(data[0].linksMap).map(([key, value], idx) => {
-                  let socialMediaIcon = getCorrectSocialMediaIcon(key);
-                  return (
-                    <button
-                      onClick={() => {
-                        if (value.individual.length === 0) {
-                          // no-op
-                          return;
-                        } else if (value.individual.length > 1) {
-                          // if more than 1 account connected for that social media
-                          // open a modal
-                        } else {
-                          window.open(
-                            constructCorrectLink(key, value),
-                            "_blank"
-                          );
-                        }
-                      }}
-                      className="py-2 mt-5 border-2 border-black w-full text-center font-medium flex items-center justify-center"
-                      style={{ boxShadow: "4px 4px" }}
-                      key={idx}
-                    >
-                      <img
-                        src={socialMediaIcon}
-                        className="w-9 h-9"
-                        style={{ marginRight: "24px" }}
-                        alt="social media icon"
-                      />
-                      {key}
-                    </button>
-                  );
-                })}
+                {Object.entries(thisPageData.linksMap).map(
+                  ([key, value], idx) => {
+                    let socialMediaIcon = getCorrectSocialMediaIcon(key);
+                    return (
+                      <button
+                        onClick={() => {
+                          if (value.individual.length === 0) {
+                            // no-op
+                            return;
+                          } else if (value.individual.length > 1) {
+                            // if more than 1 account connected for that social media
+                            // open a modal
+                          } else {
+                            window.open(
+                              constructCorrectLink(key, value),
+                              "_blank"
+                            );
+                          }
+                        }}
+                        className="py-2 mt-5 border-2 border-black w-full text-center font-medium flex items-center justify-center"
+                        style={{ boxShadow: "4px 4px" }}
+                        key={idx}
+                      >
+                        <img
+                          src={socialMediaIcon}
+                          className="w-9 h-9"
+                          style={{ marginRight: "24px" }}
+                          alt="social media icon"
+                        />
+                        {key}
+                      </button>
+                    );
+                  }
+                )}
               </div>
             </div>
             <div className="basis-1/12" />
@@ -172,7 +182,7 @@ export const PublicProfilePage = () => {
             <div className="flex flex-col items-center">
               <img
                 className="w-36 h-36 object-cover"
-                src={data[0].avatarUrl}
+                src={thisPageData.avatarUrl}
                 alt="avatar"
               />
               <h3 className="mt-3 font-bold text-lg uppercase">
@@ -182,39 +192,41 @@ export const PublicProfilePage = () => {
                 className="mt-6 text w-full"
                 style={{ wordBreak: "break-word" }}
               >
-                {data[0].bio}
+                {thisPageData.bio}
               </div>
               <div className="mt-6 flex space-x-5 mb-10">
-                {Object.entries(data[0].linksMap).map(([key, value], idx) => {
-                  let socialMediaIcon = getCorrectSocialMediaIcon(key);
-                  return (
-                    <button
-                      onClick={() => {
-                        if (value.length === 0) {
-                          // no-op
-                          return;
-                        } else if (value.length > 1) {
-                          // if more than 1 account connected for that social media
-                          // open a modal
-                        } else {
-                          window.open(
-                            constructCorrectLink(key, value),
-                            "_blank"
-                          );
-                        }
-                      }}
-                      className="p-2 mt-5 border-2 border-black w-full flex items-center justify-center"
-                      style={{ boxShadow: "4px 4px" }}
-                      key={idx}
-                    >
-                      <img
-                        src={socialMediaIcon}
-                        className="w-7 h-7"
-                        alt="social media icon"
-                      />
-                    </button>
-                  );
-                })}
+                {Object.entries(thisPageData.linksMap).map(
+                  ([key, value], idx) => {
+                    let socialMediaIcon = getCorrectSocialMediaIcon(key);
+                    return (
+                      <button
+                        onClick={() => {
+                          if (value.length === 0) {
+                            // no-op
+                            return;
+                          } else if (value.length > 1) {
+                            // if more than 1 account connected for that social media
+                            // open a modal
+                          } else {
+                            window.open(
+                              constructCorrectLink(key, value),
+                              "_blank"
+                            );
+                          }
+                        }}
+                        className="p-2 mt-5 border-2 border-black w-full flex items-center justify-center"
+                        style={{ boxShadow: "4px 4px" }}
+                        key={idx}
+                      >
+                        <img
+                          src={socialMediaIcon}
+                          className="w-7 h-7"
+                          alt="social media icon"
+                        />
+                      </button>
+                    );
+                  }
+                )}
               </div>
               <Masonry
                 columnGutter={48}
