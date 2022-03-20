@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
+import { AvatarModal } from "../components/AvatarModal";
 import { Navbar } from "../components/Navbar";
 import youtubePng from "../assets/images/youtube.png";
 import facebookPng from "../assets/images/facebook.png";
@@ -16,6 +17,8 @@ import { InstagramEmbedWrapper } from "../components/wrappers/InstagramEmbedWrap
 import { Masonry, useInfiniteLoader } from "masonic";
 import { getFakeFeedData, getFeed } from "../services/feed";
 import { getMe, getUser } from "../services/user";
+import { CameraIcon, PencilAltIcon } from "@heroicons/react/solid";
+import { EditBioModal } from "../components/EditBioModal";
 
 export const PublicProfilePage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
@@ -36,21 +39,14 @@ export const PublicProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [myData, setMyData] = useState(null);
   const [thisPageData, setThisPageData] = useState(null);
+
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [bio, setBio] = useState(null);
+  const [avatarModalVisible, setAvatarModalVisible] = useState(false);
+  const [bioModalVisible, setBioModalVisible] = useState(false);
+
   const [feedData, setFeedData] = useState(null);
   const [isOwnPage, setIsOwnPage] = useState(false);
-  // const maybeLoadMore = useInfiniteLoader(
-  //   async (startIdx, stopIdx, currentItems) => {
-  //     const nextItems = await getFakeFeedData(startIdx, stopIdx);
-  //     console.log(nextItems, "whaet is nextItems:");
-  //     setFeedData((current) => [...current, ...nextItems]);
-  //     console.log("new feedData", feedData);
-  //   },
-  //   {
-  //     isItemLoaded: (index, items) => !!items[index],
-  //     minimumBatchSize: 5,
-  //     threshold: 3,
-  //   }
-  // );
 
   useEffect(() => {
     setLoading(true);
@@ -59,6 +55,8 @@ export const PublicProfilePage = () => {
       setMyData(tmpMyData);
       const [tmpThisPageData, _hasError] = await getUser(usernameLowercase);
       setThisPageData(tmpThisPageData[0]);
+      setAvatarUrl(tmpThisPageData[0].avatarUrl);
+      setBio(tmpThisPageData[0].bio);
       // setFeedData(await getFakeFeedData());
       setFeedData(await getFeed(tmpThisPageData[0].linksMap));
       setIsOwnPage(tmpMyData.usernameLowercase === usernameLowercase);
@@ -84,15 +82,38 @@ export const PublicProfilePage = () => {
   return (
     <>
       <Navbar />
+      <AvatarModal
+        avatarModalVisible={avatarModalVisible}
+        setAvatarModalVisible={setAvatarModalVisible}
+        setAvatarUrl={setAvatarUrl}
+      />
+      <EditBioModal
+        setBio={setBio}
+        bioModalVisible={bioModalVisible}
+        setBioModalVisible={setBioModalVisible}
+      />
       <div className="flex justify-center">
         {!isMobile ? (
           <div className="flex flex-row w-3/5 mt-16">
             <div className="flex flex-col basis-1/4">
-              <img
-                className="w-full h-auto object-cover"
-                src={thisPageData.avatarUrl}
-                alt="avatar"
-              />
+              <div className="relative hover:cursor-pointer">
+                <img
+                  onClick={() => setAvatarModalVisible(true)}
+                  className="w-full h-auto object-cover hover:opacity-50"
+                  src={avatarUrl}
+                  alt="avatar"
+                />
+                <CameraIcon
+                  className="absolute w-16 h-16 text-gray-700"
+                  style={{
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: -1,
+                  }}
+                />
+              </div>
+
               <h3 className="mt-3 font-bold text-lg uppercase">
                 @{usernameCaseSensitive}
               </h3>
@@ -102,7 +123,15 @@ export const PublicProfilePage = () => {
               >
                 {thisPageData.bio}
               </div>
-              <div className="mt-20">
+              {isOwnPage && (
+                <button
+                  className="text-black text-left font-semibold text-lg mt-10"
+                  style={{ fontFamily: "Inter" }}
+                >
+                  Edit Profile
+                </button>
+              )}
+              <div className="mt-10">
                 <p
                   className="text-black font-semibold text-lg mb-4"
                   style={{ fontFamily: "Inter" }}
