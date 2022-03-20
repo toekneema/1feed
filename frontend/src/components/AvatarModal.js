@@ -83,7 +83,7 @@ export const AvatarModal = ({ ...props }) => {
               image={imgPreviewUrl}
               width={200}
               height={200}
-              borderRadius={100}
+              // borderRadius={100}
               scale={scaleValue}
               color={[0, 0, 0, 0.3]}
               className="border-4 border-gray-800"

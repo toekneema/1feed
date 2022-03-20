@@ -16,6 +16,21 @@ export const getMe = async () => {
   return [data, hasError];
 };
 
+export const getUser = async (usernameLowercase) => {
+  let [data, hasError] = [null, false];
+  try {
+    data = await (
+      await fetch(
+        `http://localhost:1337/api/users?filters[usernameLowercase][$eq]=${usernameLowercase}`
+      )
+    ).json();
+  } catch (e) {
+    console.log("getUser error:", e);
+    hasError = true;
+  }
+  return [data, hasError];
+};
+
 export const updateUser = async (body) => {
   let [data, hasError] = [null, false];
   try {
