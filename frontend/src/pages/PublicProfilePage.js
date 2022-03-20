@@ -44,6 +44,7 @@ export const PublicProfilePage = () => {
   const [bio, setBio] = useState(null);
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [bioModalVisible, setBioModalVisible] = useState(false);
+  const [isHoveringBio, setIsHoveringBio] = useState(false);
 
   const [feedData, setFeedData] = useState(null);
   const [isOwnPage, setIsOwnPage] = useState(false);
@@ -82,6 +83,8 @@ export const PublicProfilePage = () => {
   return (
     <>
       <Navbar />
+
+      {/* Placing all the modals here at the top just for organizational purposes */}
       <AvatarModal
         avatarModalVisible={avatarModalVisible}
         setAvatarModalVisible={setAvatarModalVisible}
@@ -92,37 +95,63 @@ export const PublicProfilePage = () => {
         bioModalVisible={bioModalVisible}
         setBioModalVisible={setBioModalVisible}
       />
+
+      {/* Real layout begins here */}
       <div className="flex justify-center">
         {!isMobile ? (
           <div className="flex flex-row w-3/5 mt-16">
             <div className="flex flex-col basis-1/4">
-              <div className="relative hover:cursor-pointer">
+              {isOwnPage ? (
+                <div className="relative hover:cursor-pointer">
+                  <img
+                    onClick={() => setAvatarModalVisible(true)}
+                    className="w-full h-auto object-cover hover:opacity-50"
+                    src={avatarUrl}
+                    alt="avatar"
+                  />
+                  <CameraIcon
+                    className="absolute w-16 h-16 text-gray-700"
+                    style={{
+                      left: "50%",
+                      top: "50%",
+                      transform: "translate(-50%, -50%)",
+                      zIndex: -1,
+                    }}
+                  />
+                </div>
+              ) : (
                 <img
-                  onClick={() => setAvatarModalVisible(true)}
-                  className="w-full h-auto object-cover hover:opacity-50"
+                  className="w-full h-auto object-cover"
                   src={avatarUrl}
                   alt="avatar"
                 />
-                <CameraIcon
-                  className="absolute w-16 h-16 text-gray-700"
-                  style={{
-                    left: "50%",
-                    top: "50%",
-                    transform: "translate(-50%, -50%)",
-                    zIndex: -1,
-                  }}
-                />
-              </div>
+              )}
 
               <h3 className="mt-3 font-bold text-lg uppercase">
                 @{usernameCaseSensitive}
               </h3>
-              <div
-                className="mt-6 text w-full"
-                style={{ wordBreak: "break-word" }}
-              >
-                {thisPageData.bio}
-              </div>
+
+              {isOwnPage ? (
+                <button
+                  onClick={() => setBioModalVisible(true)}
+                  onMouseOver={() => setIsHoveringBio(true)}
+                  onMouseLeave={() => setIsHoveringBio(false)}
+                  className="mt-6 w-full text-left hover:bg-gray-100 hover:rounded-xl relative"
+                  style={{ wordBreak: "break-word" }}
+                >
+                  {bio}
+                  {isHoveringBio && (
+                    <PencilAltIcon className="absolute bottom-1 w-5 h-5 right-1 text-gray-800" />
+                  )}
+                </button>
+              ) : (
+                <div
+                  className="mt-6 w-full text-left"
+                  style={{ wordBreak: "break-word" }}
+                >
+                  {bio}
+                </div>
+              )}
               {isOwnPage && (
                 <button
                   className="text-black text-left font-semibold text-lg mt-10"
