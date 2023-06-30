@@ -13,6 +13,34 @@ Used for aggregating/sorting the different urls/timestamps into one nice feed. E
 `python server.py` <br>
 Not currently utilized. Was attemping to use it for python web scraping recent TikTok video urls. Uses a community library TikTokApi and uses Flask server. <br>
 
+## Other setup instructions
+
+### Set up permissioning for Strapi
+
+By default, Strapi does not allow users to query for other users. So you'll get `403 Forbidden`s when trying to visit other people's profiles. We need to allow this query.
+
+Here is one way to change this:
+
+1. Run the Strapi admin console (i.e. `npm run develop` in [`backend`](/backend/))
+1. Go to the [roles page](http://localhost:1337/admin/settings/users-permissions/roles) in the Strapi admin console
+1. Navigate to the "Public" role
+1. Open the "User-permissions" dropdown under the "Permissions" card
+1. Enable `find` and `findOne` under the "USER" heading
+
+Maybe this could be done through a configuration-in-code for Strapi, but there isn't any clear documentation I could find on how to do this.
+
+### Node version for Strapi
+
+Strapi (used in [`backend`](/backend/)) typically doesn't support the latest `node` version, [they only support LTS](https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/installation/cli.html#preparing-the-installation). At the time of writing, the latest Node version is the non-LTS Node 17. This breaks Strapi. Node needs to be downgraded to 16.
+
+If you have a non-compatible Node version, this is one way of downgrading:
+
+1. `cd backend`
+1. `npm install` (this actually installs the correct `node` version defined in [`package.json`](backend/package.json); don't use `yarn`, it doesn't run the `node` installation)
+1. If you are going to use `yarn` commands like `yarn develop`, add the absolute path to `node_modules/.bin` to your `PATH` variable so that the right `node` version gets picked up by `yarn`. No action needed if you're using `npm` commands like `npm run develop`.
+
+If you don't do this and run with Node 17, bad things will happen.
+
 # Request flows: <br>
 
 ## Public page request (1feed.com/steph, 1feed.com/kingjames, etc.):

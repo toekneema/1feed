@@ -41,18 +41,20 @@ export const login = async (email, password) => {
   let error = null;
   let hasError = false;
   try {
-    const userInfo = await (
-      await fetch("http://localhost:1337/api/auth/local", {
-        method: "POST",
-        body: JSON.stringify({
-          identifier: email,
-          password: password,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      })
-    ).json();
+    const userInfoRaw = await fetch("http://localhost:1337/api/auth/local", {
+      method: "POST",
+      body: JSON.stringify({
+        identifier: email,
+        password: password,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    const userInfo = await userInfoRaw.json();
+    if (!userInfoRaw.ok) {
+      throw new Error(userInfo.error.message);
+    }
     localStorage.setItem("jwt", userInfo.jwt);
     localStorage.setItem("user", JSON.stringify(userInfo.user));
     console.log("Login success!");
